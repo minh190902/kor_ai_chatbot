@@ -1,0 +1,12 @@
+2025-05-29 10:38:15,834 - __main__ - INFO - Starting Korean Learning Chatbot...
+2025-05-29 10:38:15,834 - __main__ - INFO - Settings validated successfully
+2025-05-29 10:38:15,834 - __main__ - INFO - Launching Gradio interface on 127.0.0.1:7860
+2025-05-29 10:38:16,937 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-05-29 10:38:20,996 - __main__ - ERROR - Error starting chatbot: Cannot find empty port in range: 7860-7860. You can specify a different port by setting the GRADIO_SERVER_PORT environment variable or passing the `server_port` parameter to `launch()`.
+2025-05-29 10:38:29,829 - __main__ - INFO - Starting Korean Learning Chatbot...
+2025-05-29 10:38:29,834 - __main__ - INFO - Settings validated successfully
+2025-05-29 10:38:29,834 - __main__ - INFO - Launching Gradio interface on 127.0.0.1:7860
+2025-05-29 10:38:30,135 - httpx - INFO - HTTP Request: GET http://127.0.0.1:7860/gradio_api/startup-events "HTTP/1.1 200 OK"
+2025-05-29 10:38:30,157 - httpx - INFO - HTTP Request: HEAD http://127.0.0.1:7860/ "HTTP/1.1 200 OK"
+2025-05-29 10:38:30,844 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-05-29 10:39:18,801 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
