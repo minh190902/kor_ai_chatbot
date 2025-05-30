@@ -6,7 +6,8 @@ from dotenv import load_dotenv
 from pathlib import Path
 
 # Load environment variables
-load_dotenv()
+BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv(dotenv_path=BASE_DIR / ".env", override=True)
 
 class Settings:
     """Application settings configuration"""
@@ -15,9 +16,9 @@ class Settings:
     OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY", "")
     
     # Database Configuration
-    DATABASE_URL: str = os.getenv("DATABASE_URL", "sqlite:///korean_chatbot.db")
+    DATABASE_URL: str = os.getenv("DATABASE_URL", "postgresql+psycopg2://postgres:1234@localhost:5432/postgres")
     VECTOR_DB_PATH: str = os.getenv("VECTOR_DB_PATH", "./data/vector_db")
-    
+
     # Model Configuration
     DEFAULT_MODEL: str = os.getenv("DEFAULT_MODEL", "gpt-4o-mini")
     EMBEDDING_MODEL: str = os.getenv("EMBEDDING_MODEL", "text-embedding-3-small")
@@ -55,10 +56,10 @@ class Settings:
             raise ValueError("OPENAI_API_KEY is required")
         
         # Create necessary directories
-        cls.DATA_DIR.mkdir(exist_ok=True)
-        cls.GRAMMAR_RULES_DIR.mkdir(exist_ok=True)
-        cls.VOCABULARY_DIR.mkdir(exist_ok=True)
-        cls.CULTURE_DIR.mkdir(exist_ok=True)
+        # cls.DATA_DIR.mkdir(exist_ok=True)
+        # cls.GRAMMAR_RULES_DIR.mkdir(exist_ok=True)
+        # cls.VOCABULARY_DIR.mkdir(exist_ok=True)
+        # cls.CULTURE_DIR.mkdir(exist_ok=True)
         
         return True
 
