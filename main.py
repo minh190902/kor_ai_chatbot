@@ -4,6 +4,7 @@ Main entry point for Korean Learning Chatbot
 import sys
 import logging
 from pathlib import Path
+from src.db.db_config import init_db
 
 # Add src to Python path
 sys.path.append(str(Path(__file__).parent / "src"))
@@ -23,7 +24,6 @@ def setup_logging():
         ]
     )
 
-
 def main():
     """Main function to run the Korean Learning Chatbot"""
     
@@ -38,13 +38,16 @@ def main():
         settings.validate_settings()
         logger.info("Settings validated successfully")
         
+        init_db()
+        logger.info("Database initialized successfully")
+        
         # Initialize and launch UI
         chatbot_ui = KoreanChatbotUI()
         
         logger.info(f"Launching Gradio interface on {settings.GRADIO_HOST}:{settings.GRADIO_PORT}")
         
         chatbot_ui.launch(
-            share=False,  # Set to True if you want public URL
+            share=True,  # Set to True if you want public URL
             debug=True if settings.LOG_LEVEL == "DEBUG" else False
         )
         

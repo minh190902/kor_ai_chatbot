@@ -4,4 +4,5 @@ langchain-openai
 gradio
 python-dotenv
 
+psycopg2
 chromadb
