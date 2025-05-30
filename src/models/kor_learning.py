@@ -26,10 +26,11 @@ class KoreanLearningCallbackHandler(BaseCallbackHandler):
 
 
 class KorLearningModels:
-    def __init__(self, user_id: str, level: str = "beginner"):
+    def __init__(self, user_id: str, sesstion_id: str, level: str = "beginner"):
         self.user_id = user_id
+        self.sesstion_id = sesstion_id
         self.level = level
-        self.user_memory = UserMemory(user_id)
+        self.user_memory = UserMemory(user_id=user_id, session_id=sesstion_id)
         
         # Initialize components
         self.llm = self._initialize_llm()
