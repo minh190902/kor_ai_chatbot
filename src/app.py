@@ -2,13 +2,17 @@ import gradio as gr
 import uuid
 from typing import List, Tuple, Dict, Any
 from models.kor_learning import KorLearningModels
+from crew.crew import KoreanAILearningPath
+from crew.models import UserProfile
 from config.settings import settings
+import json
 
 class KoreanChatbotUI:
     """Gradio interface for Korean learning chatbot"""
 
     def __init__(self):
         self.user_sessions = {}  # Store multiple user sessions
+        self.crew = KoreanAILearningPath()
 
     def initialize_agent(self, user_id: str, session_id: str, level: str) -> KorLearningModels:
         """Initialize or get existing agent for user and session"""
@@ -62,23 +66,11 @@ class KoreanChatbotUI:
                 display += f"🏆 {achievement}\n"
         return display
 
-    # def change_level(self, user_id: str, session_id: str, new_level: str) -> str:
-    #     """Handle level change"""
-    #     session_key = f"{user_id}_{session_id}_{new_level}"
-    #     self.user_sessions[session_key] = KorLearningModels(user_id, session_id, new_level)
-    #     return f"레벨이 {new_level}로 변경되었습니다! Level changed to {new_level}!"
-
     def clear_chat(self, user_id: str, session_id: str, level: str) -> Tuple[List, str]:
         """Clear chat history"""
         agent = self.initialize_agent(user_id, session_id, level)
         agent.reset_conversation()
         return []
-
-    # def get_learning_stats(self, user_id: str, session_id: str, level: str) -> str:
-    #     """Get detailed learning statistics"""
-    #     agent = self.initialize_agent(user_id, session_id, level)
-    #     stats = agent.get_learning_stats()
-    #     return self._format_detailed_stats(stats)
 
     def _format_detailed_stats(self, stats: Dict[str, Any]) -> str:
         if not stats:
@@ -101,13 +93,88 @@ class KoreanChatbotUI:
                 conversations = day_data.get('conversations', 0)
                 display += f"• {date}: {conversations}회 대화\n"
         return display
-
+    
+    def assess_and_plan(self, name, current_level, target_level, learning_goal, 
+                       hours_per_week, preferred_style, experience):
+        """Main function to assess user and create learning plan"""
+        
+        user_input = UserProfile(
+            name=name,
+            current_level=current_level,
+            target_level=target_level,
+            learning_goal=learning_goal,
+            available_hours_per_week=hours_per_week,
+            preferred_learning_style=preferred_style,
+            experience=experience
+        )
+        
+        # Get results from supervisor agent
+        result = self.crew.run(user_input.model_dump())
+        
+        # Format output for display
+        assessment_text = self._format_assessment(result["assessment"])
+        plan_text = self._format_learning_plan(result["learning_plan"])
+        recommendations_text = self._format_recommendations(result["recommendations"])
+        
+        return assessment_text, plan_text, recommendations_text
+    
+    def _format_assessment(self, assessment):
+        return f"""
+        ## 📊 Korean Level Assessment
+        
+        **Overall Level:** {assessment.get('overall_level', 'To be determined')}
+        
+        **Strengths:**
+        {chr(10).join([f"• {strength}" for strength in assessment.get('strengths', [])])}
+        
+        **Areas for Improvement:**
+        {chr(10).join([f"• {weakness}" for weakness in assessment.get('weaknesses', [])])}
+        
+        **Recommendations:**
+        {assessment.get('recommendations', 'Detailed assessment pending...')}
+        """
+    
+    def _format_learning_plan(self, plan):
+        return f"""
+        ## 📅 Personalized Learning Plan
+        
+        **Duration:** {plan.get('duration_weeks', 12)} weeks
+        
+        **Weekly Schedule:**
+        {self._format_weekly_schedule(plan.get('weekly_goals', {}))}
+        
+        **Key Milestones:**
+        {chr(10).join([f"Week {i*4}: {milestone}" for i, milestone in enumerate(plan.get('milestones', []), 1)])}
+        
+        **Daily Study Structure:**
+        {plan.get('daily_schedule', 'Customized schedule will be generated...')}
+        """
+    
+    def _format_recommendations(self, recommendations):
+        return f"""
+        ## 💡 Recommended Resources
+        
+        **Recommended Apps:**
+        {chr(10).join([f"• {app}" for app in recommendations.get('apps', ['Duolingo Korean', 'Memrise Korean', 'HelloTalk'])])}
+        
+        **Study Materials:**
+        {chr(10).join([f"• {book}" for book in recommendations.get('books', ['Korean Grammar in Use', 'Integrated Korean Textbook'])])}
+        
+        **Practice Activities:**
+        {chr(10).join([f"• {activity}" for activity in recommendations.get('practice_activities', ['Daily conversation practice', 'TOPIK mock tests'])])}
+        """
+    
+    def _format_weekly_schedule(self, weekly_goals):
+        if not weekly_goals:
+            return "• Week 1-4: Foundation building\n• Week 5-8: Skill development\n• Week 9-12: Advanced practice"
+        return chr(10).join([f"• Week {week}: {goal}" for week, goal in weekly_goals.items()])
+    
     def create_interface(self) -> gr.Blocks:
-        """Create the main Gradio interface"""
+        """Create Gradio interface with two tabs: Learning Plan & Chatbot"""
 
         with gr.Blocks(
             theme=gr.themes.Soft(),
-            title="한국어 학습 챗봇 (Korean Learning Chatbot)",
+            title="Korean Learning AI Assistant",
             css="""
             .main-container { max-width: 1200px; margin: 0 auto; }
             .chat-container { height: 600px; }
@@ -115,130 +182,161 @@ class KoreanChatbotUI:
             .stats-container { height: 300px; overflow-y: auto; }
             """
         ) as interface:
-            # Tạo user_id và session_id ngẫu nhiên cho mỗi session
-            user_id_state = gr.State(str(uuid.uuid4()))
-            session_id_state = gr.State(str(uuid.uuid4()))
+            with gr.Tabs():
+                # Tab 1: Learning Plan
+                with gr.TabItem("📅 Learning Plan Generator"):
+                    gr.Markdown("# 🇰🇷 AI Korean Learning Path Generator")
+                    gr.Markdown("Get your personalized Korean learning plan powered by AI!")
 
-            gr.Markdown(
-                """
-                # 🇰🇷 한국어 학습 챗봇 (Korean Learning Chatbot)
-                안녕하세요! 한국어 학습을 도와드리는 AI 챗봇입니다.
-                Hello! I'm an AI chatbot here to help you learn Korean.
-                """
-            )
-
-            with gr.Row():
-                with gr.Column(scale=2):
-                    with gr.Group():
-                        gr.Markdown("### 👤 사용자 설정 (User Settings)")
-                        level = gr.Dropdown(
-                            choices=settings.SUPPORTED_LEVELS,
-                            label="학습 레벨 (Learning Level)",
-                            value="beginner"
-                        )
-                    with gr.Group():
-                        gr.Markdown("### 💬 대화 (Chat)")
-                        chatbot = gr.Chatbot(
-                            label="한국어 학습 대화",
-                            height=500,
-                            elem_classes=["chat-container"],
-                        )
-                        with gr.Row():
-                            message_input = gr.Textbox(
-                                label="메시지 입력 (Enter your message)",
-                                placeholder="한국어로 질문하거나 문장을 입력하세요... (Ask in Korean or enter a sentence...)",
-                                scale=4
+                    with gr.Row():
+                        with gr.Column():
+                            gr.Markdown("## 📝 Tell us about yourself")
+                            name = gr.Textbox(label="Name", placeholder="Enter your name")
+                            current_level = gr.Dropdown(
+                                choices=list(settings.TOPIK_LEVELS.keys()),
+                                label="Current Korean Level",
+                                value="Beginner"
                             )
-                            send_btn = gr.Button("전송 (Send)", scale=1, variant="primary")
-                        with gr.Row():
-                            clear_btn = gr.Button("대화 초기화 (Clear Chat)")
-                            level_change_btn = gr.Button("레벨 변경 적용 (Apply Level Change)")
+                            target_level = gr.Dropdown(
+                                choices=list(settings.TOPIK_LEVELS.keys()),
+                                label="Target Korean Level",
+                                value="Intermediate"
+                            )
+                            learning_goal = gr.Dropdown(
+                                choices=settings.LEARNING_GOALS,
+                                label="Primary Learning Goal",
+                                value="Conversational Korean"
+                            )
+                            hours_per_week = gr.Slider(
+                                minimum=1, maximum=30, value=5,
+                                label="Available Study Hours per Week"
+                            )
+                            preferred_style = gr.Radio(
+                                choices=["Visual", "Auditory", "Kinesthetic", "Mixed"],
+                                label="Preferred Learning Style",
+                                value="Mixed"
+                            )
+                            experience = gr.Textbox(
+                                label="Previous Korean Learning Experience (Optional)",
+                                placeholder="Describe any previous study, time in Korea, etc.",
+                                lines=3
+                            )
+                            generate_btn = gr.Button("🚀 Generate My Learning Plan", variant="primary")
 
-                # with gr.Column(scale=1):
-                #     with gr.Group():
-                #         gr.Markdown("### 📊 학습 진도 (Progress)")
-                #         progress_display = gr.Markdown(
-                #             "진도 정보를 불러오는 중...",
-                #             elem_classes=["progress-container"]
-                #         )
-                #         refresh_progress_btn = gr.Button("진도 새로고침 (Refresh Progress)")
-                #     with gr.Group():
-                #         gr.Markdown("### 📈 상세 통계 (Detailed Stats)")
-                #         stats_display = gr.Markdown(
-                #             "통계를 보려면 버튼을 클릭하세요.",
-                #             elem_classes=["stats-container"]
-                #         )
-                #         show_stats_btn = gr.Button("통계 보기 (Show Stats)")
+                    with gr.Row():
+                        with gr.Column():
+                            assessment_output = gr.Markdown(label="Assessment Results")
+                        with gr.Column():
+                            plan_output = gr.Markdown(label="Learning Plan")
+                        with gr.Column():
+                            recommendations_output = gr.Markdown(label="Recommendations")
 
-            with gr.Accordion("💡 사용 팁 (Usage Tips)", open=False):
-                gr.Markdown(
-                    """
-                    **문법 검사:** "이 문장이 맞나요?" + 한국어 문장
-                    **어휘 학습:** "~의 뜻이 뭐예요?" 또는 "vocabulary practice"
-                    **발음 도움:** "~은/는 어떻게 발음해요?"
-                    **문화 설명:** "한국 문화에서 ~은/는 어떤 의미예요?"
+                    generate_btn.click(
+                        self.assess_and_plan,
+                        inputs=[name, current_level, target_level, learning_goal,
+                                hours_per_week, preferred_style, experience],
+                        outputs=[assessment_output, plan_output, recommendations_output]
+                    )
 
-                    **Grammar Check:** "Is this sentence correct?" + Korean sentence
-                    **Vocabulary:** "What does ~ mean?" or "vocabulary practice"
-                    **Pronunciation:** "How do you pronounce ~?"
-                    **Culture:** "What does ~ mean in Korean culture?"
-                    """
-                )
+                    gr.Markdown("""
+                    ## 📚 How it works:
+                    1. **Assessment**: AI analyzes your current level and goals
+                    2. **Planning**: Creates a personalized week-by-week study plan
+                    3. **Recommendations**: Suggests the best resources for your needs
+                    4. **Tracking**: (Coming soon) Monitor progress and adjust plan
+                    """)
 
-            # Event handlers
-            def handle_send(message, history, user_id, session_id, level):
-                return self.chat_with_bot(message, history, user_id, session_id, level)
+                # Tab 2: Chatbot
+                with gr.TabItem("💬 Korean Learning Chatbot"):
+                    # Tạo user_id và session_id ngẫu nhiên cho mỗi session
+                    user_id_state = gr.State(str(uuid.uuid4()))
+                    session_id_state = gr.State(str(uuid.uuid4()))
 
-            def handle_clear(user_id, session_id, level):
-                return self.clear_chat(user_id, session_id, level)
+                    gr.Markdown(
+                        """
+                        # 🇰🇷 한국어 학습 챗봇 (Korean Learning Chatbot)
+                        안녕하세요! 한국어 학습을 도와드리는 AI 챗봇입니다.
+                        Hello! I'm an AI chatbot here to help you learn Korean.
+                        """
+                    )
 
-            # def handle_level_change(user_id, session_id, level):
-            #     return self.change_level(user_id, session_id, level)
+                    with gr.Row():
+                        with gr.Column(scale=2):
+                            with gr.Group():
+                                gr.Markdown("### 👤 사용자 설정 (User Settings)")
+                                level = gr.Dropdown(
+                                    choices=settings.SUPPORTED_LEVELS,
+                                    label="학습 레벨 (Learning Level)",
+                                    value="beginner"
+                                )
+                            with gr.Group():
+                                gr.Markdown("### 💬 대화 (Chat)")
+                                chatbot = gr.Chatbot(
+                                    label="한국어 학습 대화",
+                                    height=500,
+                                    elem_classes=["chat-container"],
+                                )
+                                with gr.Row():
+                                    message_input = gr.Textbox(
+                                        label="메시지 입력 (Enter your message)",
+                                        placeholder="한국어로 질문하거나 문장을 입력하세요... (Ask in Korean or enter a sentence...)",
+                                        scale=4
+                                    )
+                                    send_btn = gr.Button("전송 (Send)", scale=1, variant="primary")
+                                with gr.Row():
+                                    clear_btn = gr.Button("대화 초기화 (Clear Chat)")
+                                    level_change_btn = gr.Button("레벨 변경 적용 (Apply Level Change)")
 
-            # def handle_show_stats(user_id, session_id, level):
-            #     return self.get_learning_stats(user_id, session_id, level)
+                        with gr.Column(scale=1):
+                            with gr.Group():
+                                gr.Markdown("### 📊 학습 진도 (Progress)")
+                                progress_display = gr.Markdown(
+                                    "진도 정보를 불러오는 중...",
+                                    elem_classes=["progress-container"]
+                                )
+                                refresh_progress_btn = gr.Button("진도 새로고침 (Refresh Progress)")
+                            with gr.Group():
+                                gr.Markdown("### 📈 상세 통계 (Detailed Stats)")
+                                stats_display = gr.Markdown(
+                                    "통계를 보려면 버튼을 클릭하세요.",
+                                    elem_classes=["stats-container"]
+                                )
+                                show_stats_btn = gr.Button("통계 보기 (Show Stats)")
 
-            # def handle_refresh_progress(user_id, session_id, level):
-            #     agent = self.initialize_agent(user_id, session_id, level)
-            #     progress = agent.progress_tracker.get_progress_summary()
-            #     return self._format_progress_display(progress)
+                    with gr.Accordion("💡 사용 팁 (Usage Tips)", open=False):
+                        gr.Markdown(
+                            """
+                            **문법 검사:** "이 문장이 맞나요?" + 한국어 문장  
+                            **어휘 학습:** "~의 뜻이 뭐예요?" 또는 "vocabulary practice"  
+                            **발음 도움:** "~은/는 어떻게 발음해요?"  
+                            **문화 설명:** "한국 문화에서 ~은/는 어떤 의미예요?"  
+                            """
+                        )
 
-            # Connect events
-            send_btn.click(
-                fn=handle_send,
-                inputs=[message_input, chatbot, user_id_state, session_id_state, level],
-                outputs=[message_input, chatbot]
-            )
+                    # Event handlers
+                    def handle_send(message, history, user_id, session_id, level):
+                        return self.chat_with_bot(message, history, user_id, session_id, level)
 
-            message_input.submit(
-                fn=handle_send,
-                inputs=[message_input, chatbot, user_id_state, session_id_state, level],
-                outputs=[message_input, chatbot]
-            )
+                    def handle_clear(user_id, session_id, level):
+                        return self.clear_chat(user_id, session_id, level)
 
-            clear_btn.click(
-                fn=handle_clear,
-                inputs=[user_id_state, session_id_state, level],
-                outputs=[chatbot]
-            )
+                    send_btn.click(
+                        fn=handle_send,
+                        inputs=[message_input, chatbot, user_id_state, session_id_state, level],
+                        outputs=[message_input, chatbot]
+                    )
 
-            # level_change_btn.click(
-            #     fn=handle_level_change,
-            #     inputs=[user_id_state, session_id_state, level],
-            #     outputs=[progress_display]
-            # )
+                    message_input.submit(
+                        fn=handle_send,
+                        inputs=[message_input, chatbot, user_id_state, session_id_state, level],
+                        outputs=[message_input, chatbot]
+                    )
 
-            # show_stats_btn.click(
-            #     fn=handle_show_stats,
-            #     inputs=[user_id_state, session_id_state, level],
-            #     outputs=[stats_display]
-            # )
-
-            # refresh_progress_btn.click(
-            #     fn=handle_refresh_progress,
-            #     inputs=[user_id_state, session_id_state, level],
-            #     outputs=[progress_display]
-            # )
+                    clear_btn.click(
+                        fn=handle_clear,
+                        inputs=[user_id_state, session_id_state, level],
+                        outputs=[chatbot]
+                    )
 
         return interface
 
