@@ -28,6 +28,25 @@ class Settings:
     # Korean Learning Configuration
     DEFAULT_LEVEL: str = os.getenv("DEFAULT_LEVEL", "beginner")
     SUPPORTED_LEVELS: list = ["beginner", "intermediate", "advanced"]
+    # TOPIK Levels
+    TOPIK_LEVELS = {
+        "Beginner": {"level": 1, "description": "Basic Korean"},
+        "Elementary": {"level": 2, "description": "Elementary Korean"},
+        "Intermediate": {"level": 3, "description": "Intermediate Korean"},
+        "Upper-Intermediate": {"level": 4, "description": "Upper-Intermediate Korean"},
+        "Advanced": {"level": 5, "description": "Advanced Korean"},
+        "Proficient": {"level": 6, "description": "Near-native Korean"}
+    }
+    
+    # Learning Goals
+    LEARNING_GOALS = [
+        "TOPIK Test Preparation",
+        "Business Korean",
+        "Travel Korean", 
+        "Academic Korean",
+        "Conversational Korean",
+        "Korean Drama/Media Understanding"
+    ]
     
     # Memory Configuration
     MEMORY_BUFFER_SIZE: int = int(os.getenv("MEMORY_BUFFER_SIZE", "10"))
