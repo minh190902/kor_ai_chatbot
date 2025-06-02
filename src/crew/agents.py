@@ -1,8 +1,11 @@
 from crewai import Agent
+from crewai.project import CrewBase
+
 from langchain_openai import ChatOpenAI
 from config.settings import settings
 
 class Agents:
+    # agents_config = 'prompts/agents.yaml'
     def __init__(self):
         self.llm = ChatOpenAI(
             model=settings.DEFAULT_MODEL,
