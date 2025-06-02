@@ -1,11 +1,6 @@
 langchain
 langchain-openai
-crewai
 gradio
-python-dotenv
-fastapi
-psycopg2
-chromadb
 pydantic
 pandas
 numpy
