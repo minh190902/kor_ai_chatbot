@@ -25,3 +25,7 @@ def get_db_session() -> Generator:
         raise
     finally:
         session.close()
+        
+if __name__ == "__main__":
+    init_db()
+    print("Database initialized successfully.")

@@ -173,19 +173,80 @@ class KoreanChatbotUI:
         """Create Gradio interface with two tabs: Learning Plan & Chatbot"""
 
         with gr.Blocks(
-            theme=gr.themes.Soft(),
-            title="Korean Learning AI Assistant",
+            theme=gr.themes.Base(
+                primary_hue="orange",
+                font=["Poppins", "Noto Sans KR", "sans-serif"],
+            ).set(
+                body_background_fill="#FFF5D7",
+                body_text_color="#222",
+                button_primary_background_fill="#FF6A00",
+                button_primary_background_fill_hover="#e65c00",
+                border_color_primary="#FF6A00",
+                shadow_drop="shadow-md",
+                block_background_fill="#FFFFFF"
+            ),
+            title="Start learning Korean with DOTORE",
             css="""
             .main-container { max-width: 1200px; margin: 0 auto; }
             .chat-container { height: 600px; }
             .progress-container { height: 400px; overflow-y: auto; }
             .stats-container { height: 300px; overflow-y: auto; }
             """
-        ) as interface:
+            ) as interface:
             with gr.Tabs():
-                # Tab 1: Learning Plan
+                # Tab 1: Chatbot
+                with gr.TabItem("💬 Korean Learning Chatbot"):
+                    # Tạo user_id và session_id ngẫu nhiên cho mỗi session
+                    user_id_state = gr.State(str(uuid.uuid4()))
+                    session_id_state = gr.State(str(uuid.uuid4()))
+
+                    gr.Markdown(
+                        """
+                        # 🇰🇷 한국어 학습 챗봇 (Korean Learning Chatbot)
+                        안녕하세요! 한국어 학습을 도와드리는 AI 챗봇입니다.
+                        Hello! I'm an AI chatbot here to help you learn Korean.
+                        """
+                    )
+
+                    with gr.Column():
+                        with gr.Group():
+                            gr.Markdown("### 👤 사용자 설정 (User Settings)")
+                            level = gr.Dropdown(
+                                choices=settings.SUPPORTED_LEVELS,
+                                label="학습 레벨 (Learning Level)",
+                                value="beginner"
+                            )
+                        with gr.Group():
+                            gr.Markdown("### 💬 대화 (Chat)")
+                            chatbot = gr.Chatbot(
+                                label="한국어 학습 대화",
+                                height=500,
+                                elem_classes=["chat-container"],
+                            )
+                            with gr.Row():
+                                message_input = gr.Textbox(
+                                    label="메시지 입력 (Enter your message)",
+                                    placeholder="한국어로 질문하거나 문장을 입력하세요... (Ask in Korean or enter a sentence...)",
+                                    scale=4
+                                )
+                                send_btn = gr.Button("전송 (Send)", scale=1, variant="primary")
+                            with gr.Row():
+                                clear_btn = gr.Button("대화 초기화 (Clear Chat)")
+                                level_change_btn = gr.Button("레벨 변경 적용 (Apply Level Change)")
+
+                    with gr.Accordion("💡 사용 팁 (Usage Tips)", open=False):
+                        gr.Markdown(
+                            """
+                            **문법 검사:** "이 문장이 맞나요?" + 한국어 문장  
+                            **어휘 학습:** "~의 뜻이 뭐예요?" 또는 "vocabulary practice"  
+                            **발음 도움:** "~은/는 어떻게 발음해요?"  
+                            **문화 설명:** "한국 문화에서 ~은/는 어떤 의미예요?"  
+                            """
+                        )
+                
+                # Tab 2: Learning Plan
                 with gr.TabItem("📅 Learning Plan Generator"):
-                    gr.Markdown("# 🇰🇷 AI Korean Learning Path Generator")
+                    gr.Markdown("# AI Korean Learning Path Generator")
                     gr.Markdown("Get your personalized Korean learning plan powered by AI!")
 
                     with gr.Row():
@@ -245,73 +306,6 @@ class KoreanChatbotUI:
                     3. **Recommendations**: Suggests the best resources for your needs
                     4. **Tracking**: (Coming soon) Monitor progress and adjust plan
                     """)
-
-                # Tab 2: Chatbot
-                with gr.TabItem("💬 Korean Learning Chatbot"):
-                    # Tạo user_id và session_id ngẫu nhiên cho mỗi session
-                    user_id_state = gr.State(str(uuid.uuid4()))
-                    session_id_state = gr.State(str(uuid.uuid4()))
-
-                    gr.Markdown(
-                        """
-                        # 🇰🇷 한국어 학습 챗봇 (Korean Learning Chatbot)
-                        안녕하세요! 한국어 학습을 도와드리는 AI 챗봇입니다.
-                        Hello! I'm an AI chatbot here to help you learn Korean.
-                        """
-                    )
-
-                    with gr.Row():
-                        with gr.Column(scale=2):
-                            with gr.Group():
-                                gr.Markdown("### 👤 사용자 설정 (User Settings)")
-                                level = gr.Dropdown(
-                                    choices=settings.SUPPORTED_LEVELS,
-                                    label="학습 레벨 (Learning Level)",
-                                    value="beginner"
-                                )
-                            with gr.Group():
-                                gr.Markdown("### 💬 대화 (Chat)")
-                                chatbot = gr.Chatbot(
-                                    label="한국어 학습 대화",
-                                    height=500,
-                                    elem_classes=["chat-container"],
-                                )
-                                with gr.Row():
-                                    message_input = gr.Textbox(
-                                        label="메시지 입력 (Enter your message)",
-                                        placeholder="한국어로 질문하거나 문장을 입력하세요... (Ask in Korean or enter a sentence...)",
-                                        scale=4
-                                    )
-                                    send_btn = gr.Button("전송 (Send)", scale=1, variant="primary")
-                                with gr.Row():
-                                    clear_btn = gr.Button("대화 초기화 (Clear Chat)")
-                                    level_change_btn = gr.Button("레벨 변경 적용 (Apply Level Change)")
-
-                        with gr.Column(scale=1):
-                            with gr.Group():
-                                gr.Markdown("### 📊 학습 진도 (Progress)")
-                                progress_display = gr.Markdown(
-                                    "진도 정보를 불러오는 중...",
-                                    elem_classes=["progress-container"]
-                                )
-                                refresh_progress_btn = gr.Button("진도 새로고침 (Refresh Progress)")
-                            with gr.Group():
-                                gr.Markdown("### 📈 상세 통계 (Detailed Stats)")
-                                stats_display = gr.Markdown(
-                                    "통계를 보려면 버튼을 클릭하세요.",
-                                    elem_classes=["stats-container"]
-                                )
-                                show_stats_btn = gr.Button("통계 보기 (Show Stats)")
-
-                    with gr.Accordion("💡 사용 팁 (Usage Tips)", open=False):
-                        gr.Markdown(
-                            """
-                            **문법 검사:** "이 문장이 맞나요?" + 한국어 문장  
-                            **어휘 학습:** "~의 뜻이 뭐예요?" 또는 "vocabulary practice"  
-                            **발음 도움:** "~은/는 어떻게 발음해요?"  
-                            **문화 설명:** "한국 문화에서 ~은/는 어떤 의미예요?"  
-                            """
-                        )
 
                     # Event handlers
                     def handle_send(message, history, user_id, session_id, level):

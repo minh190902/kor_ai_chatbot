@@ -1,5 +1,5 @@
-from db.db_models import Message, MessageRole, ChatSession, User
-from db.db_config import get_db_session
+from ..db.db_models import Message, MessageRole, ChatSession, User
+from ..db.db_config import get_db_session
 from datetime import datetime
 import uuid
 

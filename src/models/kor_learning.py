@@ -3,9 +3,9 @@ from typing import Dict, Any
 from langchain_openai import ChatOpenAI
 from langchain.callbacks.base import BaseCallbackHandler
 
-from prompts import Prompts
-from memory.user_memory import UserMemory
-from utils.progress_tracker import ProgressTracker
+from ..prompts import Prompts
+from ..memory.user_memory import UserMemory
+from ..utils.progress_tracker import ProgressTracker
 from config.settings import settings
 
 class KoreanLearningCallbackHandler(BaseCallbackHandler):
