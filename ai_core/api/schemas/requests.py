@@ -10,4 +10,3 @@ class ChatbotRequest(BaseRequest):
     """Request schema for chatbot interactions."""
     message: str
     history: List[List[str]]
-    level: Optional[str] = "beginner"

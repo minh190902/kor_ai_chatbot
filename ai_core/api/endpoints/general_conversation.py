@@ -18,12 +18,10 @@ def request_chatbot(request: ChatbotRequest):
             "session_id": request.session_id,
             "message": request.message,
             "history": request.history,
-            "level": request.level
         }
         model = KorLearningModels(
             user_id=state["user_id"],
-            sesstion_id=state["session_id"],
-            level=state["level"]
+            sesstion_id=state["session_id"]
         )
         response = model.chat(state["message"])
         return StreamingResponse(
