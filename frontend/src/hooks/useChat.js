@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { sendChatMessage } from '../services/api';
 import { DEFAULT_SETTINGS } from '../utils/constants';
 
-export const useChat = (conversationId, setMessages) => {
+export const useChat = (conversationId, setMessages, userId) => {
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
@@ -20,10 +20,21 @@ export const useChat = (conversationId, setMessages) => {
 
     try {
       let convId = conversationId;
+      let userid = userId;
       // If no conversation exist, creating is handled outside
+      // const payload = {
+      //   message: inputMessage,
+      //   conversationId: convId,
+      //   settings: {
+      //     model: DEFAULT_SETTINGS.model,
+      //     temperature: DEFAULT_SETTINGS.temperature,
+      //     maxTokens: DEFAULT_SETTINGS.maxTokens,
+      //   },
+      // };
       const payload = {
+        user_id: userid,
+        session_id: convId,
         message: inputMessage,
-        conversationId: convId,
         settings: {
           model: DEFAULT_SETTINGS.model,
           temperature: DEFAULT_SETTINGS.temperature,

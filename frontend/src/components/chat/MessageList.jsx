@@ -1,14 +1,14 @@
 import React from 'react';
 import Message from './Message';
 import LoadingSpinner from '../common/LoadingSpinner';
-import { FaRobot } from 'react-icons/fa';
+import { Bot } from 'lucide-react';;
 
 const MessageList = ({ messages, isLoading }) => (
   <div className="flex-1 overflow-y-auto p-4 space-y-4">
     {messages.length === 0 ? (
       <div className="flex items-center justify-center h-full text-gray-500">
         <div className="text-center">
-          <FaRobot className="w-12 h-12 mx-auto mb-4 text-gray-400" />
+          <Bot className="w-12 h-12 mx-auto mb-4 text-gray-400" />
           <p className="text-lg">Chào bạn! Tôi là AI assistant.</p>
           <p>Hãy bắt đầu cuộc trò chuyện bằng cách gửi tin nhắn.</p>
         </div>
