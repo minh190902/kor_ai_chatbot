@@ -3,7 +3,7 @@ const express = require('express');
 const corsMiddleware = require('./middleware/cors');
 const rateLimiter = require('./middleware/rateLimiter');
 const authMiddleware = require('./middleware/auth');
-const routes = require('./routes/chat');
+const routes = require('./routes');
 const storageService = require('./services/storageService');
 const logger = require('./utils/logger');
 
@@ -22,10 +22,6 @@ app.get('/health', (req, res) => {
 
 // Đăng ký toàn bộ route
 app.use('/api', routes);
-
-app.listen(8000, () => {
-  console.log('Server running on port 8000');
-});
 
 // 404 handler
 app.use((req, res, next) => {

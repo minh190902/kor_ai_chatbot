@@ -9,6 +9,22 @@ const MESSAGES_FILE = path.join(DATA_DIR, 'messages.json');
 
 let conversations = [];
 let messages = [];
+let users = [];
+
+function findUserByUsername(username) {
+  return users.find(u => u.username === username);
+}
+
+function createUser(user) {
+  users.push(user);
+  return user;
+}
+
+module.exports = {
+  // ...các hàm khác
+  findUserByUsername,
+  createUser,
+};
 
 /**
  * Đảm bảo folder data tồn tại
@@ -87,19 +103,21 @@ function deleteConversationById(id) {
   messages = messages.filter((m) => m.conversationId !== id);
 }
 
-function updateConversation(conversation) {
-  const idx = conversations.findIndex((c) => c.id === conversation.id);
-  if (idx !== -1) {
-    conversations[idx] = conversation;
-  }
+function addMessage(message) {
+  messages.push(message);
+  return message;
 }
 
 function getMessagesByConversationId(conversationId) {
-  return messages.filter((m) => m.conversationId === conversationId);
+  return messages.filter(m => m.conversationId === conversationId);
 }
 
-function addMessage(msg) {
-  messages.push(msg);
+function updateConversation(conversation) {
+  const index = conversations.findIndex(c => c.id === conversation.id);
+  if (index !== -1) {
+    conversations[index] = conversation;
+  }
+  return conversation;
 }
 
 module.exports = {

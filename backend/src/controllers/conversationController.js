@@ -1,57 +1,100 @@
-// src/services/aiService.js
-const axios = require('axios');
-const logger = require('../utils/logger');
-
-const FASTAPI_URL = process.env.AI_API_URL || 'http://localhost:8080';
-const CHAT_ENDPOINT = '/api/v1/chat';
-const MODELS_ENDPOINT = '/api/v1/models';
+// src/controllers/conversationController.js
+const { v4: uuidv4 } = require('uuid');
+const storage = require('../services/storageService');
+const { sortByUpdatedAtDesc, generateTitleFromMessage } = require('../utils/helpers');
 
 /**
- * Gọi API chat của FastAPI
- * @param {Object} payload { message, conversation_history, settings }
+ * GET /api/conversations
  */
-async function callChatAPI(payload) {
+async function getAllConversations(req, res) {
   try {
-    const res = await axios.post(
-      `${FASTAPI_URL}${CHAT_ENDPOINT}`,
-      payload,
-      {
-        headers: { 'Content-Type': 'application/json' },
-        timeout: 30000,
-      }
-    );
-    let aiResp = res.data.response || res.data.message || res.data;
-    if (typeof aiResp === 'object') {
-      aiResp = aiResp.content || aiResp.text || JSON.stringify(aiResp);
-    }
-    return aiResp;
+    let convs = storage.getAllConversations();
+    convs = sortByUpdatedAtDesc(convs);
+    res.json(convs);
   } catch (err) {
-    logger.error('AI API Error:', err.message);
-    if (err.response) {
-      logger.error('AI API Response Error:', {
-        status: err.response.status,
-        data: err.response.data,
-      });
-    }
-    // Trả về fallback message
-    return 'Xin lỗi, tôi đang gặp vấn đề kỹ thuật. Vui lòng thử lại sau.';
+    console.error(err);
+    res.status(500).json({ error: 'Failed to get conversations' });
   }
 }
 
 /**
- * Lấy danh sách model từ FastAPI
+ * POST /api/conversations
  */
-async function getAvailableModels() {
+async function createConversation(req, res) {
   try {
-    const res = await axios.get(`${FASTAPI_URL}${MODELS_ENDPOINT}`);
-    return res.data;
+    const { title } = req.body;
+    const newConversation = {
+      id: uuidv4(),
+      title: title || 'New Conversation',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      messageCount: 0,
+    };
+    storage.createConversation(newConversation);
+    await storage.saveData();
+    res.json({ session_id });
+    res.status(201).json(newConversation);
   } catch (err) {
-    logger.error('Error fetching models:', err.message);
-    return { models: ['default'] }; // fallback
+    console.error(err);
+    res.status(500).json({ error: 'Failed to create conversation' });
+  }
+}
+
+/**
+ * GET /api/conversations/:id
+ */
+async function getConversationById(req, res) {
+  try {
+    const { id } = req.params;
+    const conversation = storage.getConversationById(id);
+    if (!conversation) {
+      return res.status(404).json({ error: 'Conversation not found' });
+    }
+    res.json(conversation);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to get conversation' });
+  }
+}
+
+/**
+ * GET /api/conversations/:id/messages
+ */
+async function getMessagesForConversation(req, res) {
+  try {
+    const { id } = req.params;
+    const msgs = storage.getMessagesByConversationId(id)
+      .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+    res.json(msgs);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to get messages' });
+  }
+}
+
+/**
+ * DELETE /api/conversations/:id
+ */
+async function deleteConversation(req, res) {
+  try {
+    const { id } = req.params;
+    const existing = storage.getConversationById(id);
+    if (!existing) {
+      return res.status(404).json({ error: 'Conversation not found' });
+    }
+    storage.deleteConversationById(id);
+    await storage.saveData();
+    res.json({ message: 'Conversation deleted successfully' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to delete conversation' });
   }
 }
 
 module.exports = {
-  callChatAPI,
-  getAvailableModels,
+  getAllConversations,
+  createConversation,
+  getConversationById,
+  getMessagesForConversation,
+  deleteConversation,
 };

@@ -1,21 +1,18 @@
-// src/controllers/chatController.js
 const { v4: uuidv4 } = require('uuid');
-const storage = require('../services/storageService');
 const aiService = require('../services/aiService');
-const { generateTitleFromMessage } = require('../utils/helpers');
+const storage = require('../services/storageService');
+const logger = require('../utils/logger');
 
-/**
- * POST /api/chat
- */
 async function handleChat(req, res) {
   try {
-    const { message, conversationId, settings = {} } = req.body;
-    if (!message || !conversationId) {
-      return res.status(400).json({ error: 'Message and conversationId are required' });
+    const { user_id, session_id, message, settings = {} } = req.body;
+    
+    if (!user_id || !session_id || !message) {
+      return res.status(400).json({ error: 'user_id, session_id, and message are required' });
     }
 
     // Kiểm tra conversation tồn tại
-    const conversation = storage.getConversationById(conversationId);
+    const conversation = storage.getConversationById(session_id);
     if (!conversation) {
       return res.status(404).json({ error: 'Conversation not found' });
     }
@@ -23,15 +20,16 @@ async function handleChat(req, res) {
     // Lưu message từ user
     const userMessage = {
       id: uuidv4(),
-      conversationId,
+      conversationId: session_id, // Sửa thành session_id
       text: message,
       sender: 'user',
       timestamp: new Date().toISOString(),
     };
     storage.addMessage(userMessage);
 
-    // Lấy history để feed vào AI (10 tin nhắn gần nhất)
-    const history = storage.getMessagesByConversationId(conversationId)
+    // Lấy history
+    const history = storage
+      .getMessagesByConversationId(session_id) // Sửa thành session_id
       .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp))
       .slice(-10)
       .map((m) => ({
@@ -40,38 +38,29 @@ async function handleChat(req, res) {
         timestamp: m.timestamp,
       }));
 
-    // Chuẩn payload cho AI
     const aiRequestData = {
+      user_id,
+      session_id,
       message,
-      conversation_history: history,
-      settings: {
-        model: settings.model || 'default',
-        temperature: settings.temperature || 0.7,
-        max_tokens: settings.maxTokens || 1000,
-        ...settings,
-      },
+      history
     };
 
     // Gọi FastAPI
     const aiResponseText = await aiService.callChatAPI(aiRequestData);
 
-    // Lưu message từ AI
+    // Lưu message AI
     const aiMessage = {
       id: uuidv4(),
-      conversationId,
+      conversationId: session_id, // Sửa thành session_id
       text: aiResponseText,
       sender: 'ai',
       timestamp: new Date().toISOString(),
     };
     storage.addMessage(aiMessage);
 
-    // Cập nhật conversation: updatedAt, messageCount, title (nếu lần đầu)
+    // Cập nhật conversation
     conversation.updatedAt = new Date().toISOString();
-    const totalMsgs = storage.getMessagesByConversationId(conversationId).length;
-    conversation.messageCount = totalMsgs;
-    if (totalMsgs === 2 && conversation.title === 'New Conversation') {
-      conversation.title = generateTitleFromMessage(message);
-    }
+    conversation.messageCount = storage.getMessagesByConversationId(session_id).length;
     storage.updateConversation(conversation);
 
     await storage.saveData();
@@ -81,26 +70,13 @@ async function handleChat(req, res) {
       messageId: aiMessage.id,
       timestamp: aiMessage.timestamp,
     });
-  } catch (err) {
-    console.error('Chat error:', err);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-}
 
-/**
- * GET /api/models
- */
-async function getModels(req, res) {
-  try {
-    const data = await aiService.getAvailableModels();
-    res.json(data);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Failed to fetch models' });
+    logger.error('Chat error:', err);
+    res.status(500).json({ error: 'Internal server error', detail: err.message });
   }
 }
 
 module.exports = {
-  handleChat,
-  getModels,
+  handleChat
 };

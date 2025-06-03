@@ -3,8 +3,8 @@ const axios = require('axios');
 const logger = require('../utils/logger');
 
 const FASTAPI_URL = process.env.AI_API_URL || 'http://localhost:8080';
-const CHAT_ENDPOINT = '/api/v1/chat';
-const MODELS_ENDPOINT = '/api/v1/models';
+const CHAT_ENDPOINT = '/chat';
+// const MODELS_ENDPOINT = '/api/v1/models';
 
 /**
  * Gọi API chat của FastAPI
@@ -43,7 +43,7 @@ async function callChatAPI(payload) {
  */
 async function getAvailableModels() {
   try {
-    const res = await axios.get(`${FASTAPI_URL}${MODELS_ENDPOINT}`);
+    const res = await axios.get(`${FASTAPI_URL}${CHAT_ENDPOINT}`);
     return res.data;
   } catch (err) {
     logger.error('Error fetching models:', err.message);
