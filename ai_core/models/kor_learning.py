@@ -26,10 +26,9 @@ class KoreanLearningCallbackHandler(BaseCallbackHandler):
 
 
 class KorLearningModels:
-    def __init__(self, user_id: str, sesstion_id: str, level: str = "beginner"):
+    def __init__(self, user_id: str, sesstion_id: str):
         self.user_id = user_id
         self.sesstion_id = sesstion_id
-        self.level = level
         self.user_memory = UserMemory(user_id=user_id, session_id=sesstion_id)
         
         # Initialize components
@@ -63,16 +62,6 @@ class KorLearningModels:
             "response": response,
             "success": True
         }
-        
-    def update_level(self, new_level: str):
-        """Update user's learning level"""
-        if new_level in settings.SUPPORTED_LEVELS:
-            self.level = new_level
-            self.progress_tracker.update_level(new_level)
-            
-            # Reinitialize tools with new level
-            self.tools = self._initialize_tools()
-            # self.agent = self._initialize_agent()
     
     def get_learning_stats(self) -> Dict[str, Any]:
         """Get comprehensive learning statistics"""
