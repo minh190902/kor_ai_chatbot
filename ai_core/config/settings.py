@@ -16,8 +16,7 @@ class Settings:
     OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY", "")
     
     # Database Configuration
-    # DATABASE_URL: str = os.getenv("DATABASE_URL", "postgresql+psycopg2://postgres:1234@localhost:5432/postgres")
-    DATABASE_URL: str = os.getenv("DATABASE_URL", "postgresql+psycopg2://postgres:1234@db:5432/postgres")
+    DATABASE_URL: str = os.getenv("DATABASE_URL", "postgresql://fiktech:1234@db:5432/ai_chatbot")
     VECTOR_DB_PATH: str = os.getenv("VECTOR_DB_PATH", "./data/vector_db")
 
     # Model Configuration
