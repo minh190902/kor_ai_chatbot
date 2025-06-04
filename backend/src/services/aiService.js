@@ -3,15 +3,21 @@ const axios = require('axios');
 const logger = require('../utils/logger');
 
 const FASTAPI_URL = process.env.AI_API_URL || 'http://localhost:8080';
-const CHAT_ENDPOINT = '/chat';
+const CHAT_ENDPOINT = '/chatbot/chat_response';
 // const MODELS_ENDPOINT = '/api/v1/models';
 
 /**
  * Gọi API chat của FastAPI
  * @param {Object} payload { message, conversation_history, settings }
  */
-async function callChatAPI(payload) {
+async function callChatAPI({ user_id, session_id, message, history }) {
   try {
+    const payload = {
+      user_id,
+      session_id,
+      message,
+      history, // chỉ truyền history, không truyền metadata DB
+    };
     const res = await axios.post(
       `${FASTAPI_URL}${CHAT_ENDPOINT}`,
       payload,
@@ -20,11 +26,7 @@ async function callChatAPI(payload) {
         timeout: 30000,
       }
     );
-    let aiResp = res.data.response || res.data.message || res.data;
-    if (typeof aiResp === 'object') {
-      aiResp = aiResp.content || aiResp.text || JSON.stringify(aiResp);
-    }
-    return aiResp;
+    return res.data.response || res.data.message || res.data;
   } catch (err) {
     logger.error('AI API Error:', err.message);
     if (err.response) {

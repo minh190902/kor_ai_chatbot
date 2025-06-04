@@ -1,21 +1,17 @@
-// src/routes/conversations.js
 const express = require('express');
 const router = express.Router();
 const conversationController = require('../controllers/conversationController');
+const messageController = require('../controllers/messageController');
 
-// GET    /api/conversations
-router.get('/', conversationController.getAllConversations);
+// GET    /api/conversations?user_id=...
+router.get('/', conversationController.getConversationsByUser);
 
 // POST   /api/conversations
 router.post('/', conversationController.createConversation);
 
-// GET    /api/conversations/:id
-router.get('/:id', conversationController.getConversationById);
-
-// GET    /api/conversations/:id/messages
-router.get('/:id/messages', conversationController.getMessagesForConversation);
-
 // DELETE /api/conversations/:id
 router.delete('/:id', conversationController.deleteConversation);
+
+router.get('/:session_id/messages', messageController.getMessagesBySession);
 
 module.exports = router;
