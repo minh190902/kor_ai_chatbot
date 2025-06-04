@@ -15,7 +15,7 @@ const ConversationList = ({ conversations, currentId, onSelect }) => (
           {conv.title || 'Cuộc trò chuyện'}
         </div>
         <div className="text-sm text-gray-500">
-          {formatTime(conv.updatedAt || conv.createdAt)}
+          {formatTime(conv.updatedAt || conv.createdAt || conv.startedAt)}
         </div>
       </button>
     ))}

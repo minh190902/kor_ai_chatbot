@@ -9,7 +9,7 @@ import { DEFAULT_SETTINGS } from './utils/constants';
 
 const App = () => {
   const [settings, setSettings] = useState(DEFAULT_SETTINGS);
-  const [userId, setUserId] = useState(localStorage.getItem('user_id') || '');
+  const [userId, setUserId] = useState('');
 
   const {
     conversations,

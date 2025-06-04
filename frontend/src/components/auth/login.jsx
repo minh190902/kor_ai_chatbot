@@ -6,18 +6,21 @@ const Login = ({ onLogin }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!username.trim()) return;
-    // Gọi API backend để tạo user_id
     const res = await fetch('http://localhost:8000/api/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username }),
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username }),
     });
     const data = await res.json();
     if (data.user_id) {
-      localStorage.setItem('user_id', data.user_id);
-      onLogin(data.user_id);
+        // localStorage.setItem('user_id', data.user_id);
+        // // Nếu backend trả về session_id, lưu luôn
+        // if (data.session_id) {
+        // localStorage.setItem('session_id', data.session_id);
+        // }
+        onLogin(data.user_id);
     }
-  };
+    };
 
   return (
     <div className="flex items-center justify-center h-screen bg-gray-100">

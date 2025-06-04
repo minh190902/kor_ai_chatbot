@@ -1,39 +1,31 @@
 import { useState } from 'react';
-import { sendChatMessage } from '../services/api';
+import { sendChatMessage, fetchMessages } from '../services/api';
 import { DEFAULT_SETTINGS } from '../utils/constants';
 
+// Nhận thêm userId để gửi lên backend
 export const useChat = (conversationId, setMessages, userId) => {
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const sendMessage = async () => {
     if (!inputMessage.trim() || isLoading) return;
+    setIsLoading(true);
+
+    // Tạo message user tạm thời
     const userMsg = {
       id: Date.now(),
-      text: inputMessage,
-      sender: 'user',
+      content: inputMessage,
+      role: 'USER',
       timestamp: new Date().toISOString(),
+      isPending: true,
     };
     setMessages(prev => [...prev, userMsg]);
     setInputMessage('');
-    setIsLoading(true);
 
     try {
-      let convId = conversationId;
-      let userid = userId;
-      // If no conversation exist, creating is handled outside
-      // const payload = {
-      //   message: inputMessage,
-      //   conversationId: convId,
-      //   settings: {
-      //     model: DEFAULT_SETTINGS.model,
-      //     temperature: DEFAULT_SETTINGS.temperature,
-      //     maxTokens: DEFAULT_SETTINGS.maxTokens,
-      //   },
-      // };
       const payload = {
-        user_id: userid,
-        session_id: convId,
+        user_id: userId,
+        session_id: conversationId,
         message: inputMessage,
         settings: {
           model: DEFAULT_SETTINGS.model,
@@ -41,24 +33,23 @@ export const useChat = (conversationId, setMessages, userId) => {
           maxTokens: DEFAULT_SETTINGS.maxTokens,
         },
       };
-      const data = await sendChatMessage(DEFAULT_SETTINGS.apiEndpoint, payload);
-      const aiMsg = {
-        id: Date.now() + 1,
-        text: data.response,
-        sender: 'ai',
-        timestamp: new Date().toISOString(),
-      };
-      setMessages(prev => [...prev, aiMsg]);
+      await sendChatMessage(DEFAULT_SETTINGS.apiEndpoint, payload);
+
+      // Sau khi gửi, lấy lại toàn bộ messages mới nhất từ backend (đảm bảo đồng bộ DB)
+      const msgs = await fetchMessages(DEFAULT_SETTINGS.apiEndpoint, conversationId);
+      setMessages(msgs);
     } catch (error) {
       console.error(error);
-      const errorMsg = {
-        id: Date.now() + 1,
-        text: 'Xin lỗi, có lỗi xảy ra khi kết nối với AI. Vui lòng thử lại.',
-        sender: 'ai',
-        timestamp: new Date().toISOString(),
-        isError: true,
-      };
-      setMessages(prev => [...prev, errorMsg]);
+      setMessages(prev => [
+        ...prev,
+        {
+          id: Date.now() + 1,
+          content: 'Xin lỗi, có lỗi xảy ra khi kết nối với AI. Vui lòng thử lại.',
+          role: 'ASSISTANT',
+          timestamp: new Date().toISOString(),
+          isError: true,
+        },
+      ]);
     } finally {
       setIsLoading(false);
     }
