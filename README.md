@@ -1,103 +1,200 @@
-```markdown
-# 🇰🇷 AI Korean Learning Path Generator
+# AI Korean Learning Chatbot
 
-A multi-agent AI system that creates personalized Korean language learning plans using CrewAI.
+This project is a **full-stack AI-powered chatbot** designed to help users learn Korean. It features a modern web interface, a Node.js backend, a FastAPI-based AI core, and a PostgreSQL database. The system is containerized using Docker for easy deployment.
 
-## 🌟 Features
+---
 
-- **Multi-Agent System**: Specialized AI agents for assessment, planning, tracking, and recommendations
-- **Personalized Learning Plans**: Customized study schedules based on your goals and availability  
-- **TOPIK Preparation**: Structured paths for Korean proficiency test preparation
-- **Progress Tracking**: Monitor your learning journey and adjust plans accordingly
-- **Resource Recommendations**: Curated suggestions for apps, books, and practice materials
+## Table of Contents
 
-## 🚀 Quick Start
+- [Features](#features)
+- [Project Structure](#project-structure)
+- [Prerequisites](#prerequisites)
+- [Configuration](#configuration)
+- [How to Run (Quick Start)](#how-to-run-quick-start)
+- [Accessing the Application](#accessing-the-application)
+- [Common Issues & Solutions](#common-issues--solutions)
+- [Resetting the Database](#resetting-the-database)
+- [Customization](#customization)
+- [Troubleshooting](#troubleshooting)
+- [Contact](#contact)
 
-1. **Install Dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
+---
 
-2. **Set OpenAI API Key**
-   ```bash
-   # Create .env file
-   echo "OPENAI_API_KEY=your_api_key_here" > .env
-   ```
+## Features
 
-3. **Run the Application**
-   ```bash
-   python main.py
-   ```
+- **Interactive Korean learning chatbot** powered by AI (OpenAI/GPT or custom models)
+- Personalized learning plans, progress tracking, and resource recommendations
+- User authentication and conversation history
+- Modern React frontend with chat UI
+- Node.js/Express backend API
+- FastAPI Python AI core for language processing
+- PostgreSQL database for persistent storage
+- Dockerized for easy deployment
 
-4. **Or try the demo**
-   ```bash
-   python demo.py
-   ```
+---
 
-## 🏗️ Architecture
+## Project Structure
 
-The system uses a Multi-Agent Architecture with specialized agents:
-
-- **Assessment Agent**: Evaluates current Korean proficiency
-- **Planning Agent**: Creates personalized learning schedules  
-- **Progress Tracker**: Monitors learning progress and performance
-- **Recommender Agent**: Suggests optimal learning resources
-- **Supervisor Agent**: Coordinates all agents for optimal results
-
-## 🤖 Tech Stack
-
-- **AI Framework**: CrewAI for multi-agent orchestration
-- **LLM**: OpenAI GPT-4 for intelligent planning
-- **UI**: Gradio for interactive web interface
-- **Language**: Python 3.8+
-
-## 📚 Learning Approach
-
-1. **Initial Assessment**: Determine current Korean level and learning goals
-2. **Custom Planning**: Generate week-by-week study plans
-3. **Resource Matching**: Recommend optimal learning materials
-4. **Progress Monitoring**: Track advancement and adjust plans
-5. **Continuous Optimization**: Improve recommendations based on performance
-
-## 🎯 Supported Goals
-
-- TOPIK Test Preparation (Levels 1-6)
-- Business Korean Communication
-- Travel & Tourism Korean
-- Academic Korean
-- Conversational Fluency
-- Korean Media Comprehension
-
-## 📈 Future Roadmap
-
-- [ ] Integration with popular Korean learning platforms
-- [ ] Voice recognition for pronunciation practice
-- [ ] Community features and study groups  
-- [ ] Mobile app development
-- [ ] Advanced analytics dashboard
-- [ ] Multi-language interface support
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit issues and pull requests.
-
-## 📄 License
-
-This project is licensed under the MIT License.
+```
+demo_chatbot/
+│
+├── backend/         # Node.js backend (API)
+│   ├── Dockerfile
+│   └── ...
+│
+├── frontend/        # React frontend
+│   ├── Dockerfile
+│   └── ...
+│
+├── ai_core/         # FastAPI AI core (Python)
+│   ├── docker/
+│   │   └── Dockerfile
+│   └── ...
+│
+├── volumes/         # (auto-created) for database persistence
+│
+├── .env             # Environment variables (edit as needed)
+├── docker-compose.yaml
+└── README.md
 ```
 
-이 프로젝트는 완전한 구조를 가진 AI Korean Learning Path system입니다. 
+---
 
-**주요 특징:**
-1. **Multi-Agent Architecture**: CrewAI를 사용한 전문화된 AI 에이전트들
-2. **Modular Design**: 명확한 파일 구조와 책임 분리
-3. **Gradio UI**: 직관적인 웹 인터페이스
-4. **Scalable**: 쉽게 확장 가능한 아키텍처
+## Prerequisites
 
-**사용법:**
-1. OpenAI API 키를 .env 파일에 설정
-2. `pip install -r requirements.txt`로 의존성 설치  
-3. `python main.py`로 Gradio 인터페이스 실행
-4. 또는 `python demo.py`로 간단한 데모 실행
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) (Windows/Mac) or [Docker Engine](https://docs.docker.com/engine/install/) (Linux)
+- [Git](https://git-scm.com/) (optional, for cloning the repo)
 
-이 시스템은 문서에서 제시한 Multi-Agent System 아키텍처를 충실히 구현하면서도, 실제 동작하는 프로토타입으로 설계되었습니다.
+---
+
+## Configuration
+
+### 1. Environment Variables
+
+Copy `.env` or `example.env` to the project root if not present.
+
+Edit the following variables as needed (defaults are usually fine):
+
+```env
+NETWORK_NAME=kor-learning
+
+POSTGRES_USER=fiktech
+POSTGRES_PASSWORD=1234
+POSTGRES_DB=ai_chatbot
+POSTGRES_HOST=db
+POSTGRES_PORT=5432
+
+FASTAPI_PORT=8080
+```
+
+---
+
+## How to Run (Quick Start)
+
+1. **Clone the repository:**
+
+   ```sh
+   git clone <your-repo-url>
+   cd demo_chatbot
+   ```
+
+2. **Build and start all services using Docker Compose:**
+
+   ```sh
+   docker compose up --build
+   ```
+
+   - The first build may take several minutes.
+   - This will start **PostgreSQL**, **AI Core (FastAPI)**, **Backend (Node.js)**, and **Frontend (React+Nginx)**.
+
+3. **Wait until all services are up.**  
+   You can check logs with:
+
+   ```sh
+   docker compose logs -f
+   ```
+
+---
+
+## Accessing the Application
+
+- **Frontend (React):**  
+  http://localhost:3000
+
+- **Backend API (Node.js):**  
+  http://localhost:8000
+
+- **AI Core API (FastAPI):**  
+  http://localhost:8080
+
+- **PostgreSQL:**  
+  Accessible on port 5432 (for admin tools like DBeaver, pgAdmin, etc.)
+
+---
+
+## Common Issues & Solutions
+
+- **Port already in use:**  
+  Change the port in `docker-compose.yaml` or stop the process using that port.
+
+- **Database authentication failed:**  
+  If you change `POSTGRES_USER` or `POSTGRES_DB`, you must delete the old database volume:
+  ```sh
+  docker compose down -v
+  rm -rf ./volumes/db/data
+  docker compose up --build
+  ```
+
+- **Docker permission denied (Linux):**  
+  Run with `sudo` or add your user to the `docker` group.
+
+- **File changes not reflected:**  
+  Rebuild the containers:
+  ```sh
+  docker compose up --build
+  ```
+
+---
+
+## Resetting the Database
+
+To reset (delete all data):
+
+```sh
+docker compose down -v
+rm -rf ./volumes/db/data
+docker compose up --build
+```
+
+---
+
+## Customization
+
+- **Change ports:** Edit `docker-compose.yaml` and `.env`.
+- **Change database credentials:** Edit `.env` and reset the volume as above.
+- **Add Python/Node.js dependencies:** Edit `requirements.txt` or `package.json` and rebuild.
+
+---
+
+## Troubleshooting
+
+- Check logs for any service:
+  ```sh
+  docker compose logs <service>
+  ```
+  Example:
+  ```sh
+  docker compose logs backend
+  ```
+
+- If you encounter issues, ensure Docker Desktop/Engine is running and you have enough free disk space.
+
+---
+
+## Contact
+
+For further support, please open an issue or contact the project maintainer.
+
+---
+
+**Enjoy your AI Korean Learning Chatbot!**
