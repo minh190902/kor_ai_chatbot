@@ -3,7 +3,7 @@ services:
   fastapi:
     container_name: fastapi
     build:
-      context: ..
+      context: ./ai_core
       dockerfile: docker/Dockerfile
     command: sh -c "sleep 5 && python -m db.create_tables && uvicorn api:api --host 0.0.0.0 --port 8080 --reload"
     ports:
@@ -38,10 +38,37 @@ services:
                -c 'maintenance_work_mem=${POSTGRES_MAINTENANCE_WORK_MEM:-64MB}'
                -c 'effective_cache_size=${POSTGRES_EFFECTIVE_CACHE_SIZE:-4096MB}'
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: ["CMD-SHELL", "pg_isready -U fiktech -d ai_chatbot"]
       interval: 10s
       timeout: 5s
       retries: 5
+    networks:
+      - ${NETWORK_NAME}
+  
+  backend:
+    container_name: be
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    env_file:
+      - ./backend/.env
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - fastapi
+    networks:
+      - ${NETWORK_NAME}
+
+  frontend:
+    container_name: fe
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
     networks:
       - ${NETWORK_NAME}
 
