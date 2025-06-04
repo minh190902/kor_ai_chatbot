@@ -1,4 +1,4 @@
-from typing import Optional, List
+from typing import Optional, List, Dict
 from pydantic import BaseModel
 
 class BaseResponse(BaseModel):
@@ -10,5 +10,5 @@ class BaseResponse(BaseModel):
 class ChatbotResponse(BaseResponse):
     """Response scheme for chatbot interactions"""
     message: str
-    history: List[List[str]]
+    history: List[Dict]
    

@@ -13,17 +13,11 @@ router = APIRouter()
 )
 def request_chatbot(request: ChatbotRequest):
     try:
-        state = {
-            "user_id": request.user_id,
-            "session_id": request.session_id,
-            "message": request.message,
-            "history": request.history,
-        }
         model = KorLearningModels(
-            user_id=state["user_id"],
-            sesstion_id=state["session_id"]
+            user_id=request.user_id,
+            sesstion_id=request.session_id
         )
-        response = model.chat(state["message"])
+        response = model.chat(request.message, request.history)
         return StreamingResponse(
             iter([response["response"]]),
             media_type="text/plain"

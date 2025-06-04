@@ -9,4 +9,4 @@ class BaseRequest(BaseModel):
 class ChatbotRequest(BaseRequest):
     """Request schema for chatbot interactions."""
     message: str
-    history: List[List[str]]
+    history: List[Dict]
