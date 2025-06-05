@@ -1,4 +1,3 @@
-// src/app.js
 const express = require('express');
 const corsMiddleware = require('./middleware/cors');
 const rateLimiter = require('./middleware/rateLimiter');
@@ -9,18 +8,18 @@ const logger = require('./utils/logger');
 
 const app = express();
 
-// Middleware toàn cục
+// Middleware
 app.use(corsMiddleware());
 app.use(express.json());
-app.use(rateLimiter());    // Ví dụ: giới hạn tần suất request
-// app.use(authMiddleware()); // Bật nếu cần xác thực chung
+app.use(rateLimiter());
+// app.use(authMiddleware()); // turn on when auth is ready
 
 // Health-check endpoint
 app.get('/health', (req, res) => {
   res.json({ status: 'OK', timestamp: new Date().toISOString() });
 });
 
-// Đăng ký toàn bộ route
+// setup routes
 app.use('/api', routes);
 
 // 404 handler
@@ -28,7 +27,7 @@ app.use((req, res, next) => {
   res.status(404).json({ error: 'Endpoint not found' });
 });
 
-// Error handling middleware (cuối cùng)
+// Error handling middleware
 app.use((err, req, res, next) => {
   logger.error('Unhandled error:', err);
   res.status(500).json({ error: 'Internal server error' });
@@ -36,6 +35,6 @@ app.use((err, req, res, next) => {
 
 module.exports = {
   getApp: () => app,
-  loadData: storageService.loadData,   // gọi load file JSON vào memory
-  saveData: storageService.saveData,   // gọi save JSON khi shutdown
+  loadData: storageService.loadData,
+  saveData: storageService.saveData,
 };

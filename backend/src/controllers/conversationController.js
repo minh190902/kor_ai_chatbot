@@ -55,9 +55,8 @@ async function deleteConversation(req, res) {
     if (!session) {
       return res.status(404).json({ error: 'Conversation not found' });
     }
-    // Xóa tất cả messages thuộc session này
+    // remove all messages in this session
     await Message.destroy({ where: { session_id: id } });
-    // Xóa session
     await session.destroy();
     res.json({ message: 'Conversation deleted successfully' });
   } catch (err) {

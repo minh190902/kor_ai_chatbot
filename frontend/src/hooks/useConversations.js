@@ -2,13 +2,16 @@ import { useState, useEffect } from 'react';
 import { fetchConversations, createConversation, fetchMessages } from '../services/api';
 import { DEFAULT_SETTINGS } from '../utils/constants';
 
-// Nhận userId từ props hoặc context (tùy app bạn)
+/**
+ * Custom hook for managing user conversations and messages.
+ * @param {string} userId - The user's unique identifier.
+ */
 export const useConversations = (userId) => {
   const [conversations, setConversations] = useState([]);
   const [currentConversationId, setCurrentConversationId] = useState(null);
   const [messages, setMessages] = useState([]);
 
-  // Lấy danh sách session/conversation từ backend theo userId
+  // Fetch the list of sessions/conversations from the backend by userId
   const loadConversations = async (settings = DEFAULT_SETTINGS) => {
     if (!userId) return;
     try {
@@ -16,21 +19,21 @@ export const useConversations = (userId) => {
       setConversations(data);
       if (data.length > 0) {
         setCurrentConversationId(data[0].id);
-        // Chỉ load messages nếu session đã tồn tại
+        // Only load messages if a session already exists
         loadConversation(data[0].id, settings);
       } else {
-        // Nếu là user mới, tạo session mới
-        const newConv = await createConversation(settings.apiEndpoint, "Cuộc trò chuyện mới", userId);
+        // If this is a new user, create a new session
+        const newConv = await createConversation(settings.apiEndpoint, "New Conversation", userId);
         setConversations([newConv]);
         setCurrentConversationId(newConv.id);
-        setMessages([]); // Không cần load messages vì chắc chắn chưa có
+        setMessages([]); // No need to load messages since there are none yet
       }
     } catch (error) {
       console.error(error);
     }
   };
 
-  // Lấy messages của 1 session từ backend
+  // Fetch messages for a session from the backend
   const loadConversation = async (conversationId, settings = DEFAULT_SETTINGS) => {
     if (!conversationId) return;
     try {
@@ -42,13 +45,13 @@ export const useConversations = (userId) => {
     }
   };
 
-  // Tạo session mới trên backend
+  // Create a new session on the backend
   const createNewConversation = async (title, settings = DEFAULT_SETTINGS) => {
     try {
       const newConv = await createConversation(settings.apiEndpoint, title, userId);
       setConversations(prev => [newConv, ...prev]);
       setCurrentConversationId(newConv.id);
-      setMessages([]); // Không cần load messages vì là session mới
+      setMessages([]); 
     } catch (error) {
       console.error(error);
     }

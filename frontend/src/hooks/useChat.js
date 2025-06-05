@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { sendChatMessage, sendChatMessageStream, fetchMessages } from '../services/api';
 import { DEFAULT_SETTINGS } from '../utils/constants';
 
-// Nhận thêm userId để gửi lên backend
 export const useChat = (conversationId, setMessages, userId) => {
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -11,7 +10,7 @@ export const useChat = (conversationId, setMessages, userId) => {
     if (!inputMessage.trim() || isLoading) return;
     setIsLoading(true);
 
-    // Tạo message user tạm thời
+    // Create user message object
     const userMsg = {
       id: Date.now(),
       content: inputMessage,
@@ -35,7 +34,7 @@ export const useChat = (conversationId, setMessages, userId) => {
       };
 
       if (useStream) {
-        // Thêm message AI tạm thời để stream nội dung vào
+        // Add stream temparary message
         let aiMsg = {
           id: Date.now() + 1,
           content: '',
@@ -50,9 +49,6 @@ export const useChat = (conversationId, setMessages, userId) => {
             prev.map(m => m.id === aiMsg.id ? { ...aiMsg } : m)
           );
         });
-        // Sau khi stream xong, lấy lại messages từ backend để đồng bộ
-        // const msgs = await fetchMessages(DEFAULT_SETTINGS.apiEndpoint, conversationId);
-        // setMessages(msgs);
       } else {
         await sendChatMessage(DEFAULT_SETTINGS.apiEndpoint, payload);
         const msgs = await fetchMessages(DEFAULT_SETTINGS.apiEndpoint, conversationId);

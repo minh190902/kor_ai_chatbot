@@ -1,4 +1,3 @@
-// src/services/storageService.js
 const fs = require('fs').promises;
 const path = require('path');
 const logger = require('../utils/logger');
@@ -21,7 +20,6 @@ function createUser(user) {
 }
 
 module.exports = {
-  // ...các hàm khác
   findUserByUsername,
   createUser,
 };
@@ -38,7 +36,7 @@ async function ensureDataDir() {
 }
 
 /**
- * Load dữ liệu từ file JSON vào memory
+ * Load datt from file JSON to memory
  */
 async function loadData() {
   try {

@@ -1,4 +1,3 @@
-// src/services/aiService.js
 const axios = require('axios');
 const logger = require('../utils/logger');
 
@@ -34,7 +33,7 @@ async function callChatAPI({ user_id, session_id, message, history }) {
         data: err.response.data,
       });
     }
-    return 'Xin lỗi, tôi đang gặp vấn đề kỹ thuật. Vui lòng thử lại sau.';
+    return 'Sorry, I am having technical issues. Please try again later.';
   }
 }
 
@@ -101,13 +100,13 @@ async function callChatAPIStream({ user_id, session_id, message, history }, onCh
   } catch (err) {
     logger.error('AI Streaming API Error:', err.message);
     // Fallback
-    onChunk('Xin lỗi, tôi đang gặp vấn đề kỹ thuật. Vui lòng thử lại sau.');
+    onChunk('Sorry, I am having technical issues. Please try again later.');
     throw err;
   }
 }
 
 /**
- * Get model list từ FastAPI
+ * Get model list from FastAPI
  */
 async function getAvailableModels() {
   try {

@@ -12,19 +12,18 @@ exports.login = async (req, res) => {
     return res.status(400).json({ error: 'Username is required' });
   }
 
-  // Kiểm tra user đã tồn tại chưa (giả sử lưu trong conversations hoặc users)
+  // Check exist user in storage
   let user = storage.findUserByUsername
     ? storage.findUserByUsername(username)
     : null;
 
   if (!user) {
-    // Nếu chưa có, tạo mới user
+    // If user not found, create a new user
     user = { id: uuidv4(), username };
     if (storage.createUser) {
       storage.createUser(user);
     } else {
-      // Nếu chưa có hàm createUser, có thể lưu vào conversations hoặc nơi khác
-      // Hoặc chỉ trả về user_id ngẫu nhiên
+
     }
   }
 

@@ -1,8 +1,7 @@
-// src/middleware/cors.js
 const cors = require('cors');
 
 module.exports = function () {
-  // Cấu hình CORS tùy chỉnh nếu cần
+  // Configure CORS middleware
   return cors({
     origin: '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],

@@ -1,4 +1,3 @@
-// src/utils/logger.js
 const chalk = require('chalk');
 
 module.exports = {
