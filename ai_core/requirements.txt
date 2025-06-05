@@ -5,3 +5,5 @@ fastapi
 uvicorn
 psycopg2
 pydantic
+openai
+sqlalchemy

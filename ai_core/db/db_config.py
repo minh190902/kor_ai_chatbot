@@ -7,7 +7,6 @@ from typing import Generator
 from .db_models import Base
 from config import settings
 
-# DB_URL = os.getenv("DATABASE_URL", "postgresql+psycopg2://postgres:1234@localhost:5432/postgres")
 engine: Engine = create_engine(settings.DATABASE_URL, pool_pre_ping=True, future=True)
 SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)
 
