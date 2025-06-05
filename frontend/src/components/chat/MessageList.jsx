@@ -1,35 +1,57 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import Message from './Message';
-import LoadingSpinner from '../common/LoadingSpinner';
-import { Bot } from 'lucide-react';;
+import { Bot } from 'lucide-react';
 
-const MessageList = ({ messages, isLoading }) => (
-  <div className="flex-1 overflow-y-auto p-4 space-y-4">
-    {messages.length === 0 ? (
-      <div className="flex items-center justify-center h-full text-gray-500">
-        <div className="text-center">
-          <Bot className="w-12 h-12 mx-auto mb-4 text-gray-400" />
-          <p className="text-lg">Chào bạn! Tôi là AI assistant.</p>
-          <p>Hãy bắt đầu cuộc trò chuyện bằng cách gửi tin nhắn.</p>
-        </div>
-      </div>
-    ) : (
-      messages.map(msg => <Message key={msg.id} message={msg} />)
-    )}
-
-    {isLoading && (
-      <div className="flex justify-start">
-        <div className="flex items-start space-x-3 max-w-3xl">
-          <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
-            <Bot className="w-4 h-4 text-gray-600" />
-          </div>
-          <div className="px-4 py-3 rounded-2xl bg-white border border-gray-200">
-            <LoadingSpinner />
-          </div>
-        </div>
-      </div>
-    )}
+const TypingIndicator = () => (
+  <div className="flex items-center space-x-2">
+    <div className="w-8 h-8 rounded-full bg-gradient-to-r from-orange-400 to-yellow-400 flex items-center justify-center mr-2">
+      <Bot className="w-5 h-5 text-white" />
+    </div>
+    <div className="bg-white border border-orange-100 px-4 py-3 rounded-2xl shadow-sm flex space-x-1">
+      <div className="w-2 h-2 bg-orange-400 rounded-full animate-bounce" />
+      <div className="w-2 h-2 bg-orange-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }} />
+      <div className="w-2 h-2 bg-orange-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
+    </div>
   </div>
 );
+
+const MessageList = ({ messages, isLoading }) => {
+  const messagesEndRef = useRef(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages, isLoading]);
+
+  return (
+    <div className="flex-1 overflow-y-auto p-4 space-y-4 min-h-0">
+      {messages.length === 0 ? (
+        <div className="flex flex-col items-center justify-center h-full text-gray-500">
+          <div className="w-16 h-16 bg-gradient-to-r from-orange-200 to-yellow-200 rounded-full flex items-center justify-center mb-4">
+            <Bot className="w-8 h-8 text-orange-600" />
+          </div>
+          <h3 className="text-lg font-medium mb-2">Bắt đầu cuộc trò chuyện</h3>
+          <p className="text-center max-w-md">Gửi tin nhắn để bắt đầu trò chuyện với AI Assistant</p>
+        </div>
+      ) : (
+        <>
+          {messages.map(msg => <Message key={msg.id} message={msg} />)}
+          
+          {isLoading && (
+            <div className="flex justify-start">
+              <TypingIndicator />
+            </div>
+          )}
+          
+          {/* Div này để scroll xuống cuối */}
+          <div ref={messagesEndRef} />
+        </>
+      )}
+    </div>
+  );
+};
 
 export default MessageList;
