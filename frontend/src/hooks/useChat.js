@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { sendChatMessage, fetchMessages } from '../services/api';
+import { sendChatMessage, sendChatMessageStream, fetchMessages } from '../services/api';
 import { DEFAULT_SETTINGS } from '../utils/constants';
 
 // Nhận thêm userId để gửi lên backend
@@ -7,7 +7,7 @@ export const useChat = (conversationId, setMessages, userId) => {
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const sendMessage = async () => {
+  const sendMessage = async (useStream = true) => {
     if (!inputMessage.trim() || isLoading) return;
     setIsLoading(true);
 
@@ -33,17 +33,37 @@ export const useChat = (conversationId, setMessages, userId) => {
           maxTokens: DEFAULT_SETTINGS.maxTokens,
         },
       };
-      await sendChatMessage(DEFAULT_SETTINGS.apiEndpoint, payload);
 
-      // Sau khi gửi, lấy lại toàn bộ messages mới nhất từ backend (đảm bảo đồng bộ DB)
-      const msgs = await fetchMessages(DEFAULT_SETTINGS.apiEndpoint, conversationId);
-      setMessages(msgs);
+      if (useStream) {
+        // Thêm message AI tạm thời để stream nội dung vào
+        let aiMsg = {
+          id: Date.now() + 1,
+          content: '',
+          role: 'ASSISTANT',
+          timestamp: new Date().toISOString(),
+          isPending: true,
+        };
+        setMessages(prev => [...prev, aiMsg]);
+        await sendChatMessageStream(DEFAULT_SETTINGS.apiEndpoint, payload, (chunk) => {
+          aiMsg.content += chunk;
+          setMessages(prev =>
+            prev.map(m => m.id === aiMsg.id ? { ...aiMsg } : m)
+          );
+        });
+        // Sau khi stream xong, lấy lại messages từ backend để đồng bộ
+        // const msgs = await fetchMessages(DEFAULT_SETTINGS.apiEndpoint, conversationId);
+        // setMessages(msgs);
+      } else {
+        await sendChatMessage(DEFAULT_SETTINGS.apiEndpoint, payload);
+        const msgs = await fetchMessages(DEFAULT_SETTINGS.apiEndpoint, conversationId);
+        setMessages(msgs);
+      }
     } catch (error) {
       console.error(error);
       setMessages(prev => [
         ...prev,
         {
-          id: Date.now() + 1,
+          id: Date.now() + 2,
           content: 'Xin lỗi, có lỗi xảy ra khi kết nối với AI. Vui lòng thử lại.',
           role: 'ASSISTANT',
           timestamp: new Date().toISOString(),
