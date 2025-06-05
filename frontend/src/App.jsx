@@ -44,9 +44,9 @@ const App = () => {
   };
 
   return (
-    <div className="flex h-screen max-h-screen bg-gradient-to-br from-orange-50 to-yellow-50 overflow-hidden">
+    <div className="flex h-screen bg-gradient-to-br from-orange-50 to-yellow-50">
       {/* Sidebar */}
-      <div className={`${sidebarOpen ? 'w-80' : 'w-0'} transition-all duration-300 bg-white shadow-xl border-r border-orange-100 flex flex-col overflow-hidden`}>
+      <div className={`${sidebarOpen ? 'w-80' : 'w-0'} transition-all duration-300 bg-white shadow-xl border-r border-orange-100 flex flex-col overflow-hidden flex-shrink-0`}>
         <ErrorBoundary>
           <Sidebar
             conversations={conversations}
@@ -60,7 +60,7 @@ const App = () => {
         </ErrorBoundary>
       </div>
       {/* Main Chat Area */}
-      <div className="flex-1 flex flex-col min-h-0 max-h-screen">
+      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         {/* Chat Header */}
         <div className="bg-white border-b border-orange-100 p-4 shadow-sm flex-shrink-0">
           <div className="flex items-center">
@@ -76,16 +76,18 @@ const App = () => {
           </div>
         </div>
         {/* Chat Area */}
-        <ErrorBoundary>
-          <ChatArea
-            messages={messages}
-            isLoading={isLoading}
-            inputMessage={inputMessage}
-            setInputMessage={setInputMessage}
-            onSend={sendMessage}
-            currentConversationId={currentConversationId}
-          />
-        </ErrorBoundary>
+        <div className="flex-1 min-h-0 overflow-hidden">
+          <ErrorBoundary>
+            <ChatArea
+              messages={messages}
+              isLoading={isLoading}
+              inputMessage={inputMessage}
+              setInputMessage={setInputMessage}
+              onSend={sendMessage}
+              currentConversationId={currentConversationId}
+            />
+          </ErrorBoundary>
+        </div>
       </div>
     </div>
   );
