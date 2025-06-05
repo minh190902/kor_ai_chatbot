@@ -1,4 +1,4 @@
-# AI Korean Learning Chatbot
+# AI Korean Learning Chatbot v1.0
 
 This project is a **full-stack AI-powered chatbot** designed to help users learn Korean. It features a modern web interface, a Node.js backend, a FastAPI-based AI core, and a PostgreSQL database. The system is containerized using Docker for easy deployment.
 
@@ -40,21 +40,27 @@ demo_chatbot/
 │
 ├── backend/         # Node.js backend (API)
 │   ├── Dockerfile
+│   ├── src/
 │   └── ...
 │
 ├── frontend/        # React frontend
 │   ├── Dockerfile
+│   ├── src/
 │   └── ...
 │
 ├── ai_core/         # FastAPI AI core (Python)
 │   ├── docker/
-│   │   └── Dockerfile
+│        Dockerfile
+│   ├── api/
+│       ├── endpoints/
+│       ├── schemas
+│       └── api.py
+│   ├── models/
 │   └── ...
 │
-├── volumes/         # (auto-created) for database persistence
-│
-├── .env             # Environment variables (edit as needed)
+├── example.env             # Environment variables (edit as needed)
 ├── docker-compose.yaml
+├── Taskfile.yaml
 └── README.md
 ```
 
@@ -62,19 +68,40 @@ demo_chatbot/
 
 ## Prerequisites
 
+- **Node.js**: You can download it from the official Node.js website.
+- **npm** (Node Package Manager)
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/) (Windows/Mac) or [Docker Engine](https://docs.docker.com/engine/install/) (Linux)
-- [Git](https://git-scm.com/) (optional, for cloning the repo)
+- **Task** install:
+
+  Task is a task runner / build tool that aims to be simpler and easier to use than
+
+  - Windows:
+    ```bash
+    choco install go-task
+    ```
+
+    ```bash
+    pip install go-task-bin
+    ```
+
+  - Linux/MacOS:
+
+    Task is available on Snapcraft source, but keep in mind that your Linux distribution should allow classic confinement for Snaps to Task work correctly:
+    ```bash
+    sudo snap install task --classic
+    ```
+
+
 
 ---
 
 ## Configuration
 
-### 1. Environment Variables
+### Environment Variables
 
-Copy `.env` or `example.env` to the project root if not present.
+If you need to customize the configuration, please refer to the comments in our `example.env` file and update the corresponding values in your `.env` file.
 
-Edit the following variables as needed (defaults are usually fine):
-
+exp:
 ```env
 NETWORK_NAME=kor-learning
 
@@ -87,30 +114,45 @@ POSTGRES_PORT=5432
 FASTAPI_PORT=8080
 ```
 
+- Put your **OPENAI API Key** at `example.env` in `ai_core/`
+
+- Copy `.env` or `example.env` to the project root if not present.
+
+  - Linux/Mac
+    ```bash
+    chmod +x init-env.sh
+    ./init-env.sh
+    ```
+
+  - Windows
+    ```bash
+    init-env.bat
+    ```
+
 ---
 
 ## How to Run (Quick Start)
 
 1. **Clone the repository:**
 
-   ```sh
-   git clone <your-repo-url>
-   cd demo_chatbot
-   ```
-
+    ```bash
+    git clone <your-repo-url>
+    cd demo_chatbot
+    ```
+  
 2. **Build and start all services using Docker Compose:**
 
-   ```sh
-   docker compose up --build
-   ```
+    ```bash
+    task build
+    ```
 
-   - The first build may take several minutes.
-   - This will start **PostgreSQL**, **AI Core (FastAPI)**, **Backend (Node.js)**, and **Frontend (React+Nginx)**.
+    - The first build may take several minutes.
+    - This will start **PostgreSQL**, **AI Core (FastAPI)**, **Backend (Node.js)**, and **Frontend (React+Nginx)**.
 
 3. **Wait until all services are up.**  
    You can check logs with:
 
-   ```sh
+   ```bash
    docker compose logs -f
    ```
 
@@ -139,7 +181,7 @@ FASTAPI_PORT=8080
 
 - **Database authentication failed:**  
   If you change `POSTGRES_USER` or `POSTGRES_DB`, you must delete the old database volume:
-  ```sh
+  ```bash
   docker compose down -v
   rm -rf ./volumes/db/data
   docker compose up --build
@@ -150,8 +192,8 @@ FASTAPI_PORT=8080
 
 - **File changes not reflected:**  
   Rebuild the containers:
-  ```sh
-  docker compose up --build
+  ```bash
+  task reset build
   ```
 
 ---
@@ -160,10 +202,8 @@ FASTAPI_PORT=8080
 
 To reset (delete all data):
 
-```sh
-docker compose down -v
-rm -rf ./volumes/db/data
-docker compose up --build
+```bash
+task clear
 ```
 
 ---
@@ -179,11 +219,11 @@ docker compose up --build
 ## Troubleshooting
 
 - Check logs for any service:
-  ```sh
+  ```bash
   docker compose logs <service>
   ```
   Example:
-  ```sh
+  ```bash
   docker compose logs backend
   ```
 
