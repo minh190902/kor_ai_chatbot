@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import LanguageSwitcher from '../common/LanguageSwitcher';
+import { useNavigate } from 'react-router-dom';
 
 const Login = ({ onLogin }) => {
   const [username, setUsername] = useState('');
@@ -8,6 +9,7 @@ const Login = ({ onLogin }) => {
   const [isRegister, setIsRegister] = useState(false);
   const [error, setError] = useState('');
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -20,7 +22,7 @@ const Login = ({ onLogin }) => {
       const res = await fetch(`/api/${isRegister ? 'register' : 'login'}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ username, password}),
       });
       const data = await res.json();
       if (!res.ok) {
@@ -28,6 +30,8 @@ const Login = ({ onLogin }) => {
         return;
       }
       onLogin(data);
+      if (data.role === 'admin') navigate('/admin');
+      else navigate('/chat');
     } catch (err) {
       setError(t("login.error.server_error"));
     }

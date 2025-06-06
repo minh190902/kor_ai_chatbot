@@ -15,7 +15,7 @@ async function register(req, res) {
 
     const hash = await bcrypt.hash(password, 10);
     const user = await User.create({ username, password: hash });
-    res.status(201).json({ user_id: user.id, username: user.username });
+    res.status(201).json({ user_id: user.id, username: user.username, role: user.role });
   } catch (err) {
     res.status(500).json({ error: 'Internal server error' });
   }
@@ -37,7 +37,7 @@ async function login(req, res) {
     if (!match) return res.status(401).json({ error: 'Invalid username or password' });
 
     // TODO: Trả về JWT token nếu muốn bảo mật hơn
-    res.json({ user_id: user.id, username: user.username });
+    res.json({ user_id: user.id, username: user.username, role: user.role });
   } catch (err) {
     res.status(500).json({ error: 'Internal server error' });
   }
