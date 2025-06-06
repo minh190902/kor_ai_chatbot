@@ -1,4 +1,5 @@
-const { User } = require('../db/models');
+const { User, ChatSession, Message } = require('../db/models');
+const { Op } = require('sequelize');
 
 async function deleteUser(req, res) {
   const userId = req.params.id;
@@ -15,6 +16,27 @@ async function deleteUser(req, res) {
   }
 };
 
+async function cleanupOldConversations(req, res) {
+  const days = parseInt(req.query.days, 10) || 90;
+  const cutoff = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
+
+  try {
+    const oldSessions = await ChatSession.findAll({
+      where: { started_at: { [Op.lt]: cutoff } },
+      attributes: ['id'],
+    });
+    const oldSessionIds = oldSessions.map(s => s.id);
+
+    await Message.destroy({ where: { session_id: { [Op.in]: oldSessionIds } } });
+    await ChatSession.destroy({ where: { id: { [Op.in]: oldSessionIds } } });
+
+    res.json({ message: `Deleted ${oldSessionIds.length} conversations older than ${days} days.` });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to cleanup old conversations.' });
+  }
+}
+
 module.exports = {
-    deleteUser
+    deleteUser,
+    cleanupOldConversations
 }
