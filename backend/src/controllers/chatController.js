@@ -1,7 +1,7 @@
 const { ChatSession, Message, User } = require('../db/models');
 const aiService = require('../services/aiService');
 
-exports.handleChat = async (req, res) => {
+async function handleChat(req, res) {
   const { user_id, session_id, message, settings = {}, stream = false } = req.body;
   if (!user_id || !session_id || !message) {
     return res.status(400).json({ error: 'user_id, session_id, and message are required' });
@@ -99,4 +99,8 @@ exports.handleChat = async (req, res) => {
       res.status(500).json({ error: 'Failed to process chat', detail: err.message });
     }
   }
+};
+
+module.exports = {
+  handleChat
 };

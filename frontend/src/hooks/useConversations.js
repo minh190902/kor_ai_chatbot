@@ -64,6 +64,7 @@ export const useConversations = (userId) => {
 
   return {
     conversations,
+    setConversations,
     currentConversationId,
     messages,
     setMessages,

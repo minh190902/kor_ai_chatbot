@@ -11,11 +11,20 @@ const Sidebar = ({
   settings,
   setSettings,
   onCloseSidebar,
+  onSearchConversations
 }) => {
   const [showSettings, setShowSettings] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  const [fromDate, setFromDate] = useState('');
+  const [toDate, setToDate] = useState('');
   const { t } = useTranslation();
 
+  React.useEffect(() => {
+    if (onSearchConversations) {
+      onSearchConversations({ q: searchTerm, from: fromDate, to: toDate });
+    }
+    // eslint-disable-next-line
+  }, [searchTerm, fromDate, toDate]);
   // Filter conversations by search term
   const filteredConversations = conversations.filter(conv =>
     (conv.title || 'Cuộc trò chuyện').toLowerCase().includes(searchTerm.toLowerCase())
@@ -49,15 +58,31 @@ const Sidebar = ({
       </div>
 
       {/* Search */}
-      <div className="p-4 border-b border-orange-100">
+      <div className="p-4 border-b border-orange-100 space-y-2">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
           <input
             type="text"
             placeholder={t('sidebar.find_sessions')}
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={e => setSearchTerm(e.target.value)}
             className="w-full pl-10 pr-4 py-2 border border-orange-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-300 focus:border-transparent"
+          />
+        </div>
+        <div className="flex gap-2">
+          <input
+            type="date"
+            value={fromDate}
+            onChange={e => setFromDate(e.target.value)}
+            className="w-1/2 px-2 py-1 border border-orange-200 rounded-lg text-sm"
+            placeholder="From"
+          />
+          <input
+            type="date"
+            value={toDate}
+            onChange={e => setToDate(e.target.value)}
+            className="w-1/2 px-2 py-1 border border-orange-200 rounded-lg text-sm"
+            placeholder="To"
           />
         </div>
       </div>

@@ -9,6 +9,9 @@ router.get('/', conversationController.getConversationsByUser);
 // POST   /api/conversations
 router.post('/', conversationController.createConversation);
 
+router.get('/search', conversationController.searchConversations);
+router.get('/messages/search', messageController.searchMessages);
+
 // DELETE /api/conversations/:id
 router.delete('/:id', conversationController.deleteConversation);
 

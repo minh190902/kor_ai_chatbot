@@ -1,4 +1,5 @@
 const { User, ChatSession, Message } = require('../db/models');
+const { Op } = require('sequelize');
 
 // GET /api/conversations?user_id=...
 async function getConversationsByUser(req, res) {
@@ -27,6 +28,35 @@ async function getConversationsByUser(req, res) {
     res.status(500).json({ error: 'Failed to get conversations' });
   }
 }
+
+async function searchConversations(req, res) {
+  const { user_id, q, from, to } = req.query;
+  if (!user_id) return res.status(400).json({ error: 'user_id is required' });
+
+  let where = { user_id };
+  if (q) where.title = { [Op.iLike]: `%${q}%` };
+  if (from || to) {
+    where.started_at = {};
+    if (from) where.started_at[Op.gte] = new Date(from);
+    if (to) where.started_at[Op.lte] = new Date(to);
+  }
+
+  try {
+    const sessions = await ChatSession.findAll({
+      where,
+      order: [['started_at', 'DESC']]
+    });
+    res.json(sessions.map(s => ({
+      id: s.id,
+      title: s.title,
+      startedAt: s.started_at,
+      endedAt: s.ended_at,
+      isActive: s.is_active
+    })));
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to search conversations' });
+  }
+};
 
 // POST /api/conversations
 async function createConversation(req, res) {
@@ -67,4 +97,5 @@ module.exports = {
   getConversationsByUser,
   createConversation,
   deleteConversation,
+  searchConversations
 };

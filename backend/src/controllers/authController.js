@@ -5,7 +5,7 @@ const { User } = require('../db/models');
  * POST /api/register
  * Body: { username, password }
  */
-exports.register = async (req, res) => {
+async function register(req, res) {
   const { username, password } = req.body;
   if (!username || !password) return res.status(400).json({ error: 'Username and password are required' });
 
@@ -25,7 +25,7 @@ exports.register = async (req, res) => {
  * POST /api/login
  * Body: { username, password }
  */
-exports.login = async (req, res) => {
+async function login(req, res) {
   const { username, password } = req.body;
   if (!username || !password) return res.status(400).json({ error: 'Username and password are required' });
 
@@ -42,3 +42,8 @@ exports.login = async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 };
+
+module.exports = {
+  register,
+  login
+}
