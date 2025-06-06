@@ -1,7 +1,7 @@
 {
   "name": "ai-chat-backend",
   "version": "1.0.0",
-  "description": "Backend cho ứng dụng chat AI",
+  "description": "Backend For AI Chat",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -17,7 +17,8 @@
     "chalk": "^4.1.2",
     "pg": "^8.16.0",
     "pg-hstore": "^2.3.4",
-    "sequelize": "^6.37.7"
+    "sequelize": "^6.37.7",
+    "bcrypt": "^6.0.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.22"

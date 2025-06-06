@@ -8,9 +8,7 @@ async function getConversationsByUser(req, res) {
   try {
     let user = await User.findByPk(user_id);
     if (!user) {
-      user = await User.create({ id: user_id, username: `user_${user_id}` });
-      const session = await ChatSession.create({ user_id: user.id, title: 'Cuộc trò chuyện mới' });
-      return res.json([{ id: session.id, title: session.title, startedAt: session.started_at }]);
+      return res.status(400).json({ error: 'User not found. Please login again.' });
     }
 
     const sessions = await ChatSession.findAll({

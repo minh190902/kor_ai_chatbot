@@ -5,6 +5,7 @@ class User extends Model {}
 User.init({
   id: { type: DataTypes.UUID, primaryKey: true, defaultValue: DataTypes.UUIDV4 },
   username: { type: DataTypes.STRING, unique: true, allowNull: false },
+  password: { type: DataTypes.STRING, allowNull: false },
   email: { type: DataTypes.STRING, unique: true },
   created_at: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
   last_active: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
