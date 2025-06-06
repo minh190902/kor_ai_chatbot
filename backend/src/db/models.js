@@ -11,6 +11,7 @@ User.init({
   last_active: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
   status: { type: DataTypes.STRING, defaultValue: 'ACTIVE' },
   user_metadata: { type: DataTypes.JSONB, defaultValue: {} },
+  role: { type: DataTypes.STRING, defaultValue: 'user' },
 }, { sequelize, modelName: 'user', timestamps: false });
 
 class ChatSession extends Model {}
