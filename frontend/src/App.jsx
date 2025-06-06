@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import Sidebar from './components/sidebar/Sidebar';
 import ChatArea from './components/chat/ChatArea';
 import ErrorBoundary from './components/common/ErrorBoundary';
+import LanguageSwitcher from './components/common/LanguageSwitcher';
 import Login from './components/auth/login';
 import { useConversations } from './hooks/useConversations';
 import { useChat } from './hooks/useChat';
 import { DEFAULT_SETTINGS } from './utils/constants';
 import { Menu } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const App = () => {
   const [settings, setSettings] = useState(DEFAULT_SETTINGS);
@@ -16,6 +18,7 @@ const App = () => {
     return saved ? JSON.parse(saved) : null;
   });
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const { t } = useTranslation();
 
   const userId = user?.user_id || '';
   const username = user?.username || '';
@@ -98,15 +101,18 @@ const App = () => {
             )}
             <span className="font-bold text-orange-500 text-xl">AI CHAT</span>
             {username && (
-              <span className="ml-4 text-gray-500 text-sm">Hi, <b>{username}</b></span>
+              <span className="ml-4 text-gray-500 text-sm">{t("header.greeting")}<b>{username}</b></span>
             )}
           </div>
-          <button
-            onClick={handleLogout}
-            className="text-orange-500 underline text-sm ml-4"
-          >
-            Đăng xuất
-          </button>
+          <div className="flex items-center gap-2">
+            <LanguageSwitcher />
+            <button
+              onClick={handleLogout}
+              className="text-orange-500 underline text-sm ml-2"
+            >
+              {t('header.logout') || 'Đăng xuất'}
+            </button>
+          </div>
         </div>
         {/* Chat Area */}
         <div className="flex-1 min-h-0 overflow-hidden">

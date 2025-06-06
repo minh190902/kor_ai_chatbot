@@ -1,0 +1,45 @@
+{
+    "login": {
+        "login_btn": "Đăng nhập",
+        "register_btn": "Đăng ký",
+        "username": "Tên đăng nhập",
+        "password": "Mật khẩu",
+        "login_title": "Đăng nhập AI Chat",
+        "register_title": "Đăng ký tài khoản",
+        "login_notice": "Chưa có tài khoản? Vui lòng đăng ký!",
+        "register_notice": "Đã có tài khoản? Vui lòng đăng nhập!",
+        "error": {
+            "username_required": "Tên đăng nhập là bắt buộc.",
+            "password_required": "Mật khẩu là bắt buộc.",
+            "login_failed": "Đăng nhập không thành công. Vui lòng kiểm tra lại tên đăng nhập và mật khẩu.",
+            "fully_required": "Vui lòng nhập đầy đủ tên và mật khẩu",
+            "register_failed": "Đăng ký không thành công. Vui lòng thử lại sau.",
+            "server_error": "Lỗi kết nối server. Vui lòng thử lại sau."
+        }
+    },
+    "sidebar": {
+        "ai_name": "AI Chat",
+        "new_session": "Tạo cuộc trò chuyện mới",
+        "find_sessions": "Tìm kiếm cuộc trò chuyện...",
+        "no_sessions": "Không có cuộc trò chuyện nào",
+        "sessions_history": "Lịch sử trò chuyện",
+        "settings": "Cài đặt"
+    },
+    "header": {
+        "logout": "Đăng xuất",
+        "name": "AI Korean Tutor",
+        "greeting": "Xin chào bạn, "
+    },
+    "common": {
+        "loading": "AI đang suy nghĩ...",
+        "error": "Đã xảy ra lỗi. Vui lòng thử lại."
+    },
+    "chat_area": {
+        "input_placeholder": "Nhập tin nhắn của bạn...",
+        "welcome_message": {
+            "title": "Bắt đầu cuộc trò chuyện",
+            "content": "Gửi tin nhắn để bắt đầu trò chuyện với AI Korean Tutor"
+        },
+        "warning": "AI có thể mắc lỗi. Hãy kiểm tra thông tin quan trọng."
+    }
+}

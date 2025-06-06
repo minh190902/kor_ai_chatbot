@@ -1,0 +1,45 @@
+{
+  "login": {
+    "login_btn": "Login",
+    "register_btn": "Register",
+    "username": "Username",
+    "password": "Password",
+    "login_title": "AI Chat Login",
+    "register_title": "Register an Account",
+    "login_notice": "Don't have an account? Please register!",
+    "register_notice": "Already have an account? Please login!",
+    "error": {
+      "username_required": "Username is required.",
+      "password_required": "Password is required.",
+      "login_failed": "Login failed. Please check your username and password.",
+      "fully_required": "Please enter both username and password.",
+      "register_failed": "Registration failed. Please try again later.",
+      "server_error": "Server connection error. Please try again later."
+    }
+  },
+  "sidebar": {
+    "ai_name": "AI Chat",
+    "new_session": "Start New Chat",
+    "find_sessions": "Search chat sessions...",
+    "no_sessions": "No chat sessions available",
+    "sessions_history": "Chat History",
+    "settings": "Settings"
+  },
+  "header": {
+    "logout": "Logout",
+    "name": "AI Korean Tutor",
+    "greeting": "Hello, "
+  },
+  "common": {
+    "loading": "AI is thinking...",
+    "error": "An error occurred. Please try again."
+  },
+  "chat_area": {
+    "input_placeholder": "Enter your message...",
+    "welcome_message": {
+      "title": "Start a conversation",
+      "content": "Send a message to begin chatting with AI Korean Tutor"
+    },
+    "warning": "AI may make mistakes. Please verify important information."
+  }
+}

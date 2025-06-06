@@ -1,0 +1,45 @@
+{
+  "login": {
+    "login_btn": "로그인",
+    "register_btn": "회원가입",
+    "username": "사용자 이름",
+    "password": "비밀번호",
+    "login_title": "AI 채팅 로그인",
+    "register_title": "계정 등록",
+    "login_notice": "계정이 없으신가요? 회원가입하세요!",
+    "register_notice": "이미 계정이 있으신가요? 로그인하세요!",
+    "error": {
+      "username_required": "사용자 이름은 필수입니다.",
+      "password_required": "비밀번호는 필수입니다.",
+      "login_failed": "로그인에 실패했습니다. 사용자 이름과 비밀번호를 확인하세요.",
+      "fully_required": "사용자 이름과 비밀번호를 모두 입력해 주세요.",
+      "register_failed": "회원가입에 실패했습니다. 나중에 다시 시도해 주세요.",
+      "server_error": "서버 연결 오류입니다. 다시 시도해 주세요."
+    }
+  },
+  "sidebar": {
+    "ai_name": "AI Chat",
+    "new_session": "새 대화 시작",
+    "find_sessions": "대화 세션 검색...",
+    "no_sessions": "대화 세션이 없습니다",
+    "sessions_history": "대화 기록",
+    "settings": "설정"
+  },
+  "header": {
+    "logout": "로그아웃",
+    "name": "AI Korean Tutor",
+    "greeting": "안녕하세요, "
+  },
+  "common": {
+    "loading": "AI가 생각 중입니다...",
+    "error": "오류가 발생했습니다. 다시 시도해 주세요."
+  },
+  "chat_area": {
+    "input_placeholder": "메시지를 입력하세요...",
+    "welcome_message": {
+      "title": "대화를 시작하세요",
+      "content": "AI 한국어 튜터와 대화를 시작하려면 메시지를 보내세요"
+    },
+    "warning": "AI가 실수할 수 있습니다. 중요한 정보는 확인하세요."
+  }
+}

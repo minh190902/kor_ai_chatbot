@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import Message from './Message';
 import { Bot } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const TypingIndicator = () => (
   <div className="flex items-center space-x-2">
@@ -17,7 +18,7 @@ const TypingIndicator = () => (
 
 const MessageList = ({ messages, isLoading }) => {
   const messagesEndRef = useRef(null);
-
+  const { t } = useTranslation();
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -34,8 +35,8 @@ const MessageList = ({ messages, isLoading }) => {
             <div className="w-16 h-16 bg-gradient-to-r from-orange-200 to-yellow-200 rounded-full flex items-center justify-center mb-4">
               <Bot className="w-8 h-8 text-orange-600" />
             </div>
-            <h3 className="text-lg font-medium mb-2">Bắt đầu cuộc trò chuyện</h3>
-            <p className="text-center max-w-md">Gửi tin nhắn để bắt đầu trò chuyện với AI Assistant</p>
+            <h3 className="text-lg font-medium mb-2">{t("chat_area.welcome_message.title")}</h3>
+            <p className="text-center max-w-md">{t("chat_area.welcome_message.content")}</p>
           </div>
         ) : (
           <>

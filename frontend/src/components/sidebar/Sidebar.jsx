@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { MessageCircle, History, Settings, X, Plus, Search, Trash2 } from 'lucide-react';
-import ConversationList from './ConversationList';
 import SettingsPanel from './SettingsPanel';
+import { useTranslation } from 'react-i18next';
 
 const Sidebar = ({
   conversations,
@@ -14,6 +14,7 @@ const Sidebar = ({
 }) => {
   const [showSettings, setShowSettings] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  const { t } = useTranslation();
 
   // Filter conversations by search term
   const filteredConversations = conversations.filter(conv =>
@@ -29,7 +30,7 @@ const Sidebar = ({
             <div className="w-8 h-8 bg-gradient-to-r from-orange-400 to-yellow-400 rounded-lg flex items-center justify-center">
               <MessageCircle className="w-5 h-5 text-white" />
             </div>
-            <h1 className="text-xl font-bold text-gray-800">AI Chat</h1>
+            <h1 className="text-xl font-bold text-gray-800">{t("sidebar.ai_name")}</h1>
           </div>
           <button
             onClick={onCloseSidebar}
@@ -43,7 +44,7 @@ const Sidebar = ({
           className="w-full bg-gradient-to-r from-orange-400 to-yellow-400 text-white py-3 px-4 rounded-xl font-medium hover:from-orange-500 hover:to-yellow-500 transition-all duration-200 flex items-center justify-center space-x-2 shadow-lg hover:shadow-xl"
         >
           <Plus className="w-5 h-5" />
-          <span>Cuộc trò chuyện mới</span>
+          <span>{t('sidebar.new_session')}</span>
         </button>
       </div>
 
@@ -53,7 +54,7 @@ const Sidebar = ({
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
           <input
             type="text"
-            placeholder="Tìm kiếm cuộc trò chuyện..."
+            placeholder={t('sidebar.find_sessions')}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="w-full pl-10 pr-4 py-2 border border-orange-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-300 focus:border-transparent"
@@ -74,7 +75,7 @@ const Sidebar = ({
           <div className="flex items-center justify-between px-2 mb-2">
             <h3 className="text-sm font-semibold text-gray-500 flex items-center">
               <History className="w-4 h-4 mr-2" />
-              Lịch sử trò chuyện
+              {t('sidebar.sessions_history')}
             </h3>
             <button
               onClick={() => setShowSettings(!showSettings)}
@@ -87,7 +88,7 @@ const Sidebar = ({
           {/* Conversation List */}
           <div className="space-y-2">
             {filteredConversations.length === 0 ? (
-              <div className="text-gray-400 text-sm px-2 py-4 text-center">Không có cuộc trò chuyện nào</div>
+              <div className="text-gray-400 text-sm px-2 py-4 text-center">{t('sidebar.no_sessions')}</div>
             ) : (
               filteredConversations.map(conv => (
                 <div

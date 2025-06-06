@@ -1,8 +1,10 @@
 import React, { useRef, useEffect } from 'react';
 import { Send } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const MessageInput = ({ inputMessage, setInputMessage, onSend, isLoading }) => {
   const inputRef = useRef(null);
+  const { t } = useTranslation();
 
   const handleKeyPress = (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -24,7 +26,7 @@ const MessageInput = ({ inputMessage, setInputMessage, onSend, isLoading }) => {
             value={inputMessage}
             onChange={e => setInputMessage(e.target.value)}
             onKeyPress={handleKeyPress}
-            placeholder="Nhập tin nhắn của bạn..."
+            placeholder={t('chat_area.input_placeholder')}
             className="w-full px-4 py-3 border border-orange-200 rounded-2xl resize-none focus:outline-none focus:ring-2 focus:ring-orange-300 focus:border-transparent"
             rows={1}
             style={{ minHeight: '48px', maxHeight: '120px' }}
@@ -40,7 +42,7 @@ const MessageInput = ({ inputMessage, setInputMessage, onSend, isLoading }) => {
         </button>
       </div>
       <p className="text-xs text-gray-400 mt-2 text-center">
-        AI có thể mắc lỗi. Hãy kiểm tra thông tin quan trọng.
+        {t('chat_area.warning')}
       </p>
     </div>
   );
