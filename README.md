@@ -174,6 +174,12 @@ FASTAPI_PORT=8080
 
 ---
 
+## Admin account
+- **username**: fiktech
+- **password**: 1234
+
+---
+
 ## Common Issues & Solutions
 
 - **Port already in use:**  
@@ -198,12 +204,30 @@ FASTAPI_PORT=8080
 
 ---
 
-## Resetting the Database
+## Resetting the Database and others
 
 To reset (delete all data):
 
 ```bash
 task clear
+```
+---
+
+## Restore backup database
+```bash
+# Stop services that use the database (if needed)
+docker compose stop backend fastapi
+
+# Delete the old database (if you want a clean restore)
+docker exec -it postgres psql -U $POSTGRES_USER -d postgres -c "DROP DATABASE $POSTGRES_DB;"
+docker exec -it postgres psql -U $POSTGRES_USER -d postgres -c "CREATE DATABASE $POSTGRES_DB;"
+
+# Restore from a backup file (e.g., backup_20240606_120000.sql)
+docker exec -i postgres psql -U $POSTGRES_USER -d $POSTGRES_DB < ./volumes/db/backups/backup_20240606_120000.sql
+
+# Restart services that use the database
+docker compose start backend fastapi
+
 ```
 
 ---
