@@ -164,58 +164,56 @@ const App = () => {
   }
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route
-          path="/admin"
-          element={
-            user.role === 'admin' ? (
-              <AdminDashboard user={user} onLogout={handleLogout} />
-            ) : (
-              <Navigate to="/chat" />
-            )
-          }
-        />
-        <Route
-          path="/chat"
-          element={
-            user.role !== 'admin' ? (
-              <ChatLayout
-                user={user}
-                settings={settings}
-                setSettings={setSettings}
-                sidebarOpen={sidebarOpen}
-                setSidebarOpen={setSidebarOpen}
-                conversations={conversations}
-                setConversations={setConversations}
-                currentConversationId={currentConversationId}
-                messages={messages}
-                setMessages={setMessages}
-                loadConversation={loadConversation}
-                createNewConversation={createNewConversation}
-                loadConversations={loadConversations}
-                inputMessage={inputMessage}
-                setInputMessage={setInputMessage}
-                isLoading={isLoading}
-                sendMessage={sendMessage}
-                handleLogout={handleLogout}
-                handleSearchConversations={handleSearchConversations}
-                username={username}
-              />
-            ) : (
-              <Navigate to="/admin" />
-            )
-          }
-        />
-        {/* Redirect root to correct page */}
-        <Route
-          path="*"
-          element={
-            <Navigate to={user.role === 'admin' ? '/admin' : '/chat'} />
-          }
-        />
-      </Routes>
-    </BrowserRouter>
+    <Routes>
+      <Route
+        path="/admin"
+        element={
+          user.role === 'admin' ? (
+            <AdminDashboard user={user} onLogout={handleLogout} />
+          ) : (
+            <Navigate to="/chat" />
+          )
+        }
+      />
+      <Route
+        path="/chat"
+        element={
+          user.role !== 'admin' ? (
+            <ChatLayout
+              user={user}
+              settings={settings}
+              setSettings={setSettings}
+              sidebarOpen={sidebarOpen}
+              setSidebarOpen={setSidebarOpen}
+              conversations={conversations}
+              setConversations={setConversations}
+              currentConversationId={currentConversationId}
+              messages={messages}
+              setMessages={setMessages}
+              loadConversation={loadConversation}
+              createNewConversation={createNewConversation}
+              loadConversations={loadConversations}
+              inputMessage={inputMessage}
+              setInputMessage={setInputMessage}
+              isLoading={isLoading}
+              sendMessage={sendMessage}
+              handleLogout={handleLogout}
+              handleSearchConversations={handleSearchConversations}
+              username={username}
+            />
+          ) : (
+            <Navigate to="/admin" />
+          )
+        }
+      />
+      {/* Redirect root to correct page */}
+      <Route
+        path="*"
+        element={
+          <Navigate to={user.role === 'admin' ? '/admin' : '/chat'} />
+        }
+      />
+    </Routes>
   );
 };
 

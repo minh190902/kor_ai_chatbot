@@ -2,6 +2,7 @@ import React from 'react';
 import { Menu } from 'lucide-react';
 import LanguageSwitcher from '../common/LanguageSwitcher';
 import { useTranslation } from 'react-i18next';
+import useLogout from '../auth/logout';
 
 const ChatHeader = ({
   sidebarOpen,
@@ -10,6 +11,7 @@ const ChatHeader = ({
   onLogout,
 }) => {
   const { t } = useTranslation();
+  const handleLogout = useLogout(onLogout);
   return (
     <div className="bg-white border-b border-orange-100 p-4 shadow-sm flex-shrink-0 flex items-center justify-between">
       <div className="flex items-center">
@@ -31,7 +33,7 @@ const ChatHeader = ({
       <div className="flex items-center gap-2">
         <LanguageSwitcher />
         <button
-          onClick={onLogout}
+          onClick={handleLogout}
           className="text-orange-500 underline text-sm ml-2"
         >
           {t('header.logout') || 'Đăng xuất'}

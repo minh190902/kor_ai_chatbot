@@ -1,6 +1,3 @@
-import React from 'react';
-import { DEFAULT_SETTINGS } from '../../utils/constants';
-
 const SettingsPanel = ({ settings, setSettings }) => (
   <div className="p-4 bg-gray-50 border-b border-gray-200">
     <h3 className="font-semibold mb-3 text-gray-800">Cài đặt</h3>
