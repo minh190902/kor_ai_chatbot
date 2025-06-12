@@ -1,12 +1,12 @@
 from .requests import (
     BaseRequest,
-    
+    LearningRequest,
     ChatbotRequest
 )
 
 from .response import (
     BaseResponse,
-    
+    LearningResponse,
     ChatbotResponse
 )
 
@@ -18,6 +18,7 @@ __all__ = [
     # ------------------------------
     
     "BaseRequest",
+    "LearningRequest",
     "ChatbotRequest",
     
     # ------------------------------
@@ -25,6 +26,7 @@ __all__ = [
     # ------------------------------
     
     "BaseResponse",
+    "LearningResponse",
     "ChatbotResponse",
     
     # ------------------------------

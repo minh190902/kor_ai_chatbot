@@ -1,0 +1,194 @@
+goal_analysis_task:
+  description: |-
+    # User Input
+    - Self-assessment: {self_assessment}
+    - User goals: {user_goals}
+    - Period: {period}
+    - Weekly study hours: {weekly_study_hours}
+
+    # Guidelines
+    1. Analyze each user goal using SMART criteria (Specific, Measurable, Achievable, Relevant, Time-bound).
+    2. Assess the feasibility of each goal based on the user's self-assessment, available period, and weekly study hours. Clearly state if the goal is realistic or needs adjustment.
+    3. Structure goals into a hierarchy: identify main goals and break them down into actionable sub-goals.
+    4. Assign a priority weight (max 1.0) to each main goal, based on importance and urgency.
+    5. For each goal, provide a short, specific description and a feasibility note and sub goal.
+    6. If goals are unclear or unrealistic, provide feedback and suggestions for clarification or adjustment.
+
+  expected_output: |-
+    Provide a structured goal hierarchy in the concise format:
+
+curriculum_planning_task:
+  description: |-
+    # User Input
+    - Goals: Get concise goal hierarchy from goal analysis task
+
+    # Guidelines
+    1. Design a personalized curriculum based on assessment results and user goals.
+    2. Sequence topics and skills for optimal learning progression.
+    3. Map dependencies between topics and skills.
+    4. Ensure the curriculum is achievable and motivating within the given constraints.
+
+  expected_output: |-
+    Provide a detailed curriculum plan in the concise format:
+
+timeline_task:
+  description: |-
+    # User Input
+    ## Period:
+    {period}
+
+    ## Weekly study hours:
+    {weekly_study_hours} (hours/weekly)
+
+    ## Curriculum: 
+    {curriculum_plan}
+
+    # Guidelines
+    1. Carefully analyze the provided Curriculum, user constraints (period, weekly study hours), and feasibility notes.
+    2. Break down the learning journey into clear, realistic phases (e.g., Foundation, Skill Integration, Exam Preparation), each with a specific time period (e.g., "Month 1-2", "Q1 2024").
+    3. For each phase:
+       - Name: Combine a descriptive phase name and its estimated period (e.g., "Month 1-2: Foundation Building").
+       - Objective: Write a clear, actionable objective that aligns with the user's main goals and sub-goals for this phase.
+       - Plan: List specific, measurable, and achievable tasks or milestones that must be completed in this phase. Each plan item should be concrete and relevant to the user's goals and available time.
+    4. Ensure the timeline is logically sequenced, covers all main/sub-goals, and distributes workload realistically according to the user's available study hours and period.
+    5. Make sure each phase is motivating, achievable, and avoids overloading the user.
+    6. If the user's goals are very ambitious, recommend breaking them into smaller, more manageable milestones across phases.
+
+  expected_output: |-
+    Provide a structured timeline in the concise format:
+
+schedule_optimization_task:
+  description: |-
+    # User Input
+    ## Available time: 
+    {weekly_study_hours} (hours/weekly)
+
+    ## Curriculum: 
+    {curriculum_plan}
+
+    # Guidelines
+    1. Analyze available study time (weekly).
+    2. Integrate Pomodoro and spaced repetition techniques into the schedule.
+    3. Balance cognitive load across sessions and days.
+    4. Adjust the schedule for optimal retention and motivation.
+
+  expected_output: |-
+    Provide an optimized study schedule in the concise format:
+
+planning_task:
+  description: |-
+    # User Input
+
+    ## Curriculum plan: 
+    {curriculum_plan}
+
+    ## Timeline:
+    {timeline_plan}
+
+    ## Schedule plan: 
+    {schedule_plan}
+
+    # Guidelines
+    1. Integrate all components into a comprehensive, actionable learning plan.
+    2. Ensure the plan includes the following sections, each clearly structured:
+       - title: The overall title of the study plan.
+       - overview: General description of the plan, goals, duration, and target audience.
+       - weekly_plan: A list of days, each with name, time, focus, and activities.
+       - learning_strategies: For each skill area (listening, reading, writing, speaking, vocabulary, grammar), provide a list of strategies.
+       - recommended_resources: For each resource type (textbooks, online_resources, apps, practice_tests), provide a list of recommended items.
+       - timeline: A list of phases, each with name, objective, and a list of plan items.
+       - tips: A list of actionable tips for success.
+    3. Each section must be output as a top-level YAML key, with all sub-items as lists or nested keys as appropriate.
+    4. Ensure all content is clear, actionable, and ready for conversion to XML.
+
+  expected_output: |-
+    Provide the complete learning plan with concise structured:
+    All sections must be present and clearly structured as much as details.
+
+xml_structure_task:
+  description: |-
+    # User Input
+    - Comprehensive plan data: get from planning task
+
+    # Guidelines
+    1. Convert the learning plan into a well-structured XML format following the defined schema.
+    2. Validate the XML for consistency and completeness.
+    3. Generate additional UI-friendly representations (e.g., parsed components or summaries) as needed.
+    4. Ensure the output is ready for integration into user interfaces.
+
+  expected_output: |-
+    You MUST output only a single, well-formed XML document, strictly following this structure:
+    <?xml version="1.0" encoding="UTF-8" ?>
+    <study_plan>
+      <title>...</title>
+      <overview>...</overview>
+      <weekly_plan>
+        <day name="..." time="...">
+          <focus>...</focus>
+          <activity>
+            <item>...</item>
+            ...
+          </activity>
+        </day>
+        ...
+      </weekly_plan>
+      <learning_strategies>
+        <listening>
+          <item>...</item>
+          ...
+        </listening>
+        <reading>
+          <item>...</item>
+          ...
+        </reading>
+        <writing>
+          <item>...</item>
+          ...
+        </writing>
+        <speaking>
+          <item>...</item>
+          ...
+        </speaking>
+        <vocabulary>
+          <item>...</item>
+          ...
+        </vocabulary>
+        <grammar>
+          <item>...</item>
+          ...
+        </grammar>
+      </learning_strategies>
+      <recommended_resources>
+        <textbooks>
+          <item>...</item>
+          ...
+        </textbooks>
+        <online_resources>
+          <item>...</item>
+          ...
+        </online_resources>
+        <apps>
+          <item>...</item>
+          ...
+        </apps>
+        <practice_tests>
+          <item>...</item>
+          ...
+        </practice_tests>
+      </recommended_resources>
+      <timeline>
+        <phase name="...">
+          <objective>...</objective>
+          <plan>
+            <item>...</item>
+            ...
+          </plan>
+        </phase>
+        ...
+      </timeline>
+      <tips>
+        <item>...</item>
+        ...
+      </tips>
+    </study_plan>
+    All content must be inside tags, and all tags must be correctly nested and closed. Do not add any explanations or text outside the XML.

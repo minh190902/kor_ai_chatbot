@@ -1,0 +1,24 @@
+openai:
+  base_url: https://api.openai.com/v1
+  default_model: gpt-4o-mini
+  key_name: openai_api_key
+
+anthropic:
+  base_url: https://api.anthropic.com/v1/openai
+  default_model: claude-3-opus-20240229
+  key_name: anthropic_api_key
+
+gemini:
+  base_url: https://generativelanguage.googleapis.com/v1beta/openai
+  default_model: gemini-2.0-flash
+  key_name: gemini_api_key
+
+mistral:
+  base_url: https://api.mistral.ai/v1/openai
+  default_model: mistral-large-latest
+  key_name: mistral_api_key
+
+ollama: 
+  base_url: http://localhost:11434
+  default_model: llama3.1
+  key_name: ollama_api_key

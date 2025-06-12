@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from .endpoints import general_conversation
+from .endpoints import general_conversation, learning_plan
 
 summary = "Korean Learning API"
 
@@ -11,6 +11,10 @@ tags_metadata = [
     {
         "name": "Korean Learning Chatbot",
         "description": "Endpoints for Korean language learning chatbot conversation",
+    },
+    {
+        "name": "Korean Learning Plan",
+        "description": "Endpoints for creating and managing personalized Korean learning plans",
     }
 ]
 
@@ -26,4 +30,10 @@ api.include_router(
     general_conversation.router,
     prefix="/chatbot",
     tags=["Korean Learning Chatbot"],
+)
+
+api.include_router(
+    learning_plan.router,
+    prefix="/learning",
+    tags=["Korean Learning Plan"],
 )

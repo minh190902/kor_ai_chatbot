@@ -1,4 +1,5 @@
 from typing import Dict, List
+import re
 
 class Prompts:
     """
@@ -7,8 +8,10 @@ class Prompts:
     def __init__(self):
         pass 
     
-    def build_prompt(self, history: List[Dict[str, str]], new_message: str) -> str:
-        prompt = "You are a helpful Korean language tutor. Continue the conversation below:\n"
+    def build_prompt(self, history: List[Dict[str, str]], new_message: str, language: str) -> str:
+        prompt = f"""You are a helpful Korean language tutor. 
+                Remember to always respond in {language} language.
+                Continue the conversation below:\n"""
         for msg in history:
             role = "User" if msg["role"] == "user" else "Assistant"
             prompt += f"{role}: {msg['content']}\n"

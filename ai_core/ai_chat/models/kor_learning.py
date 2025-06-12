@@ -5,7 +5,7 @@ from langchain_openai import ChatOpenAI
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 from langchain.callbacks.base import BaseCallbackHandler
 
-from prompts import Prompts
+from ai_chat.prompts import Prompts
 from config.settings import settings
 
 class StreamingCallbackHandler(BaseCallbackHandler):
@@ -24,7 +24,7 @@ class StreamingCallbackHandler(BaseCallbackHandler):
     def clear_tokens(self):
         self.tokens = []
 
-class KorLearningModels:
+class KorLearningChatModels:
     def __init__(self, user_id: str, session_id: str):
         self.user_id = user_id
         self.session_id = session_id
@@ -53,10 +53,10 @@ class KorLearningModels:
             streaming=True
         )
         
-    def chat(self, message: str, history: list[Dict]) -> Dict[str, Any]:
+    def chat(self, message: str, history: list[Dict], language: str) -> Dict[str, Any]:
         """Non-streaming chat method"""
         # Build prompt with history
-        prompt = self.prompt.build_prompt(history, message)
+        prompt = self.prompt.build_prompt(history, message, language)
         # Get response from LLM
         response_obj = self.llm.invoke(prompt)
         response = getattr(response_obj, "content", str(response_obj))
@@ -66,11 +66,11 @@ class KorLearningModels:
             "success": True
         }
     
-    def chat_stream(self, message: str, history: list[Dict]) -> Generator[str, None, None]:
+    def chat_stream(self, message: str, history: list[Dict], language: str) -> Generator[str, None, None]:
         """Streaming chat method"""
         try:
             # Build prompt with history
-            prompt = self.prompt.build_prompt(history, message)
+            prompt = self.prompt.build_prompt(history, message, language)
             
             # Create callback handler
             # callback = StreamingCallbackHandler()
