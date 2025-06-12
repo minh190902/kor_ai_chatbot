@@ -10,7 +10,7 @@ router = APIRouter()
 
 @router.post(
     "/chat_response",
-    response_model=ChatbotResponse,
+    response_model=str,
     responses={500: {"model": ErrorResponse}},
 )
 def request_chatbot(request: ChatbotRequest):
@@ -33,7 +33,7 @@ def request_chatbot(request: ChatbotRequest):
 
 @router.post(
     "/chat_stream",
-    response_model=ChatbotResponse,
+    response_model=str,
     responses={500: {"model": ErrorResponse}},
 )
 def request_chatbot_stream(request: ChatbotRequest):
