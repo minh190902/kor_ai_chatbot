@@ -2,74 +2,60 @@ const axios = require('axios');
 const logger = require('../utils/logger');
 
 const FASTAPI_URL = process.env.AI_API_URL || 'http://localhost:8080';
-const CHAT_ENDPOINT = '/chatbot/chat_response';
-const CHAT_STREAM_ENDPOINT = '/chatbot/chat_stream';
 
 /**
- * Call FastAPI chat (non-streaming)
+ * Hàm tổng quát gọi bất kỳ endpoint FastAPI nào (non-stream)
  */
-async function callChatAPI({ user_id, session_id, message, language, history }) {
+async function callFastAPI(endpoint, payload, options = {}) {
   try {
-    const payload = {
-      user_id,
-      session_id,
-      message,
-      language,
-      history,
-    };
     const res = await axios.post(
-      `${FASTAPI_URL}${CHAT_ENDPOINT}`,
+      `${FASTAPI_URL}${endpoint}`,
       payload,
       {
         headers: { 'Content-Type': 'application/json' },
-        timeout: 30000,
+        timeout: options.timeout || 30000,
+        ...options.axiosConfig,
       }
     );
+    // Nếu trả về response dạng object có field response/message thì lấy, không thì trả về toàn bộ
     return res.data.response || res.data.message || res.data;
   } catch (err) {
-    logger.error('AI API Error:', err.message);
+    logger.error(`AI API Error [${endpoint}]:`, err.message);
     if (err.response) {
       logger.error('AI API Response Error:', {
         status: err.response.status,
         data: err.response.data,
       });
     }
-    return 'Sorry, I am having technical issues. Please try again later.';
+    throw err;
   }
 }
 
 /**
- * Call FastAPI chat (streaming)
+ * Hàm tổng quát gọi endpoint FastAPI dạng stream
  */
-async function callChatAPIStream({ user_id, session_id, message, language, history }, onChunk) {
+async function callFastAPIStream(endpoint, payload, onChunk, options = {}) {
   try {
-    const payload = {
-      user_id,
-      session_id,
-      message,
-      language,
-      history,
-    };
-
     const response = await axios.post(
-      `${FASTAPI_URL}${CHAT_STREAM_ENDPOINT}`,
+      `${FASTAPI_URL}${endpoint}`,
       payload,
       {
         headers: { 'Content-Type': 'application/json' },
         responseType: 'stream',
-        timeout: 60000,
+        timeout: options.timeout || 60000,
+        ...options.axiosConfig,
       }
     );
 
     return new Promise((resolve, reject) => {
       let buffer = '';
-      
+
       response.data.on('data', (chunk) => {
         buffer += chunk.toString();
-        
+
         const lines = buffer.split('\n');
-        buffer = lines.pop() || ''; 
-        
+        buffer = lines.pop() || '';
+
         for (const line of lines) {
           if (line.startsWith('data: ')) {
             try {
@@ -99,15 +85,37 @@ async function callChatAPIStream({ user_id, session_id, message, language, histo
     });
 
   } catch (err) {
-    logger.error('AI Streaming API Error:', err.message);
-    // Fallback
+    logger.error(`AI Streaming API Error [${endpoint}]:`, err.message);
     onChunk('Sorry, I am having technical issues. Please try again later.');
     throw err;
   }
 }
 
 /**
- * Get model list from FastAPI
+ * Wrapper cho các API cụ thể (dễ mở rộng)
+ */
+async function callChatAPI(payload) {
+  return callFastAPI('/chatbot/chat_response', payload);
+}
+
+async function callChatAPIStream(payload, onChunk) {
+  return callFastAPIStream('/chatbot/chat_stream', payload, onChunk);
+}
+
+async function callPlanAPI(payload) {
+  return callFastAPI('/learning/planning_response', payload);
+}
+
+async function callSummaryAPI(payload) {
+  return callFastAPI('/chatbot/summary', payload);
+}
+
+async function callFeedbackAPI(payload) {
+  return callFastAPI('/chatbot/feedback', payload);
+}
+
+/**
+ * Lấy danh sách model từ FastAPI
  */
 async function getAvailableModels() {
   try {
@@ -120,7 +128,12 @@ async function getAvailableModels() {
 }
 
 module.exports = {
+  callFastAPI,
+  callFastAPIStream,
   callChatAPI,
   callChatAPIStream,
+  callPlanAPI,
+  callSummaryAPI,
+  callFeedbackAPI,
   getAvailableModels,
 };
