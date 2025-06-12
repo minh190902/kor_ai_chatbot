@@ -1,42 +1,48 @@
 import React from 'react';
-import { Menu } from 'lucide-react';
+import { Menu, ArrowLeft } from 'lucide-react';
 import LanguageSwitcher from '../common/LanguageSwitcher';
 import { useTranslation } from 'react-i18next';
-import useLogout from '../auth/logout';
+import { useNavigate } from 'react-router-dom';
 
 const ChatHeader = ({
   sidebarOpen,
   setSidebarOpen,
   username,
-  onLogout,
 }) => {
   const { t } = useTranslation();
-  const handleLogout = useLogout(onLogout);
+  const navigate = useNavigate();
+
   return (
-    <div className="bg-white border-b border-orange-100 p-4 shadow-sm flex-shrink-0 flex items-center justify-between">
-      <div className="flex items-center">
+    <div className="border-b bg-white shadow-sm flex items-center justify-between px-6 h-16">
+      {/* Trái */}
+      <div className="flex items-center gap-2 min-w-0">
         {!sidebarOpen && (
           <button
             onClick={() => setSidebarOpen(true)}
-            className="p-2 hover:bg-orange-100 rounded-lg transition-colors mr-3"
+            className="text-orange-500 mr-2"
+            title="Mở menu"
           >
-            <Menu className="w-5 h-5 text-gray-600" />
+            <Menu className="w-5 h-5" />
           </button>
         )}
         <span className="font-bold text-orange-500 text-xl">AI CHAT</span>
         {username && (
-          <span className="ml-4 text-gray-500 text-sm">
+          <span className="ml-4 text-gray-500 text-sm truncate">
             {t("header.greeting")}<b>{username}</b>
           </span>
         )}
       </div>
-      <div className="flex items-center gap-2">
+      {/* Giữa */}
+      <div className="flex-1 flex justify-center items-center">
         <LanguageSwitcher />
+      </div>
+      {/* Phải */}
+      <div className="flex items-center gap-4">
         <button
-          onClick={handleLogout}
-          className="text-orange-500 underline text-sm ml-2"
+          onClick={() => navigate('/ai')}
+          className="text-orange-500 underline text-sm flex items-center gap-1"
         >
-          {t('header.logout') || 'Đăng xuất'}
+          <ArrowLeft className="w-4 h-4" /> Quay lại Home
         </button>
       </div>
     </div>

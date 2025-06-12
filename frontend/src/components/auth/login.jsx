@@ -31,7 +31,7 @@ const Login = ({ onLogin }) => {
       }
       onLogin(data);
       if (data.role === 'admin') navigate('/admin');
-      else navigate('/chat');
+      else navigate('/ai');
     } catch (err) {
       setError(t("login.error.server_error"));
     }
@@ -39,7 +39,9 @@ const Login = ({ onLogin }) => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-orange-50 to-yellow-50">
-      <LanguageSwitcher className="absolute top-4 right-4" />
+      <div className="w-full flex justify-center mt-6 mb-2">
+        <LanguageSwitcher />
+      </div>
       <form onSubmit={handleSubmit} className="bg-white p-8 rounded-xl shadow-lg w-full max-w-sm">
         <div className="w-14 h-14 bg-gradient-to-r from-orange-400 to-yellow-400 rounded-full flex items-center justify-center mb-4 shadow">
           {/* icon */}

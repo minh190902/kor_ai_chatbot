@@ -1,3 +1,7 @@
+// -------------------------------------------------------------------------------------
+// Chat API Service
+// -------------------------------------------------------------------------------------
+
 export const fetchConversations = async (apiEndpoint, userId) => {
   const res = await fetch(`${apiEndpoint}/api/conversations?user_id=${userId}`);
   if (!res.ok) throw new Error('Không thể tải cuộc trò chuyện');
@@ -77,4 +81,18 @@ export const sendChatMessageStream = async (apiEndpoint, payload, onChunk) => {
       }
     }
   }
+};
+
+
+// -------------------------------------------------------------------------------------
+// AI Learning Planning API Service
+// -------------------------------------------------------------------------------------
+export const fetchLearningPlan = async (apiEndpoint, payload) => {
+  const res = await fetch(`${apiEndpoint}/api/learning-plan`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) throw new Error('Không thể tạo kế hoạch học tập');
+  return res.json();
 };

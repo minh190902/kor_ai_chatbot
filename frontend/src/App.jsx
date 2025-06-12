@@ -6,6 +6,8 @@ import ChatHeader from './components/chat/ChatHeader';
 import ErrorBoundary from './components/common/ErrorBoundary';
 import Login from './components/auth/login';
 import AdminDashboard from './components/admin/AdminDashboard';
+import LearningPlan from './components/learning_plan/LearningPlan';
+import AIHome from './components/AIHome';
 import { useConversations } from './hooks/useConversations';
 import { useChat } from './hooks/useChat';
 import { DEFAULT_SETTINGS } from './utils/constants';
@@ -173,47 +175,50 @@ const App = () => {
           user.role === 'admin' ? (
             <AdminDashboard user={user} onLogout={handleLogout} />
           ) : (
-            <Navigate to="/chat" />
+            <Navigate to="/ai" />
           )
         }
+      />
+      <Route
+        path="/ai"
+        element={<AIHome onLogout={handleLogout} />}
       />
       <Route
         path="/chat"
         element={
-          user.role !== 'admin' ? (
-            <ChatLayout
-              user={user}
-              settings={settings}
-              setSettings={setSettings}
-              sidebarOpen={sidebarOpen}
-              setSidebarOpen={setSidebarOpen}
-              conversations={conversations}
-              setConversations={setConversations}
-              currentConversationId={currentConversationId}
-              messages={messages}
-              setMessages={setMessages}
-              loadConversation={loadConversation}
-              createNewConversation={createNewConversation}
-              deleteConversationById={deleteConversationById}
-              loadConversations={loadConversations}
-              inputMessage={inputMessage}
-              setInputMessage={setInputMessage}
-              isLoading={isLoading}
-              sendMessage={sendMessage}
-              handleLogout={handleLogout}
-              handleSearchConversations={handleSearchConversations}
-              username={username}
-            />
-          ) : (
-            <Navigate to="/admin" />
-          )
+          <ChatLayout
+            user={user}
+            settings={settings}
+            setSettings={setSettings}
+            sidebarOpen={sidebarOpen}
+            setSidebarOpen={setSidebarOpen}
+            conversations={conversations}
+            setConversations={setConversations}
+            currentConversationId={currentConversationId}
+            messages={messages}
+            setMessages={setMessages}
+            loadConversation={loadConversation}
+            createNewConversation={createNewConversation}
+            deleteConversationById={deleteConversationById}
+            loadConversations={loadConversations}
+            inputMessage={inputMessage}
+            setInputMessage={setInputMessage}
+            isLoading={isLoading}
+            sendMessage={sendMessage}
+            handleLogout={handleLogout}
+            handleSearchConversations={handleSearchConversations}
+            username={username}
+          />
         }
       />
+      <Route path="/learning-plan" element={<LearningPlan user_id={userId} />} />
+      <Route path="/problem-generation" element={<div>Problem Generation Feature Coming Soon</div>} />
+      <Route path="/vocab-expansion" element={<div>Vocabulary Expansion Feature Coming Soon</div>} />
       {/* Redirect root to correct page */}
       <Route
         path="*"
         element={
-          <Navigate to={user.role === 'admin' ? '/admin' : '/chat'} />
+          <Navigate to={user.role === 'admin' ? '/admin' : '/ai'} />
         }
       />
     </Routes>
