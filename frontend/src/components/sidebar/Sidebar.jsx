@@ -8,6 +8,7 @@ const Sidebar = ({
   currentConversationId,
   onSelectConversation,
   onCreateConversation,
+  onDeleteConversation,
   settings,
   setSettings,
   onCloseSidebar,
@@ -49,7 +50,7 @@ const Sidebar = ({
           </button>
         </div>
         <button
-          onClick={onCreateConversation}
+          onClick={() => onCreateConversation('Cuộc trò chuyện mới', settings)}
           className="w-full bg-gradient-to-r from-orange-400 to-yellow-400 text-white py-3 px-4 rounded-xl font-medium hover:from-orange-500 hover:to-yellow-500 transition-all duration-200 flex items-center justify-center space-x-2 shadow-lg hover:shadow-xl"
         >
           <Plus className="w-5 h-5" />
@@ -138,7 +139,9 @@ const Sidebar = ({
                       <button
                         onClick={e => {
                           e.stopPropagation();
-                          if (conv.onDelete) conv.onDelete(conv.id);
+                          if (typeof onDeleteConversation === 'function') {
+                            onDeleteConversation(conv.id, settings);
+                          }
                         }}
                         className="p-1 hover:bg-red-100 rounded text-red-400 hover:text-red-600 transition-colors"
                         title="Xóa"

@@ -134,7 +134,7 @@ class ContextService {
       const summaryContent = await aiService.callChatAPI({
         user_id: 'system',
         session_id: 'summary_' + sessionId,
-        message: `Hãy tóm tắt cuộc trò chuyện sau đây một cách ngắn gọn và bao quát các điểm chính:\n\n${conversationText}\n\nTóm tắt:`,
+        message: `Please summarize the following conversation concisely and cover the main points:\n\n${conversationText}\n\nSummarize:`,
         history: []
       });
 

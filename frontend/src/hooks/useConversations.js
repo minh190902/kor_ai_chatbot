@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { fetchConversations, createConversation, fetchMessages } from '../services/api';
+import { fetchConversations, createConversation, fetchMessages, deleteConversation } from '../services/api';
 import { DEFAULT_SETTINGS } from '../utils/constants';
 
 /**
@@ -57,6 +57,21 @@ export const useConversations = (userId) => {
     }
   };
 
+  const deleteConversationById = async (sessionId, settings = DEFAULT_SETTINGS) => {
+    try {
+      await deleteConversation(settings.apiEndpoint, sessionId);
+      console.log('API called, updating state'); 
+      setConversations(prev => prev.filter(conv => conv.id !== sessionId));
+      if (currentConversationId === sessionId) {
+        setCurrentConversationId(null);
+        setMessages([]);
+      }
+    } catch (err) {
+      console.error('Delete error:', err); 
+      alert('Không thể xóa cuộc trò chuyện!');
+    }
+  };
+
   useEffect(() => {
     loadConversations(DEFAULT_SETTINGS);
     // eslint-disable-next-line
@@ -71,5 +86,6 @@ export const useConversations = (userId) => {
     loadConversation,
     createNewConversation,
     loadConversations,
+    deleteConversationById
   };
 };

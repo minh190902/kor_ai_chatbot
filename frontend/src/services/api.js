@@ -14,6 +14,14 @@ export const createConversation = async (apiEndpoint, title, userId) => {
   return res.json();
 };
 
+export const deleteConversation = async (apiEndpoint, sessionId) => {
+  const res = await fetch(`${apiEndpoint}/api/conversations/${sessionId}`, {
+    method: 'DELETE',
+  });
+  if (!res.ok) throw new Error('Không thể xóa cuộc trò chuyện');
+  return res.json();
+};
+
 export const fetchMessages = async (apiEndpoint, sessionId) => {
   const res = await fetch(`${apiEndpoint}/api/conversations/${sessionId}/messages`);
   if (!res.ok) throw new Error('Không thể tải tin nhắn');
@@ -28,6 +36,12 @@ export const sendChatMessage = async (apiEndpoint, payload) => {
   });
   if (!res.ok) throw new Error('Không thể gửi yêu cầu chat');
   return res.json();
+};
+
+export const fetchContextInfo = async (apiEndpoint, sessionId) => {
+  const res = await fetch(`${apiEndpoint}/api/context/${sessionId}/preview`);
+  if (!res.ok) throw new Error('Không thể lấy context');
+  return res.json(); // { truncated: true/false, summary: "...", ... }
 };
 
 export const sendChatMessageStream = async (apiEndpoint, payload, onChunk) => {

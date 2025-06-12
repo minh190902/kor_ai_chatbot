@@ -3,7 +3,7 @@ const aiService = require('../services/aiService');
 const contextService = require('../services/contextService');
 
 async function handleChat(req, res) {
-  const { user_id, session_id, message, settings = {}, stream = false } = req.body;
+  const { user_id, session_id, message, language = 'vi', settings = {}, stream = false } = req.body;
   if (!user_id || !session_id || !message) {
     return res.status(400).json({ error: 'user_id, session_id, and message are required' });
   }
@@ -57,7 +57,8 @@ async function handleChat(req, res) {
         user_id,
         session_id,
         message: enhancedMessage,
-        history: contextMessages
+        language,
+        history: contextMessages,
       });
 
       await Message.create({
@@ -108,6 +109,7 @@ async function handleChat(req, res) {
       user_id,
       session_id,
       message: enhancedMessage,
+      language,
       history: contextMessages
     }, (chunk) => {
       fullResponse += chunk;

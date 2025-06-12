@@ -24,6 +24,7 @@ const ChatLayout = ({
   setMessages,
   loadConversation,
   createNewConversation,
+  deleteConversationById,
   loadConversations,
   inputMessage,
   setInputMessage,
@@ -45,13 +46,12 @@ const ChatLayout = ({
           conversations={conversations}
           currentConversationId={currentConversationId}
           onSelectConversation={loadConversation}
-          onCreateConversation={() => createNewConversation('Cuộc trò chuyện', settings)}
+          onCreateConversation={createNewConversation}
           settings={settings}
           setSettings={setSettings}
           onCloseSidebar={() => setSidebarOpen(false)}
-          username={username}
-          onLogout={handleLogout}
           onSearchConversations={handleSearchConversations}
+          onDeleteConversation={deleteConversationById}
         />
       </ErrorBoundary>
     </div>
@@ -103,12 +103,14 @@ const App = () => {
     loadConversation,
     createNewConversation,
     loadConversations,
+    deleteConversationById, 
   } = useConversations(userId);
 
   const { inputMessage, setInputMessage, isLoading, sendMessage } = useChat(
     currentConversationId,
     setMessages,
-    userId
+    userId,
+    settings
   );
 
   useEffect(() => {
@@ -192,6 +194,7 @@ const App = () => {
               setMessages={setMessages}
               loadConversation={loadConversation}
               createNewConversation={createNewConversation}
+              deleteConversationById={deleteConversationById}
               loadConversations={loadConversations}
               inputMessage={inputMessage}
               setInputMessage={setInputMessage}

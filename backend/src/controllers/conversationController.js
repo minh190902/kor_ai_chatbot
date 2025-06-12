@@ -77,14 +77,16 @@ async function createConversation(req, res) {
 
 // DELETE /api/conversations/:id
 async function deleteConversation(req, res) {
-  const { id } = req.params;
+  const { session_id } = req.params;
   try {
-    const session = await ChatSession.findByPk(id);
+    console.log('Delete API called with id:', session_id);
+    const session = await ChatSession.findByPk(session_id);
+    console.log('Session found:', session);
     if (!session) {
       return res.status(404).json({ error: 'Conversation not found' });
     }
     // remove all messages in this session
-    await Message.destroy({ where: { session_id: id } });
+    await Message.destroy({ where: { session_id: session_id } });
     await session.destroy();
     res.json({ message: 'Conversation deleted successfully' });
   } catch (err) {

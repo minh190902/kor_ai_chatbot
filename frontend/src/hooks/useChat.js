@@ -1,10 +1,19 @@
 import { useState } from 'react';
 import { sendChatMessage, sendChatMessageStream, fetchMessages } from '../services/api';
-import { DEFAULT_SETTINGS } from '../utils/constants';
+import i18n from '../i18n';
 
-export const useChat = (conversationId, setMessages, userId) => {
+export const useChat = (conversationId, setMessages, userId, settings) => {
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+  const language = i18n.language || 'vi';
+  let mappedLanguage = 'Vietnamese';
+  try {
+    const displayNames = new Intl.DisplayNames(['en'], { type: 'language' });
+    mappedLanguage = displayNames.of(language) || 'Vietnamese';
+  } catch (e) {
+    mappedLanguage = 'Vietnamese';
+  }
 
   const sendMessage = async (useStream = true) => {
     if (!inputMessage.trim() || isLoading) return;
@@ -26,10 +35,11 @@ export const useChat = (conversationId, setMessages, userId) => {
         user_id: userId,
         session_id: conversationId,
         message: inputMessage,
+        language: mappedLanguage,
         settings: {
-          model: DEFAULT_SETTINGS.model,
-          temperature: DEFAULT_SETTINGS.temperature,
-          maxTokens: DEFAULT_SETTINGS.maxTokens,
+          model: settings.model,
+          temperature: settings.temperature,
+          maxTokens: settings.maxTokens,
         },
       };
 
@@ -43,15 +53,15 @@ export const useChat = (conversationId, setMessages, userId) => {
           isPending: true,
         };
         setMessages(prev => [...prev, aiMsg]);
-        await sendChatMessageStream(DEFAULT_SETTINGS.apiEndpoint, payload, (chunk) => {
+        await sendChatMessageStream(settings.apiEndpoint, payload, (chunk) => {
           aiMsg.content += chunk;
           setMessages(prev =>
             prev.map(m => m.id === aiMsg.id ? { ...aiMsg } : m)
           );
         });
       } else {
-        await sendChatMessage(DEFAULT_SETTINGS.apiEndpoint, payload);
-        const msgs = await fetchMessages(DEFAULT_SETTINGS.apiEndpoint, conversationId);
+        await sendChatMessage(settings.apiEndpoint, payload);
+        const msgs = await fetchMessages(settings.apiEndpoint, conversationId);
         setMessages(msgs);
       }
     } catch (error) {

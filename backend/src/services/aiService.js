@@ -8,12 +8,13 @@ const CHAT_STREAM_ENDPOINT = '/chatbot/chat_stream';
 /**
  * Call FastAPI chat (non-streaming)
  */
-async function callChatAPI({ user_id, session_id, message, history }) {
+async function callChatAPI({ user_id, session_id, message, language, history }) {
   try {
     const payload = {
       user_id,
       session_id,
       message,
+      language,
       history,
     };
     const res = await axios.post(
@@ -40,14 +41,14 @@ async function callChatAPI({ user_id, session_id, message, history }) {
 /**
  * Call FastAPI chat (streaming)
  */
-async function callChatAPIStream({ user_id, session_id, message, history }, onChunk) {
+async function callChatAPIStream({ user_id, session_id, message, language, history }, onChunk) {
   try {
     const payload = {
       user_id,
       session_id,
       message,
+      language,
       history,
-      stream: true
     };
 
     const response = await axios.post(

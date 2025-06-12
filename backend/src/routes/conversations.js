@@ -13,7 +13,7 @@ router.get('/search', conversationController.searchConversations);
 router.get('/messages/search', messageController.searchMessages);
 
 // DELETE /api/conversations/:id
-router.delete('/:id', conversationController.deleteConversation);
+router.delete('/:session_id', conversationController.deleteConversation);
 
 router.get('/:session_id/messages', messageController.getMessagesBySession);
 
