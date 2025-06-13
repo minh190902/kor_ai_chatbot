@@ -192,6 +192,24 @@ class Agents:
             ),
         )
         
+    def end2end_agent(
+        self,
+        model_provider: str = "openai",
+        model_id: str = None,
+        **kwargs
+    ) -> Agent:
+        """
+        Initialize end-to-end agent
+        """
+        return Agent(
+            config=self.agents_config["end2end_agent"],
+            llm=self.get_llm(
+                model_provider, 
+                model_id, 
+                **kwargs
+            ),
+        )
+        
     # # ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # #                                                           Progress Tracker Agents
     # # ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------

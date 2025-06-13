@@ -3,8 +3,7 @@ from fastapi.responses import StreamingResponse
 from ..schemas import LearningRequest, LearningResponse, ErrorResponse
 
 from ai_learning.crew import AILearningCrew
-import json
-from typing import Generator
+from db.pg_db import create_learning_plan, update_learning_plan, get_learning_plan_by_user
 
 router = APIRouter()
 learning_plan_crew = AILearningCrew()
@@ -16,7 +15,9 @@ learning_plan_crew = AILearningCrew()
 )
 def learning_plan(request: LearningRequest):
     try:
+        plan_id = create_learning_plan(request.user_id)
         state = {
+            "plan_id": plan_id,
             "model_provider": request.model_provider,
             "model_id": request.model_id,
             "temperature": request.temperature,
@@ -25,7 +26,7 @@ def learning_plan(request: LearningRequest):
             "period": request.period,
             "weekly_study_hours": request.weekly_study_hours
         }
-        planning = learning_plan_crew.planning_kickoff(inputs=state)
+        planning = learning_plan_crew.end2end_plan_kickoff(inputs=state)
         return {
             "user_id": request.user_id,
             "learning_plan": planning

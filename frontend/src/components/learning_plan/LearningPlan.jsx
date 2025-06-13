@@ -8,6 +8,7 @@ import PlanResult from "./PlanResult";
 import LearningPlanSettings from "./Settings";
 import { useNavigate } from "react-router-dom";
 import { fetchLearningPlan } from '../../services/api';
+import LearningPlanSidebar from "../sidebar/LearningPlanSidebar";
 
 // Khai báo các constant dùng chung
 const LEVELS = [
@@ -57,6 +58,7 @@ const LearningPlan = ({ user_id }) => {
     model_id: "gpt-4o-mini",
     temperature: 0.7
   });
+  const [currentPlanId, setCurrentPlanId] = useState(null);
   const navigate = useNavigate();
 
   // Stepper logic
@@ -72,20 +74,22 @@ const LearningPlan = ({ user_id }) => {
     setLoading(true);
     setPlan(null);
     try {
-        const payload = {
+      const payload = {
         user_id: user_id || "demo_user",
         model_provider: settings.model_provider,
         model_id: settings.model_id,
         temperature: settings.temperature,
         self_assessment: level,
-        user_goals: goals.map(g => g === "topik" && topikLevel ? `topik_${topikLevel}` : g).concat(otherGoal ? [otherGoal] : []).join(", "),
+        user_goals: goals.map(g => g === "topik" && topikLevel ? `topik_${topikLevel}` : g)
+          .concat(otherGoal ? [otherGoal] : [])
+          .join(", "),
         period: duration === "custom" ? customDuration : duration,
         weekly_study_hours: hours,
-        };
-        const result = await fetchLearningPlan("", payload);
-        setPlan(result);
+      };
+      const result = await fetchLearningPlan("", payload);
+      setPlan({ learning_plan: result.learning_plan });
     } catch (err) {
-        alert("Có lỗi khi tạo kế hoạch học tập!");
+      alert("Có lỗi khi tạo kế hoạch học tập!");
     }
     setLoading(false);
   };
@@ -106,7 +110,16 @@ const LearningPlan = ({ user_id }) => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 to-yellow-50 flex flex-col items-center py-8">
       <div className="flex w-full max-w-5xl mx-auto">
-        <LearningPlanSettings settings={settings} setSettings={setSettings} />
+        {/* Sidebar: LearningPlanSidebar + Settings */}
+        <div className="w-72 mr-6 flex flex-col gap-4">
+          <LearningPlanSidebar
+            userId={user_id}
+            onSelectPlan={setCurrentPlanId}
+            currentPlanId={currentPlanId}
+          />
+          <LearningPlanSettings settings={settings} setSettings={setSettings} />
+        </div>
+        {/* Main content */}
         <div className="flex-1 flex flex-col items-center">
           <div className="w-full flex justify-center mb-4">
             <LanguageSwitcher />
@@ -160,8 +173,9 @@ const LearningPlan = ({ user_id }) => {
             )}
             </div>
         </div>
-        </div>
+      </div>
     </div>
-)};
+  );
+};
 
 export default LearningPlan;

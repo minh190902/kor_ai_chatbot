@@ -174,9 +174,18 @@ FASTAPI_PORT=8080
 
 ---
 
-## Admin account
-- **username**: fiktech
-- **password**: 1234
+### Run AI Learning Plan by code (It not integrate on UI yet)
+```bash
+cd ai_core
+python test/test_workflow
+```
+
+---
+
+## Interact with db on terminal
+```bash
+docker exec -it postgres psql -U fiktech -d ai_chatbot
+```
 
 ---
 

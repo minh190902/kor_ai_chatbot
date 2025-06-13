@@ -192,3 +192,123 @@ xml_structure_task:
       </tips>
     </study_plan>
     All content must be inside tags, and all tags must be correctly nested and closed. Do not add any explanations or text outside the XML.
+
+
+# ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------  
+end2end_task:
+  description: |-
+    # User Input
+    - Self-assessment: {self_assessment}
+    - User goals: {user_goals}
+    - Period: {period}
+    - Weekly study hours: {weekly_study_hours}
+
+    # Guidelines
+    1. Analyze user input and structure goals using SMART criteria.
+    2. Assess feasibility and prioritize goals.
+    3. Design a personalized curriculum and sequence topics for optimal learning.
+    4. Create a realistic timeline and optimized weekly schedule.
+    5. Integrate all components into a comprehensive learning plan.
+    6. Output the final plan as a single, well-formed XML document, strictly following the schema and rules below.
+
+    # [XML STRUCTURE DEFINITION]
+
+    - <study_plan>: (Root element) Contains the entire study plan.
+      + <title>: (Required, 1) The overall title of the study plan.
+      + <overview>: (Required, 1) A general overview of the study plan, describing goals, duration, target audience, etc.
+      + <weekly_plan>: (Required, 1) Contains the weekly study schedule.
+        + <day name="[DayOfWeek]" time="[Duration]">: (Required, multiple allowed) Defines the plan for each day. Must include name and time attributes.
+          + <focus>: (Required, 1) The core learning objective for that day.
+          + <activity>: (Required, 1) Contains specific learning activities.
+            + <item>: (Required, 1 or more) Describes each individual activity.
+      + <learning_strategies>: (Required, 1) Describes specific learning strategies by skill area.
+        + <listening>, <reading>, <writing>, <speaking>, <vocabulary>, <grammar>: (Required, 1 of each) Represents each learning skill area.
+          + <item>: (Required, 1 or more) Describes each specific strategy for that skill.
+      + <recommended_resources>: (Required, 1) A list of recommended learning materials.
+        + <textbooks>, <online_resources>, <apps>, <practice_tests>: (Required, 1 of each) Categorizes the types of resources.
+          + <item>: (Required, 1 or more) Describes each individual resource.
+      + <timeline>: (Required, 1) Presents milestones and goals over a period.
+        + <phase name="[Period]">: (Required, multiple allowed) Divides the study plan into phases, like 'Months 1-2'. Must include the name attribute.
+          + <objective>: (Required, 1) The objective for that phase.
+          + <plan>: (Required, 1) The detailed plan for that phase.
+            + <item>: (Required, 1 or more) Describes each individual plan item.
+      + <tips>: (Required, 1) Contains additional advice for successful learning.
+        + <item>: (Required, 1 or more) Describes each individual tip.
+
+  expected_output: |-
+    You MUST output only a single, well-formed XML document, strictly following this structure:
+    <?xml version="1.0" encoding="UTF-8" ?>
+    <study_plan>
+      <title>...</title>
+      <overview>...</overview>
+      <weekly_plan>
+        <day name="..." time="...">
+          <focus>...</focus>
+          <activity>
+            <item>...</item>
+            ...
+          </activity>
+        </day>
+        ...
+      </weekly_plan>
+      <learning_strategies>
+        <listening>
+          <item>...</item>
+          ...
+        </listening>
+        <reading>
+          <item>...</item>
+          ...
+        </reading>
+        <writing>
+          <item>...</item>
+          ...
+        </writing>
+        <speaking>
+          <item>...</item>
+          ...
+        </speaking>
+        <vocabulary>
+          <item>...</item>
+          ...
+        </vocabulary>
+        <grammar>
+          <item>...</item>
+          ...
+        </grammar>
+      </learning_strategies>
+      <recommended_resources>
+        <textbooks>
+          <item>...</item>
+          ...
+        </textbooks>
+        <online_resources>
+          <item>...</item>
+          ...
+        </online_resources>
+        <apps>
+          <item>...</item>
+          ...
+        </apps>
+        <practice_tests>
+          <item>...</item>
+          ...
+        </practice_tests>
+      </recommended_resources>
+      <timeline>
+        <phase name="...">
+          <objective>...</objective>
+          <plan>
+            <item>...</item>
+            ...
+          </plan>
+        </phase>
+        ...
+      </timeline>
+      <tips>
+        <item>...</item>
+        ...
+      </tips>
+    </study_plan>
+    All content must be inside tags, and all tags must be correctly nested and closed. Do not add any explanations or text outside the XML.
+    Ensure the XML is well-formed, with no extra text or comments. Validate against the provided schema.

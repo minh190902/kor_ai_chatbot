@@ -13,7 +13,7 @@ async function callFastAPI(endpoint, payload, options = {}) {
       payload,
       {
         headers: { 'Content-Type': 'application/json' },
-        timeout: options.timeout || 30000,
+        timeout: options.timeout || 100000,
         ...options.axiosConfig,
       }
     );

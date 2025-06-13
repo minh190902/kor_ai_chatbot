@@ -22,7 +22,7 @@ inputs = {
 }
 
 # Run the planning kickoff
-results = crew.planning_kickoff(inputs)
+results = crew.end2end_plan_kickoff(inputs)
 print(results)
 print("AI Learning Crew planning completed successfully. Tasks executed in {:.2f} seconds.".format(time.time() - start_time))
     

@@ -11,8 +11,7 @@ from typing import Iterator, AsyncGenerator, Dict, Any
 from crewai import Crew, Process
 from crewai.task import TaskOutput
 
-from langchain_openai import ChatOpenAI
-from langchain_core.prompts import ChatPromptTemplate
+from db.pg_db import update_learning_plan
 
 from .agents import Agents
 from .tasks import Tasks
@@ -129,3 +128,36 @@ class AILearningCrew:
             raise Exception("Execution crew failed to complete tasks")
 
         return exec_result.raw
+    
+    def end2end_plan_kickoff(self, inputs: Dict[str, Any]) -> str:
+        """
+        Run full end-to-end planning process
+        """
+        # Initialize Agents
+        end2end_agent = self.agents.end2end_agent(
+            model_provider=inputs["model_provider"],
+            model_id=inputs["model_id"],
+            temperature=0,
+        )
+        
+        # Initialize Tasks
+        end2end_task = self.tasks.end2end_tasks(end2end_agent)
+        end2end_crew = Crew(
+            name="End-to-End Learning Planning Crew",
+            agents=[end2end_agent],
+            tasks=[end2end_task],
+            verbose=True,
+        )
+        # Kickoff the crew
+        input_crew = {
+            "self_assessment": inputs["self_assessment"],
+            "user_goals": inputs["user_goals"],
+            "period": inputs["period"],
+            "weekly_study_hours": inputs["weekly_study_hours"]
+        }
+        end2end_result = end2end_crew.kickoff(inputs=input_crew)
+        update_learning_plan(inputs["plan_id"], learning_plan=end2end_result.raw, status="Success")
+        if not end2end_result:
+            raise Exception("End-to-end crew failed to complete tasks")
+        
+        return end2end_result.raw

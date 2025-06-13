@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<study_plan>
+  <title>Korean Language Study Plan for TOPIK 6</title>
+  <overview>This study plan is designed for a beginner aiming to achieve TOPIK 6 proficiency in one year by dedicating 10 hours per week to study.</overview>
+  <weekly_plan>
+    <day name="Monday" time="2">
+      <focus>Vocabulary Building</focus>
+      <activity>
+        <item>Learn 20 new vocabulary words using flashcards.</item>
+        <item>Practice vocabulary using Duolingo for 30 minutes.</item>
+      </activity>
+    </day>
+    <day name="Tuesday" time="2">
+      <focus>Listening Comprehension</focus>
+      <activity>
+        <item>Listen to a Korean podcast and summarize key points.</item>
+        <item>Watch a Korean drama episode with subtitles.</item>
+      </activity>
+    </day>
+    <day name="Wednesday" time="2">
+      <focus>Grammar Practice</focus>
+      <activity>
+        <item>Study basic sentence structures and practice through exercises.</item>
+        <item>Complete grammar exercises in a textbook.</item>
+      </activity>
+    </day>
+    <day name="Thursday" time="2">
+      <focus>Speaking Practice</focus>
+      <activity>
+        <item>Engage in conversation with a language partner for 30 minutes.</item>
+        <item>Practice pronunciation and intonation using online resources.</item>
+      </activity>
+    </day>
+    <day name="Friday" time="2">
+      <focus>Reading Comprehension</focus>
+      <activity>
+        <item>Read a short Korean article and outline its main ideas.</item>
+        <item>Use a reading app to enhance skills for 30 minutes.</item>
+      </activity>
+    </day>
+    <day name="Saturday" time="2">
+      <focus>TOPIK Practice Tests</focus>
+      <activity>
+        <item>Take a practice test focusing on reading comprehension.</item>
+        <item>Review and analyze the results of the practice test.</item>
+      </activity>
+    </day>
+  </weekly_plan>
+  <learning_strategies>
+    <listening>
+      <item>Utilize Korean music and podcasts to develop listening skills.</item>
+      <item>Watch Korean films and dramas without subtitles for practice.</item>
+    </listening>
+    <reading>
+      <item>Read Korean news websites to encounter formal and conversational language.</item>
+      <item>Use graded readers to build reading comprehension gradually.</item>
+    </reading>
+    <writing>
+      <item>Maintain a daily journal in Korean to improve writing fluency.</item>
+      <item>Participate in language exchange forums to practice writing.</item>
+    </writing>
+    <speaking>
+      <item>Practice speaking with a native speaker or language partner.</item>
+      <item>Record yourself speaking to track improvements in pronunciation.</item>
+    </speaking>
+    <vocabulary>
+      <item>Use spaced repetition software (SRS) for effective vocabulary retention.</item>
+      <item>Group vocabulary by themes for organized learning.</item>
+    </vocabulary>
+    <grammar>
+      <item>Study grammar rules through textbooks and online courses.</item>
+      <item>Complete grammar exercises for reinforcement.</item>
+    </grammar>
+  </learning_strategies>
+  <recommended_resources>
+    <textbooks>
+      <item>Integrated Korean: Beginning 1</item>
+      <item>Level 1: Korean Grammar in Use</item>
+    </textbooks>
+    <online_resources>
+      <item>Talk To Me In Korean</item>
+      <item>Duolingo Korean Course</item>
+    </online_resources>
+    <apps>
+      <item>Memrise</item>
+      <item>Language Exchange Apps like HelloTalk</item>
+    </apps>
+    <practice_tests>
+      <item>TOPIK Practice Test Books</item>
+      <item>Online TOPIK Mock Exams</item>
+    </practice_tests>
+  </recommended_resources>
+  <timeline>
+    <phase name="Months 1-3">
+      <objective>Foundation Skills Development</objective>
+      <plan>
+        <item>Focus on basic vocabulary and grammar.</item>
+        <item>Establish a study routine and practice listening daily.</item>
+      </plan>
+    </phase>
+    <phase name="Months 4-6">
+      <objective>Intermediate Proficiency Development</objective>
+      <plan>
+        <item>Begin practicing speaking and writing regularly.</item>
+        <item>Start reading simple texts and articles in Korean.</item>
+      </plan>
+    </phase>
+    <phase name="Months 7-9">
+      <objective>Advanced Skills Acquisition</objective>
+      <plan>
+        <item>Engage with more complex materials (books, films).</item>
+        <item>Practice full-length TOPIK tests to assess progress.</item>
+      </plan>
+    </phase>
+    <phase name="Months 10-12">
+      <objective>TOPIK Exam Preparation</objective>
+      <plan>
+        <item>Intensive study of past TOPIK exam papers.</item>
+        <item>Focus on skill gaps identified in mock exams.</item>
+      </plan>
+    </phase>
+  </timeline>
+  <tips>
+    <item>Stay consistent with study sessions for long-term improvement.</item>
+    <item>Find a language partner to enhance practical skills.</item>
+    <item>Immerse yourself in the language daily through media and conversation.</item>
+  </tips>
+</study_plan>

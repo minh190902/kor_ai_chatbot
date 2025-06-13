@@ -112,3 +112,13 @@ class Tasks:
             agent=agent,
             output_file=f"output/xml_structure_output.xml",
         )
+        
+    def end2end_tasks(self, agent: Agent) -> Task:
+        """
+        Initialize all tasks for the end-to-end learning process
+        """
+        return Task(
+            config=self.tasks_config['end2end_task'],
+            agent=agent,
+            output_file=f"output/end2end_tasks.xml",
+        )
