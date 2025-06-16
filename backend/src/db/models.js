@@ -52,13 +52,12 @@ class LearningPlan extends Model {}
 LearningPlan.init({
   plan_id: { type: DataTypes.UUID, primaryKey: true, defaultValue: DataTypes.UUIDV4 },
   user_id: { type: DataTypes.UUID, allowNull: false },
+  title: { type: DataTypes.STRING, allowNull: false },
+  overview: { type: DataTypes.TEXT, allowNull: true },
   status: { type: DataTypes.STRING, defaultValue: 'processing' }, // processing, done, failed
   learning_plan: { type: DataTypes.TEXT },
   created_at: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
   updated_at: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
-  error_message: { type: DataTypes.TEXT },
-  plan_type: { type: DataTypes.STRING }, // ai/manual/imported
-  progress_notes: { type: DataTypes.TEXT },
   last_accessed: { type: DataTypes.DATE }
 }, { sequelize, modelName: 'learning_plan', timestamps: false });
 

@@ -92,13 +92,12 @@ class LearningPlan(Base):
     __tablename__ = "learning_plans"
     plan_id = Column(PG_UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     user_id = Column(PG_UUID(as_uuid=True), ForeignKey('users.id'), nullable=False, index=True)
+    title = Column(String(255), nullable=True)
+    overview = Column(Text, nullable=True)
     status = Column(String, default="processing")  # processing, done, failed
     learning_plan = Column(Text, nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
-    error_message = Column(Text, nullable=True)
-    plan_type = Column(String(50), nullable=True)  # ai/manual/imported
-    progress_notes = Column(Text, nullable=True)
     last_accessed = Column(DateTime(timezone=True), nullable=True)
 
     user = relationship(

@@ -103,8 +103,17 @@ const PlanResult = ({ plan, onBack }) => {
   // Parse XML
   let parsed = null;
   try {
-    const parser = new XMLParser({ ignoreAttributes: false });
-    parsed = parser.parse(plan.learning_plan);
+    const parser = new XMLParser({
+      ignoreAttributes: false,
+      trimValues: true,
+      parseTagValue: true,
+      parseAttributeValue: true,
+      allowBooleanAttributes: true,
+    });
+    // Remove BOM if present
+    let xml = plan.learning_plan?.trim();
+    if (xml?.charCodeAt(0) === 0xFEFF) xml = xml.slice(1);
+    parsed = parser.parse(xml);
   } catch (e) {
     parsed = null;
   }

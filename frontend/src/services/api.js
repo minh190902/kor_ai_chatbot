@@ -96,3 +96,9 @@ export const fetchLearningPlan = async (apiEndpoint, payload) => {
   if (!res.ok) throw new Error('Không thể tạo kế hoạch học tập');
   return res.json();
 };
+
+export const fetchLearningPlanDetail = async (planId) => {
+  const res = await fetch(`/api/learning-plan/${planId}`);
+  if (!res.ok) throw new Error('Không thể tải kế hoạch học tập');
+  return res.json();
+};

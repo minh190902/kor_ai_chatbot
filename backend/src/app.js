@@ -3,7 +3,6 @@ const corsMiddleware = require('./middleware/cors');
 const rateLimiter = require('./middleware/rateLimiter');
 const authMiddleware = require('./middleware/auth');
 const routes = require('./routes');
-const storageService = require('./services/storageService');
 const logger = require('./utils/logger');
 
 const app = express();
@@ -35,6 +34,4 @@ app.use((err, req, res, next) => {
 
 module.exports = {
   getApp: () => app,
-  loadData: storageService.loadData,
-  saveData: storageService.saveData,
 };

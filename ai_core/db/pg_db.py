@@ -1,5 +1,6 @@
 from .db_config import get_db_session
 from .db_models import LearningPlan, StudyPlanContent
+import xmltodict
 import hashlib
 import json
 
@@ -11,11 +12,22 @@ def create_learning_plan(user_id: str):
         return str(plan.plan_id)
 
 def update_learning_plan(plan_id: str, learning_plan: str, status: str = "done"):
+    try:
+        doc = xmltodict.parse(learning_plan)
+        study_plan = doc.get("study_plan", {})
+        title = study_plan.get("title", "")
+        overview = study_plan.get("overview", "")
+    except Exception:
+        title = ""
+        overview = ""
+    print(f"Updating learning plan {plan_id} with status {status}, title: {title}, overview: {overview}")
     with get_db_session() as db:
         plan = db.query(LearningPlan).filter_by(plan_id=plan_id).first()
         if plan:
             plan.learning_plan = learning_plan
             plan.status = status
+            plan.title = title
+            plan.overview = overview
             db.add(plan)
 
 def get_learning_plan_by_user(user_id: str):

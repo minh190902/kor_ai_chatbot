@@ -8,7 +8,7 @@ export default function useLearningPlans(userId) {
   useEffect(() => {
     if (!userId) return;
     setLoading(true);
-    axios.get(`/api/learning-plans?user_id=${userId}`)
+    axios.get(`/api/learning-plan?user_id=${userId}`)
       .then(res => setPlans(res.data))
       .finally(() => setLoading(false));
   }, [userId]);

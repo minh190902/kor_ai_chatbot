@@ -5,9 +5,8 @@ import Input from "./steps/Input";
 import Review from "./steps/Review";
 import LoadingContent from "./LoadingContent";
 import PlanResult from "./PlanResult";
-import LearningPlanSettings from "./Settings";
 import { useNavigate } from "react-router-dom";
-import { fetchLearningPlan } from '../../services/api';
+import { fetchLearningPlan, fetchLearningPlanDetail } from '../../services/api';
 import LearningPlanSidebar from "../sidebar/LearningPlanSidebar";
 
 // Khai báo các constant dùng chung
@@ -59,16 +58,31 @@ const LearningPlan = ({ user_id }) => {
     temperature: 0.7
   });
   const [currentPlanId, setCurrentPlanId] = useState(null);
+  const [showSettings, setShowSettings] = useState(false);
   const navigate = useNavigate();
+
+  // when user selects a plan from sidebar
+  // fetch the plan details and set it to state
+  const handleSelectPlan = async (planId) => {
+    setCurrentPlanId(planId);
+    setLoading(true);
+    try {
+      const result = await fetchLearningPlanDetail(planId);
+      setPlan(result);
+    } catch {
+      setPlan(null);
+    }
+    setLoading(false);
+  };
 
   // Stepper logic
   const nextStep = () => setStep(steps[steps.indexOf(step) + 1]);
   const prevStep = () => setStep(steps[steps.indexOf(step) - 1]);
 
-  // Bắt đầu lại
+  // Start from welcome step
   const handleStart = () => setStep("level");
 
-  // Xử lý submit cuối cùng
+  // Submit learning plan
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -102,76 +116,76 @@ const LearningPlan = ({ user_id }) => {
         plan={plan}
         onBack={() => {
           setPlan(null);
+          setCurrentPlanId(null);
           setStep("welcome");
         }}
       />
     );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-yellow-50 flex flex-col items-center py-8">
-      <div className="flex w-full max-w-5xl mx-auto">
-        {/* Sidebar: LearningPlanSidebar + Settings */}
-        <div className="w-72 mr-6 flex flex-col gap-4">
-          <LearningPlanSidebar
-            userId={user_id}
-            onSelectPlan={setCurrentPlanId}
-            currentPlanId={currentPlanId}
-          />
-          <LearningPlanSettings settings={settings} setSettings={setSettings} />
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-yellow-50 flex flex-row items-stretch py-0">
+      {/* Sidebar on the left */}
+      <LearningPlanSidebar
+        userId={user_id}
+        onSelectPlan={handleSelectPlan}
+        currentPlanId={currentPlanId}
+        settings={settings}
+        setSettings={setSettings}
+        showSettings={showSettings}
+        setShowSettings={setShowSettings}
+      />
+      {/* Main content */}
+      <div className="flex-1 flex flex-col items-center">
+        <div className="w-full flex justify-center mb-4 mt-8">
+          <LanguageSwitcher />
         </div>
-        {/* Main content */}
-        <div className="flex-1 flex flex-col items-center">
-          <div className="w-full flex justify-center mb-4">
-            <LanguageSwitcher />
-          </div>
-          <div className="bg-white rounded-2xl shadow-lg p-8 max-w-xl w-full transition-all duration-300">
-            {step === "welcome" && (
-              <Welcome
-                onStart={handleStart}
-                onBackHome={() => navigate("/ai")}
-              />
-            )}
-            {["level", "goals", "duration", "hours"].includes(step) && (
-                <Input
-                step={step}
-                level={level}
-                setLevel={setLevel}
-                LEVELS={LEVELS}
-                goals={goals}
-                setGoals={setGoals}
-                GOALS={GOALS}
-                topikLevel={topikLevel}
-                setTopikLevel={setTopikLevel}
-                otherGoal={otherGoal}
-                setOtherGoal={setOtherGoal}
-                duration={duration}
-                setDuration={setDuration}
-                customDuration={customDuration}
-                setCustomDuration={setCustomDuration}
-                DURATIONS={DURATIONS}
-                hours={hours}
-                setHours={setHours}
-                HOURS={HOURS}
-                nextStep={nextStep}
-                prevStep={prevStep}
-                />
-            )}
-            {step === "review" && (
-                <Review
-                level={level}
-                goals={goals}
-                GOALS={GOALS}
-                topikLevel={topikLevel}
-                otherGoal={otherGoal}
-                duration={duration}
-                customDuration={customDuration}
-                hours={hours}
-                HOURS={HOURS}
-                onBack={prevStep}
-                onSubmit={handleSubmit}
-                />
-            )}
-            </div>
+        <div className="bg-white rounded-2xl shadow-lg p-8 max-w-xl w-full transition-all duration-300 mt-4">
+          {step === "welcome" && (
+            <Welcome
+              onStart={handleStart}
+              onBackHome={() => navigate("/ai")}
+            />
+          )}
+          {["level", "goals", "duration", "hours"].includes(step) && (
+            <Input
+              step={step}
+              level={level}
+              setLevel={setLevel}
+              LEVELS={LEVELS}
+              goals={goals}
+              setGoals={setGoals}
+              GOALS={GOALS}
+              topikLevel={topikLevel}
+              setTopikLevel={setTopikLevel}
+              otherGoal={otherGoal}
+              setOtherGoal={setOtherGoal}
+              duration={duration}
+              setDuration={setDuration}
+              customDuration={customDuration}
+              setCustomDuration={setCustomDuration}
+              DURATIONS={DURATIONS}
+              hours={hours}
+              setHours={setHours}
+              HOURS={HOURS}
+              nextStep={nextStep}
+              prevStep={prevStep}
+            />
+          )}
+          {step === "review" && (
+            <Review
+              level={level}
+              goals={goals}
+              GOALS={GOALS}
+              topikLevel={topikLevel}
+              otherGoal={otherGoal}
+              duration={duration}
+              customDuration={customDuration}
+              hours={hours}
+              HOURS={HOURS}
+              onBack={prevStep}
+              onSubmit={handleSubmit}
+            />
+          )}
         </div>
       </div>
     </div>

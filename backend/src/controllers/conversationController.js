@@ -75,7 +75,7 @@ async function createConversation(req, res) {
   }
 }
 
-// DELETE /api/conversations/:id
+// DELETE /api/conversations/:session_id
 async function deleteConversation(req, res) {
   const { session_id } = req.params;
   try {

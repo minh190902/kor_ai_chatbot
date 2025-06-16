@@ -1,4 +1,5 @@
 const aiService = require('../services/aiService');
+const { LearningPlan } = require('../db/models');
 
 async function createLearningPlan(req, res) {
   try {
@@ -19,7 +20,18 @@ async function fetchLearningPlan(req, res) {
   });
   res.json(plans)};
 
+async function getLearningPlanDetail(req, res) {
+  const { plan_id } = req.params;
+  const plan = await LearningPlan.findByPk(plan_id);
+  if (!plan) return res.status(404).json({ error: 'Not found' });
+  res.json({
+    ...plan.toJSON(),
+    content_json: plan.learning_plan?.content_json
+  });
+};
+
 module.exports = { 
   createLearningPlan,
-  fetchLearningPlan
+  fetchLearningPlan,
+  getLearningPlanDetail
 };

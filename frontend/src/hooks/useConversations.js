@@ -72,10 +72,17 @@ export const useConversations = (userId) => {
     }
   };
 
-  useEffect(() => {
-    loadConversations(DEFAULT_SETTINGS);
-    // eslint-disable-next-line
-  }, [userId]);
+  const handleResetConversation = async (sessionId) => {
+    try {
+      await deleteConversation(settings.apiEndpoint, sessionId);
+      // Xóa khỏi state
+      setConversations(prev => prev.filter(conv => conv.id !== sessionId));
+      setMessages([]);
+      setCurrentConversationId(null);
+    } catch (err) {
+      alert('Không thể xóa hội thoại!');
+    }
+  };
 
   return {
     conversations,
@@ -86,6 +93,7 @@ export const useConversations = (userId) => {
     loadConversation,
     createNewConversation,
     loadConversations,
-    deleteConversationById
+    deleteConversationById,
+    handleResetConversation
   };
 };

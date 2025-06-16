@@ -20,14 +20,12 @@ const ChatLayout = ({
   sidebarOpen,
   setSidebarOpen,
   conversations,
-  setConversations,
   currentConversationId,
   messages,
-  setMessages,
   loadConversation,
   createNewConversation,
   deleteConversationById,
-  loadConversations,
+  handleResetConversation,
   inputMessage,
   setInputMessage,
   isLoading,
@@ -76,6 +74,7 @@ const ChatLayout = ({
             setInputMessage={setInputMessage}
             onSend={sendMessage}
             currentConversationId={currentConversationId}
+            onResetConversation={handleResetConversation}
           />
         </ErrorBoundary>
       </div>
@@ -106,6 +105,7 @@ const App = () => {
     createNewConversation,
     loadConversations,
     deleteConversationById, 
+    handleResetConversation
   } = useConversations(userId);
 
   const { inputMessage, setInputMessage, isLoading, sendMessage } = useChat(
@@ -193,14 +193,12 @@ const App = () => {
             sidebarOpen={sidebarOpen}
             setSidebarOpen={setSidebarOpen}
             conversations={conversations}
-            setConversations={setConversations}
             currentConversationId={currentConversationId}
             messages={messages}
-            setMessages={setMessages}
             loadConversation={loadConversation}
             createNewConversation={createNewConversation}
             deleteConversationById={deleteConversationById}
-            loadConversations={loadConversations}
+            handleResetConversation={handleResetConversation}
             inputMessage={inputMessage}
             setInputMessage={setInputMessage}
             isLoading={isLoading}
