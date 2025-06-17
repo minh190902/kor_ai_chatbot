@@ -26,6 +26,14 @@ export const deleteConversation = async (apiEndpoint, sessionId) => {
   return res.json();
 };
 
+export const deleteMessagesInConversation = async (apiEndpoint, sessionId) => {
+  const res = await fetch(`${apiEndpoint}/api/conversations/${sessionId}/messages`, {
+    method: 'DELETE',
+  });
+  if (!res.ok) throw new Error('Không thể xóa tin nhắn');
+  return res.json();
+};
+
 export const fetchMessages = async (apiEndpoint, sessionId) => {
   const res = await fetch(`${apiEndpoint}/api/conversations/${sessionId}/messages`);
   if (!res.ok) throw new Error('Không thể tải tin nhắn');

@@ -21,3 +21,4 @@ class LearningRequest(BaseRequest):
     user_goals: str
     period: str
     weekly_study_hours: int
+    language: str

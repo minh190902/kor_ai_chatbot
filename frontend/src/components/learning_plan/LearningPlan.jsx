@@ -4,6 +4,7 @@ import Welcome from "./steps/Welcome";
 import Input from "./steps/Input";
 import Review from "./steps/Review";
 import LoadingContent from "./LoadingContent";
+import { getLanguageName } from '../../utils/getLanguageName';
 import PlanResult from "./PlanResult";
 import { useNavigate } from "react-router-dom";
 import { fetchLearningPlan, fetchLearningPlanDetail } from '../../services/api';
@@ -99,6 +100,7 @@ const LearningPlan = ({ user_id }) => {
           .join(", "),
         period: duration === "custom" ? customDuration : duration,
         weekly_study_hours: hours,
+        language: getLanguageName() || "Vietnamese"
       };
       const result = await fetchLearningPlan("", payload);
       setPlan({ learning_plan: result.learning_plan });

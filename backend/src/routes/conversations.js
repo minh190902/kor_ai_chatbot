@@ -15,6 +15,8 @@ router.get('/messages/search', messageController.searchMessages);
 // DELETE /api/conversations/:id
 router.delete('/:session_id', conversationController.deleteConversation);
 
+router.delete('/:session_id/messages', messageController.deleteMessagesInConversation);
+
 router.get('/:session_id/messages', messageController.getMessagesBySession);
 
 module.exports = router;

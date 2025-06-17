@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { fetchConversations, createConversation, fetchMessages, deleteConversation } from '../services/api';
+import { useState } from 'react';
+import { fetchConversations, createConversation, fetchMessages, deleteConversation, deleteMessagesInConversation } from '../services/api';
 import { DEFAULT_SETTINGS } from '../utils/constants';
 
 /**
@@ -72,15 +72,12 @@ export const useConversations = (userId) => {
     }
   };
 
-  const handleResetConversation = async (sessionId) => {
+  const handleResetConversation = async (sessionId, settings = DEFAULT_SETTINGS) => {
     try {
-      await deleteConversation(settings.apiEndpoint, sessionId);
-      // Xóa khỏi state
-      setConversations(prev => prev.filter(conv => conv.id !== sessionId));
+      await deleteMessagesInConversation(settings.apiEndpoint, sessionId);
       setMessages([]);
-      setCurrentConversationId(null);
     } catch (err) {
-      alert('Không thể xóa hội thoại!');
+      alert('Không thể xóa tin nhắn hội thoại!');
     }
   };
 

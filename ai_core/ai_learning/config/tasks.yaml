@@ -195,6 +195,7 @@ xml_structure_task:
 
 
 # ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------  
+#                                                                                            End-to-End Task
 end2end_task:
   description: |-
     # User Input
@@ -210,6 +211,10 @@ end2end_task:
     4. Create a realistic timeline and optimized weekly schedule.
     5. Integrate all components into a comprehensive learning plan.
     6. Output the final plan as a single, well-formed XML document, strictly following the schema and rules below.
+    7. **IMPORTANT:** 
+      - All XML tag names and attributes MUST remain in English as defined below. 
+      - However, the content inside the tags (such as titles, overviews, activities, strategies, resources, objectives, plans, and tips) MUST be written in the {language} language. 
+      - Do NOT translate or modify any tag names or attribute names.
 
     # [XML STRUCTURE DEFINITION]
 
@@ -311,4 +316,83 @@ end2end_task:
       </tips>
     </study_plan>
     All content must be inside tags, and all tags must be correctly nested and closed. Do not add any explanations or text outside the XML.
+    Ensure the XML is well-formed, with no extra text or comments. Validate against the provided schema.
+
+
+# ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+vocab_expansion_task:
+  description: |-
+    # User Input
+    - Korean word: {user_word}
+
+    # Guidelines
+    1. Analyze the input word, correcting typos if necessary.
+    2. Classify the word's level (Beginner, Intermediate, Advanced) per TOPIK.
+    3. Detect user's language (default: Korean; otherwise, use context).
+    4. Output a detailed vocabulary analysis as a single, well-formed XML document, strictly following the schema and rules below.
+    5. If the input is invalid, out of scope, or inappropriate, return only the specified plain text error message.
+
+    # [XML STRUCTURE DEFINITION]
+
+    - <vocabulary_expansion>: (Root element) Contains the entire analysis.
+      + <request original_input="[user's raw input]">: (Required, 1) Information about the initial user request.
+        + <corrected_input>: (Optional, 1) The word after typo correction. Only include if a correction was made.
+      + <word_info level="[Beginner/Intermediate/Advanced]" type="[품사]">: (Required, 1) Contains all information about the word. level and type attributes are mandatory.
+        + <word>: (Required, 1) The standard form of the word.
+        + <pronunciation>: (Optional, 1) Phonetic pronunciation.
+        + <definition lang="ko">: (Required, 1) The primary definition in Korean.
+        + <definition lang="[user_lang]">: (Optional, 1) The definition translated into the user's native language.
+        + <synonyms>: (Optional, 1) A list of synonyms.
+          + <item>: (Required if <synonyms> exists, multiple allowed) A single synonym.
+        + <antonyms>: (Optional, 1) A list of antonyms.
+          + <item>: (Required if <antonyms> exists, multiple allowed) A single antonym.
+        + <examples>: (Required, 1) A list of example sentences.
+          + <example>: (Required, multiple allowed) A single example set.
+            + <ko>: (Required, 1) The example sentence in Korean.
+            + <translation lang="[user_lang]">: (Optional, 1) The translation of the example sentence.
+        + <etymology>: (Optional, 1) Etymology or Hanja origin of the word.
+        + <related_expressions>: (Optional, 1) A list of related idioms or expressions.
+          + <item>: (Required if tag exists, multiple allowed) A single related expression.
+
+    # [ERROR MESSAGES]
+    1. Invalid Input: 입력하신 단어나 표현을 이해하지 못했습니다. 다시 한 번 확인해 주세요.
+    2. Out of Scope: 죄송합니다. 저는 한국어 어휘 학습을 돕는 AI입니다. 일반적인 질문은 기본 챗봇을 이용해 주세요.
+    3. Inappropriate Content: 부적절한 내용이 감지되어 응답할 수 없습니다.
+
+  expected_output: |-
+    You MUST output only a single, well-formed XML document, strictly following this structure:
+    <?xml version="1.0" encoding="UTF-8" ?>
+    <vocabulary_expansion>
+      <request original_input="...">
+        <corrected_input>...</corrected_input>
+      </request>
+      <word_info level="..." type="...">
+        <word>...</word>
+        <pronunciation>...</pronunciation>
+        <definition lang="ko">...</definition>
+        <definition lang="en">...</definition>
+        <synonyms>
+          <item>...</item>
+          ...
+        </synonyms>
+        <antonyms>
+          <item>...</item>
+          ...
+        </antonyms>
+        <examples>
+          <example>
+            <ko>...</ko>
+            <translation lang="en">...</translation>
+          </example>
+          ...
+        </examples>
+        <etymology>...</etymology>
+        <related_expressions>
+          <item>...</item>
+          ...
+        </related_expressions>
+      </word_info>
+    </vocabulary_expansion>
+    All content must be inside tags, and all tags must be correctly nested and closed. Do not add any explanations or text outside the XML.
+    If the input is invalid, out of scope, or inappropriate, return only the specified plain text error message.
     Ensure the XML is well-formed, with no extra text or comments. Validate against the provided schema.

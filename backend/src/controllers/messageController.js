@@ -42,7 +42,21 @@ async function searchMessages(req, res) {
   }
 };
 
+// DELETE /api/conversations/:session_id/messages
+async function deleteMessagesInConversation(req, res) {
+  const { session_id } = req.params;
+  try {
+    // Xóa tất cả messages thuộc session này
+    await Message.destroy({ where: { session_id } });
+    res.json({ message: 'All messages in conversation deleted successfully' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to delete messages in conversation' });
+  }
+}
+
 module.exports = { 
   getMessagesBySession,
-  searchMessages
+  searchMessages,
+  deleteMessagesInConversation
 };

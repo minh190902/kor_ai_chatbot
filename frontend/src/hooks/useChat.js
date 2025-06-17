@@ -1,19 +1,12 @@
 import { useState } from 'react';
 import { sendChatMessage, sendChatMessageStream, fetchMessages } from '../services/api';
-import i18n from '../i18n';
+import { getLanguageName } from '../utils/getLanguageName';
 
 export const useChat = (conversationId, setMessages, userId, settings) => {
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const language = i18n.language || 'vi';
-  let mappedLanguage = 'Vietnamese';
-  try {
-    const displayNames = new Intl.DisplayNames(['en'], { type: 'language' });
-    mappedLanguage = displayNames.of(language) || 'Vietnamese';
-  } catch (e) {
-    mappedLanguage = 'Vietnamese';
-  }
+  const language = getLanguageName();
 
   const sendMessage = async (useStream = true) => {
     if (!inputMessage.trim() || isLoading) return;
@@ -35,7 +28,7 @@ export const useChat = (conversationId, setMessages, userId, settings) => {
         user_id: userId,
         session_id: conversationId,
         message: inputMessage,
-        language: mappedLanguage,
+        language: language,
         settings: {
           model: settings.model,
           temperature: settings.temperature,

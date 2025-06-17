@@ -24,7 +24,8 @@ def learning_plan(request: LearningRequest):
             "self_assessment": request.self_assessment,
             "user_goals": request.user_goals,
             "period": request.period,
-            "weekly_study_hours": request.weekly_study_hours
+            "weekly_study_hours": request.weekly_study_hours,
+            "language": request.language,
         }
         planning = learning_plan_crew.end2end_plan_kickoff(inputs=state)
         return {

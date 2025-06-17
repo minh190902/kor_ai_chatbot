@@ -153,7 +153,8 @@ class AILearningCrew:
             "self_assessment": inputs["self_assessment"],
             "user_goals": inputs["user_goals"],
             "period": inputs["period"],
-            "weekly_study_hours": inputs["weekly_study_hours"]
+            "weekly_study_hours": inputs["weekly_study_hours"],
+            "language": inputs["language"],
         }
         end2end_result = end2end_crew.kickoff(inputs=input_crew)
         update_learning_plan(inputs["plan_id"], learning_plan=end2end_result.raw, status="Success")
