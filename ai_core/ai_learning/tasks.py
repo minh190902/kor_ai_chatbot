@@ -122,3 +122,13 @@ class Tasks:
             agent=agent,
             output_file=f"output/end2end_tasks.xml",
         )
+        
+    def vocab_expansion_task(self, agent: Agent) -> Task:
+        """
+        Example task that can be customized
+        """
+        return Task(
+            config=self.tasks_config['vocab_expansion_task'],
+            agent=agent,
+            output_file=f"output/example_output.xml"
+        )

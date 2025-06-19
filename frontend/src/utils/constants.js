@@ -1,6 +1,16 @@
 export const DEFAULT_SETTINGS = {
-  apiEndpoint: '', // để rỗng hoặc '/', không dùng http://localhost:8000 nữa
+  apiEndpoint: '',
   model: 'default',
   temperature: 0.7,
   maxTokens: 1000,
+};
+
+export const USER_STATUS = {
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE'
+};
+
+export const ROLE = {
+  ADMIN: 'admin',
+  USER: 'user'
 };

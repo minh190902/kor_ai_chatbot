@@ -38,7 +38,7 @@ class ContextService {
     try {
       // 1. Get all messages for session
       const allMessages = await Message.findAll({
-        where: { session_id: sessionId },
+        where: { conversation_id: sessionId },
         order: [['timestamp', 'ASC']]
       });
 
@@ -118,7 +118,7 @@ class ContextService {
   async createSummaryForSession(sessionId) {
     try {
       const allMessages = await Message.findAll({
-        where: { session_id: sessionId },
+        where: { conversation_id: sessionId },
         order: [['timestamp', 'ASC']],
         limit: this.SUMMARY_TRIGGER_THRESHOLD
       });
@@ -133,7 +133,7 @@ class ContextService {
 
       const summaryContent = await aiService.callChatAPI({
         user_id: 'system',
-        session_id: 'summary_' + sessionId,
+        conversation_id: 'summary_' + sessionId,
         message: `Please summarize the following conversation concisely and cover the main points:\n\n${conversationText}\n\nSummarize:`,
         history: []
       });
@@ -164,7 +164,7 @@ class ContextService {
   async cleanupOldContext(sessionId, keepRecentCount = 10) {
     try {
       const allMessages = await Message.findAll({
-        where: { session_id: sessionId },
+        where: { conversation_id: sessionId },
         order: [['timestamp', 'DESC']],
         attributes: ['id', 'timestamp']
       });
@@ -230,11 +230,11 @@ class ContextService {
     try {
       const [session, messageCount] = await Promise.all([
         ChatSession.findByPk(sessionId),
-        Message.count({ where: { session_id: sessionId } })
+        Message.count({ where: { conversation_id: sessionId } })
       ]);
 
       const recentMessages = await Message.findAll({
-        where: { session_id: sessionId },
+        where: { conversation_id: sessionId },
         order: [['timestamp', 'DESC']],
         limit: this.MAX_CONTEXT_MESSAGES
       });

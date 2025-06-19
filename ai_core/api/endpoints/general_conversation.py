@@ -18,7 +18,7 @@ def request_chatbot(request: ChatbotRequest):
     try:
         model = KorLearningChatModels(
             user_id=request.user_id,
-            session_id=request.session_id
+            conversation_id=request.conversation_id
         )
         response = model.chat(request.message, request.history, request.language)
         return StreamingResponse(
@@ -41,7 +41,7 @@ def request_chatbot_stream(request: ChatbotRequest):
     try:
         model = KorLearningChatModels(
             user_id=request.user_id,
-            session_id=request.session_id
+            conversation_id=request.conversation_id
         )
         def generate_response() -> Generator[str, None, None]:
             try:

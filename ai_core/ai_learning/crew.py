@@ -11,7 +11,7 @@ from typing import Iterator, AsyncGenerator, Dict, Any
 from crewai import Crew, Process
 from crewai.task import TaskOutput
 
-from db.pg_db import update_learning_plan
+from db.pg_db import update_learning_plan, update_vocab_expansion
 
 from .agents import Agents
 from .tasks import Tasks
@@ -162,3 +162,34 @@ class AILearningCrew:
             raise Exception("End-to-end crew failed to complete tasks")
         
         return end2end_result.raw
+    
+    def vocab_expansion_kickoff(self, inputs: Dict[str, Any]) -> str:
+        """
+        Run full end-to-end vocabulary expansion process
+        """
+        # Initialize Agents
+        vocab_expansion_agent = self.agents.vocab_expansion_agent(
+            model_provider=inputs["model_provider"],
+            model_id=inputs["model_id"],
+            temperature=0,
+        )
+        
+        # Initialize Tasks
+        vocab_expansion_task = self.tasks.vocab_expansion_task(vocab_expansion_agent)
+        vocab_crew = Crew(
+            name="End-to-End Vocab Expansion Crew",
+            agents=[vocab_expansion_agent],
+            tasks=[vocab_expansion_task],
+            verbose=True,
+        )
+        # Kickoff the crew
+        input_crew = {
+            "user_word": inputs["user_word"],
+            "language": inputs["language"],
+        }
+        vocab_result = vocab_crew.kickoff(inputs=input_crew)
+        # update_vocab_expansion(vocab_id=inputs["vocab_id"], xml_response=vocab_result.raw, status="Success")
+        if not vocab_result:
+            raise Exception("Vocabulary expansion crew failed to complete tasks ")
+        
+        return vocab_result.raw

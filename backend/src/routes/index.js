@@ -1,18 +1,24 @@
 const express = require('express');
 const router = express.Router();
 
-const conversationRoutes = require('./conversations');
-const chatRoutes = require('./chat');
 const authRoutes = require('./auth');
 const adminRoutes = require('./admin');
+
+// Chat Features
 const contextRoutes = require('./context');
-const learningplanRoutes = require('./plan');
+const conversationRoutes = require('./conversations');
+const chatRoutes = require('./chat');
+
+// AI features
+const learningplanRoutes = require('./learningPlans');
+const vocabExpansionRoutes = require('./vocabExpansion');
 
 router.use('/admin', adminRoutes);
 router.use('/conversations', conversationRoutes);
 router.use('/chat', chatRoutes);
-router.use('/learning-plan', learningplanRoutes);
 router.use('/context', contextRoutes);
+router.use('/learning-plan', learningplanRoutes);
+router.use('/vocab-expansion', vocabExpansionRoutes);
 router.use('/', authRoutes);
 
 module.exports = router;

@@ -324,6 +324,7 @@ vocab_expansion_task:
   description: |-
     # User Input
     - Korean word: {user_word}
+    - User's language: {language}
 
     # Guidelines
     1. Analyze the input word, correcting typos if necessary.
@@ -341,7 +342,7 @@ vocab_expansion_task:
         + <word>: (Required, 1) The standard form of the word.
         + <pronunciation>: (Optional, 1) Phonetic pronunciation.
         + <definition lang="ko">: (Required, 1) The primary definition in Korean.
-        + <definition lang="[user_lang]">: (Optional, 1) The definition translated into the user's native language.
+        + <definition lang="[user_lang]">: (Optional, 1) The definition translated into the user's native language. (language: {language})
         + <synonyms>: (Optional, 1) A list of synonyms.
           + <item>: (Required if <synonyms> exists, multiple allowed) A single synonym.
         + <antonyms>: (Optional, 1) A list of antonyms.
@@ -349,7 +350,7 @@ vocab_expansion_task:
         + <examples>: (Required, 1) A list of example sentences.
           + <example>: (Required, multiple allowed) A single example set.
             + <ko>: (Required, 1) The example sentence in Korean.
-            + <translation lang="[user_lang]">: (Optional, 1) The translation of the example sentence.
+            + <translation lang="[user_lang]">: (Optional, 1) The translation of the example sentence. (language: {language})
         + <etymology>: (Optional, 1) Etymology or Hanja origin of the word.
         + <related_expressions>: (Optional, 1) A list of related idioms or expressions.
           + <item>: (Required if tag exists, multiple allowed) A single related expression.

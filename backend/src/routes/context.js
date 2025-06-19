@@ -2,22 +2,22 @@ const express = require('express');
 const router = express.Router();
 const contextController = require('../controllers/contextController');
 
-// GET /api/context/:session_id/stats - Get context statistics
-router.get('/:session_id/stats', contextController.getContextStats);
+// GET    /api/context/:conversation_id/stats
+router.get('/:conversation_id/stats', contextController.getContextStats);
 
-// GET /api/context/:session_id/preview - Preview context
-router.get('/:session_id/preview', contextController.previewContext);
+// GET    /api/context/:conversation_id/preview
+router.get('/:conversation_id/preview', contextController.previewContext);
 
-// POST /api/context/summary - Create summary
-router.post('/summary', contextController.createSummary);
+// POST   /api/context/:conversation_id/summary
+router.post('/:conversation_id/summary', contextController.createSummary);
 
-// POST /api/context/cleanup - Cleanup old context
-router.post('/cleanup', contextController.cleanupContext);
+// POST   /api/context/:conversation_id/cleanup
+router.post('/:conversation_id/cleanup', contextController.cleanupContext);
 
-// PUT /api/context/:session_id/config - Configure context settings
-router.put('/:session_id/config', contextController.configureContext);
+// PUT    /api/context/:conversation_id/config
+router.put('/:conversation_id/config', contextController.configureContext);
 
-// DELETE /api/context/:session_id/summary - Delete summary
-router.delete('/:session_id/summary', contextController.deleteSummary);
+// DELETE /api/context/:conversation_id/summary
+router.delete('/:conversation_id/summary', contextController.deleteSummary);
 
 module.exports = router;

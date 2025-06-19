@@ -92,7 +92,7 @@ async function callFastAPIStream(endpoint, payload, onChunk, options = {}) {
 }
 
 /**
- * Wrapper cho các API cụ thể (dễ mở rộng)
+ * API call to get chat response
  */
 async function callChatAPI(payload) {
   return callFastAPI('/chatbot/chat_response', payload);
@@ -102,8 +102,15 @@ async function callChatAPIStream(payload, onChunk) {
   return callFastAPIStream('/chatbot/chat_stream', payload, onChunk);
 }
 
+/**
+ * API FOR AI FEATURES
+ */
 async function callPlanAPI(payload) {
   return callFastAPI('/learning/planning_response', payload);
+}
+
+async function callVocabExpansionAPI(payload) {
+  return callFastAPI('/vocab/vocab_expansion_response', payload);
 }
 
 async function callSummaryAPI(payload) {
@@ -133,6 +140,7 @@ module.exports = {
   callChatAPI,
   callChatAPIStream,
   callPlanAPI,
+  callVocabExpansionAPI,
   callSummaryAPI,
   callFeedbackAPI,
   getAvailableModels,

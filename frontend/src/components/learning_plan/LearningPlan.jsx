@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { ArrowLeft } from 'lucide-react';
 import LanguageSwitcher from "../common/LanguageSwitcher";
 import Welcome from "./steps/Welcome";
 import Input from "./steps/Input";
@@ -105,7 +106,7 @@ const LearningPlan = ({ user_id }) => {
       const result = await fetchLearningPlan("", payload);
       setPlan({ learning_plan: result.learning_plan });
     } catch (err) {
-      alert("Có lỗi khi tạo kế hoạch học tập!");
+      alert(err.message || "Có lỗi khi tạo kế hoạch học tập!");
     }
     setLoading(false);
   };
@@ -114,80 +115,117 @@ const LearningPlan = ({ user_id }) => {
   if (loading) return <LoadingContent />;
   if (plan)
     return (
-      <PlanResult
-        plan={plan}
-        onBack={() => {
-          setPlan(null);
-          setCurrentPlanId(null);
-          setStep("welcome");
-        }}
-      />
+      <>
+        <div className="w-full border-b bg-white shadow-sm flex items-center justify-between px-6 h-16">
+          <div className="flex items-center gap-2 min-w-0">
+            <span className="font-bold text-orange-500 text-xl">AI LEARNING PLAN</span>
+          </div>
+          <div className="flex-1 flex justify-center items-center">
+            <LanguageSwitcher />
+          </div>
+          <div className="flex items-center gap-4">
+            <button
+              onClick={() => navigate('/ai')}
+              className="text-orange-500 underline text-sm flex items-center gap-1"
+            >
+              <ArrowLeft className="w-4 h-4" /> Quay lại Home
+            </button>
+          </div>
+        </div>
+        <PlanResult
+          plan={plan}
+          onBack={() => {
+            setPlan(null);
+            setCurrentPlanId(null);
+            setStep("welcome");
+          }}
+        />
+      </>
     );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-yellow-50 flex flex-row items-stretch py-0">
-      {/* Sidebar on the left */}
-      <LearningPlanSidebar
-        userId={user_id}
-        onSelectPlan={handleSelectPlan}
-        currentPlanId={currentPlanId}
-        settings={settings}
-        setSettings={setSettings}
-        showSettings={showSettings}
-        setShowSettings={setShowSettings}
-      />
-      {/* Main content */}
-      <div className="flex-1 flex flex-col items-center">
-        <div className="w-full flex justify-center mb-4 mt-8">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-yellow-50 flex flex-col">
+      {/* Header */}
+      <div className="w-full border-b bg-white shadow-sm flex items-center justify-between px-6 h-16">
+        {/* Left */}
+        <div className="flex items-center gap-2 min-w-0">
+          <span className="font-bold text-orange-500 text-xl">AI LEARNING PLAN</span>
+        </div>
+        {/* Center */}
+        <div className="flex-1 flex justify-center items-center">
           <LanguageSwitcher />
         </div>
-        <div className="bg-white rounded-2xl shadow-lg p-8 max-w-xl w-full transition-all duration-300 mt-4">
-          {step === "welcome" && (
-            <Welcome
-              onStart={handleStart}
-              onBackHome={() => navigate("/ai")}
-            />
-          )}
-          {["level", "goals", "duration", "hours"].includes(step) && (
-            <Input
-              step={step}
-              level={level}
-              setLevel={setLevel}
-              LEVELS={LEVELS}
-              goals={goals}
-              setGoals={setGoals}
-              GOALS={GOALS}
-              topikLevel={topikLevel}
-              setTopikLevel={setTopikLevel}
-              otherGoal={otherGoal}
-              setOtherGoal={setOtherGoal}
-              duration={duration}
-              setDuration={setDuration}
-              customDuration={customDuration}
-              setCustomDuration={setCustomDuration}
-              DURATIONS={DURATIONS}
-              hours={hours}
-              setHours={setHours}
-              HOURS={HOURS}
-              nextStep={nextStep}
-              prevStep={prevStep}
-            />
-          )}
-          {step === "review" && (
-            <Review
-              level={level}
-              goals={goals}
-              GOALS={GOALS}
-              topikLevel={topikLevel}
-              otherGoal={otherGoal}
-              duration={duration}
-              customDuration={customDuration}
-              hours={hours}
-              HOURS={HOURS}
-              onBack={prevStep}
-              onSubmit={handleSubmit}
-            />
-          )}
+        {/* Right */}
+        <div className="flex items-center gap-4">
+          <button
+            onClick={() => navigate('/ai')}
+            className="text-orange-500 underline text-sm flex items-center gap-1"
+          >
+            <ArrowLeft className="w-4 h-4" /> Quay lại Home
+          </button>
+        </div>
+      </div>
+      {/* Main content with sidebar */}
+      <div className="flex flex-1 flex-row items-stretch py-0">
+        {/* Sidebar on the left */}
+        <LearningPlanSidebar
+          userId={user_id}
+          onSelectPlan={handleSelectPlan}
+          currentPlanId={currentPlanId}
+          settings={settings}
+          setSettings={setSettings}
+          showSettings={showSettings}
+          setShowSettings={setShowSettings}
+        />
+        {/* Main content */}
+        <div className="flex-1 flex flex-col items-center">
+          <div className="bg-white rounded-2xl shadow-lg p-8 max-w-xl w-full transition-all duration-300 mt-4">
+            {step === "welcome" && (
+              <Welcome
+                onStart={handleStart}
+              />
+            )}
+            {["level", "goals", "duration", "hours"].includes(step) && (
+              <Input
+                step={step}
+                level={level}
+                setLevel={setLevel}
+                LEVELS={LEVELS}
+                goals={goals}
+                setGoals={setGoals}
+                GOALS={GOALS}
+                topikLevel={topikLevel}
+                setTopikLevel={setTopikLevel}
+                otherGoal={otherGoal}
+                setOtherGoal={setOtherGoal}
+                duration={duration}
+                setDuration={setDuration}
+                customDuration={customDuration}
+                setCustomDuration={setCustomDuration}
+                DURATIONS={DURATIONS}
+                hours={hours}
+                setHours={setHours}
+                HOURS={HOURS}
+                nextStep={nextStep}
+                prevStep={prevStep}
+              />
+            )}
+            {step === "review" && (
+              <Review
+                level={level}
+                goals={goals}
+                GOALS={GOALS}
+                topikLevel={topikLevel}
+                otherGoal={otherGoal}
+                duration={duration}
+                customDuration={customDuration}
+                hours={hours}
+                HOURS={HOURS}
+                onBack={prevStep}
+                onSubmit={handleSubmit}
+              />
+            )}
+          </div>
         </div>
       </div>
     </div>

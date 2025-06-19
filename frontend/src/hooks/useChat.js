@@ -26,7 +26,7 @@ export const useChat = (conversationId, setMessages, userId, settings) => {
     try {
       const payload = {
         user_id: userId,
-        session_id: conversationId,
+        conversation_id: conversationId,
         message: inputMessage,
         language: language,
         settings: {

@@ -3,7 +3,7 @@ from fastapi.responses import StreamingResponse
 from ..schemas import LearningRequest, LearningResponse, ErrorResponse
 
 from ai_learning.crew import AILearningCrew
-from db.pg_db import create_learning_plan, update_learning_plan, get_learning_plan_by_user
+from db.pg_db import create_learning_plan
 
 router = APIRouter()
 learning_plan_crew = AILearningCrew()

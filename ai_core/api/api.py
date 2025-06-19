@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from .endpoints import general_conversation, learning_plan
+from .endpoints import general_conversation, learning_plan, vocab_expansion
 
 summary = "Korean Learning API"
 
@@ -15,7 +15,11 @@ tags_metadata = [
     {
         "name": "Korean Learning Plan",
         "description": "Endpoints for creating and managing personalized Korean learning plans",
-    }
+    },
+    {
+        "name": "Korean Learning Vocab Expansion",
+        "description": "Endpoints for expanding vocabulary in Korean language learning",
+    },
 ]
 
 api = FastAPI(
@@ -36,4 +40,10 @@ api.include_router(
     learning_plan.router,
     prefix="/learning",
     tags=["Korean Learning Plan"],
+)
+
+api.include_router(
+    vocab_expansion.router,
+    prefix="/vocab",
+    tags=["Korean Learning Vocab Expansion"],
 )

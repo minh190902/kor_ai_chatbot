@@ -13,7 +13,7 @@ async function cleanupOldConversations(days = 90) {
   const oldSessionIds = oldSessions.map(s => s.id);
 
   // Xóa messages thuộc các session này
-  await Message.destroy({ where: { session_id: { [Op.in]: oldSessionIds } } });
+  await Message.destroy({ where: { conversation_id: { [Op.in]: oldSessionIds } } });
 
   // Xóa các session
   await ChatSession.destroy({ where: { id: { [Op.in]: oldSessionIds } } });

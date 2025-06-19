@@ -48,6 +48,12 @@ class User(Base):
         cascade="all, delete-orphan",
         foreign_keys='LearningPlan.user_id'
     )
+    vocab_expansions = relationship(
+        "VocabExpansion",
+        back_populates="user",
+        cascade="all, delete-orphan",
+        foreign_keys='VocabExpansion.user_id'
+    )
     last_plan = relationship(
         "LearningPlan",
         foreign_keys=[last_plan_id],
@@ -74,7 +80,7 @@ class ChatSession(Base):
 class Message(Base):
     __tablename__ = 'messages'
     id = Column(BigInteger, primary_key=True, autoincrement=True)
-    session_id = Column(PG_UUID(as_uuid=True), ForeignKey('chat_sessions.id'), nullable=False, index=True)
+    conversation_id = Column(PG_UUID(as_uuid=True), ForeignKey('chat_sessions.id'), nullable=False, index=True)
     role = Column(Enum(MessageRole), nullable=False)
     content = Column(Text, nullable=False)
     timestamp = Column(DateTime(timezone=True), server_default=func.now())
@@ -114,9 +120,24 @@ class StudyPlanContent(Base):
 
     study_plan = relationship("LearningPlan", backref="content", uselist=False)
 
+# -------------------- VOCABULARY --------------------
+class VocabExpansion(Base):
+    __tablename__ = "vocab_expansions"
+    vocab_id = Column(PG_UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    user_id = Column(PG_UUID(as_uuid=True), ForeignKey('users.id'), nullable=False, index=True)
+    user_word = Column(String(255), nullable=False)
+    xml_response = Column(Text, nullable=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+    user = relationship(
+        "User",
+        back_populates="vocab_expansions",
+        foreign_keys=[user_id]
+    )
+
 
 # -------------------- INDEXES --------------------
-Index('ix_messages_session_timestamp', Message.session_id, Message.timestamp)
+Index('ix_messages_conversation_timestamp', Message.conversation_id, Message.timestamp)
 Index('ix_learning_plan_user_status', LearningPlan.user_id, LearningPlan.status)
 Index('ix_user_email', User.email)
 Index('ix_user_username', User.username)

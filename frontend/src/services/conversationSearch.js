@@ -1,9 +1,6 @@
 export const searchConversations = async ({ userId, q, from, to }) => {
-  const params = new URLSearchParams({ user_id: userId });
-  if (q) params.append('q', q);
-  if (from) params.append('from', from);
-  if (to) params.append('to', to);
-  const res = await fetch(`/api/conversations/search?${params.toString()}`);
-  if (!res.ok) throw new Error('Search failed');
-  return res.json();
+  const res = await fetch(`/api/conversations/search?user_id=${userId}&q=${q}&from=${from}&to=${to}`);
+  const json = await res.json();
+  if (!res.ok || !json.success) throw new Error(json.error || 'Không thể tìm kiếm');
+  return json.data;
 };

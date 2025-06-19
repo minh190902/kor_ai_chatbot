@@ -51,24 +51,23 @@ export const useConversations = (userId) => {
       const newConv = await createConversation(settings.apiEndpoint, title, userId);
       setConversations(prev => [newConv, ...prev]);
       setCurrentConversationId(newConv.id);
-      setMessages([]); 
+      setMessages([]);
     } catch (error) {
-      console.error(error);
+      setError(error.message);
     }
   };
 
   const deleteConversationById = async (sessionId, settings = DEFAULT_SETTINGS) => {
     try {
       await deleteConversation(settings.apiEndpoint, sessionId);
-      console.log('API called, updating state'); 
       setConversations(prev => prev.filter(conv => conv.id !== sessionId));
       if (currentConversationId === sessionId) {
         setCurrentConversationId(null);
         setMessages([]);
       }
     } catch (err) {
-      console.error('Delete error:', err); 
-      alert('Không thể xóa cuộc trò chuyện!');
+      setError(err.message);
+      alert(err.message);
     }
   };
 
@@ -77,7 +76,8 @@ export const useConversations = (userId) => {
       await deleteMessagesInConversation(settings.apiEndpoint, sessionId);
       setMessages([]);
     } catch (err) {
-      alert('Không thể xóa tin nhắn hội thoại!');
+      setError(err.message);
+      alert(err.message);
     }
   };
 

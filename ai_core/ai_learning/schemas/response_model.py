@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from pydantic import BaseModel, Field
 
@@ -85,4 +85,80 @@ class LearningPlan(BaseModel):
     recommended_resources: RecommendedResources = Field(..., description="Recommended resources")
     timeline: List[TimelinePhase] = Field(..., description="Timeline phases")
     tips: List[str] = Field(..., description="Actionable tips for success")
+
+
+# --------------------------------------
+# --- Study Plan Response Model ---
+class ActivityItem(BaseModel):
+    item: str = Field(..., description="Describes each individual activity")
+
+class DayPlan(BaseModel):
+    name: str = Field(..., description="Day of the week", alias="name")
+    time: str = Field(..., description="Duration for the day's study", alias="time")
+    focus: str = Field(..., description="Core learning objective for that day")
+    activity: List[ActivityItem] = Field(..., description="List of activities for the day")
+
+class SkillStrategy(BaseModel):
+    item: List[str] = Field(..., description="Describes each specific strategy for that skill")
+
+class LearningStrategies(BaseModel):
+    listening: SkillStrategy = Field(..., description="Strategies for listening skill")
+    reading: SkillStrategy = Field(..., description="Strategies for reading skill")
+    writing: SkillStrategy = Field(..., description="Strategies for writing skill")
+    speaking: SkillStrategy = Field(..., description="Strategies for speaking skill")
+    vocabulary: SkillStrategy = Field(..., description="Strategies for vocabulary")
+    grammar: SkillStrategy = Field(..., description="Strategies for grammar")
+
+class ResourceCategory(BaseModel):
+    item: List[str] = Field(..., description="Describes each individual resource")
+
+class RecommendedResources(BaseModel):
+    textbooks: ResourceCategory = Field(..., description="Recommended textbooks")
+    online_resources: ResourceCategory = Field(..., description="Recommended online resources")
+    apps: ResourceCategory = Field(..., description="Recommended apps")
+    practice_tests: ResourceCategory = Field(..., description="Recommended practice tests")
+
+class PhasePlan(BaseModel):
+    item: List[str] = Field(..., description="Describes each individual plan item")
+
+class TimelinePhase(BaseModel):
+    name: str = Field(..., description="Name of the phase (period)", alias="name")
+    objective: str = Field(..., description="Objective for that phase")
+    plan: PhasePlan = Field(..., description="Detailed plan for that phase")
+
+class LearningPlanResponse(BaseModel):
+    title: str = Field(..., description="Overall title of the study plan")
+    overview: str = Field(..., description="General overview of the study plan")
+    weekly_plan: List[DayPlan] = Field(..., description="Weekly study schedule")
+    learning_strategies: LearningStrategies = Field(..., description="Learning strategies by skill area")
+    recommended_resources: RecommendedResources = Field(..., description="Recommended learning materials")
+    timeline: List[TimelinePhase] = Field(..., description="Milestones and goals over a period")
+    tips: List[str] = Field(..., description="Additional advice for successful learning")
+
+# --------------------------------------
+# --- Vocabulary Expansion Response Model ---
+class RequestInfo(BaseModel):
+    original_input: str = Field(..., description="User's raw input")
+    corrected_input: Optional[str] = Field(None, description="Corrected input if typo was found")
+
+class ExampleItem(BaseModel):
+    ko: str = Field(..., description="Example sentence in Korean")
+    translation: Optional[str] = Field(None, description="Translation of the example sentence")
+
+class WordInfo(BaseModel):
+    level: str = Field(..., description="Word level: Beginner, Intermediate, Advanced")
+    type: str = Field(..., description="Part of speech (품사)")
+    word: str = Field(..., description="Standard form of the word")
+    pronunciation: Optional[str] = Field(None, description="Phonetic pronunciation")
+    definition_ko: str = Field(..., alias="definition_ko", description="Definition in Korean")
+    definition_user: Optional[str] = Field(None, description="Definition in user's language")
+    synonyms: Optional[List[str]] = Field(None, description="List of synonyms")
+    antonyms: Optional[List[str]] = Field(None, description="List of antonyms")
+    examples: List[ExampleItem] = Field(..., description="List of example sentences")
+    etymology: Optional[str] = Field(None, description="Etymology or Hanja origin")
+    related_expressions: Optional[List[str]] = Field(None, description="Related idioms or expressions")
+
+class VocabularyExpansion(BaseModel):
+    request: RequestInfo = Field(..., description="Request information")
+    word_info: WordInfo = Field(..., description="Detailed word information")
 

@@ -210,6 +210,24 @@ class Agents:
             ),
         )
         
+    def vocab_expansion_agent(
+        self,
+        model_provider: str = "openai",
+        model_id: str = None,
+        **kwargs
+    ) -> Agent:
+        """
+        Create a vocabulary expansion agent
+        """
+        return Agent(
+            config=self.agents_config["vocab_expansion_agent"],
+            llm=self.get_llm(
+                model_provider, 
+                model_id, 
+                **kwargs
+            ),
+        )
+        
     # # ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # #                                                           Progress Tracker Agents
     # # ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------

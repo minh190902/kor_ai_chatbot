@@ -1,5 +1,6 @@
 import React from 'react';
 import { Trash2, Search } from 'lucide-react';
+import { USER_STATUS, ROLE } from '../../utils/constants';
 
 const AdminUserTable = ({
   users,
@@ -71,7 +72,7 @@ const AdminUserTable = ({
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                      user.role === 'admin'
+                      user.role === ROLE.ADMIN
                         ? 'bg-purple-100 text-purple-800'
                         : 'bg-gray-100 text-gray-800'
                     }`}>
@@ -91,7 +92,7 @@ const AdminUserTable = ({
                     {new Date(user.created_at).toLocaleDateString('vi-VN')}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    {user.role !== 'admin' && (
+                    {user.role !== ROLE.ADMIN && (
                       <button
                         onClick={() => deleteUser(user.id)}
                         className="flex items-center space-x-1 text-red-600 hover:text-red-900 transition-colors"

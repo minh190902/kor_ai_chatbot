@@ -8,11 +8,15 @@ class BaseResponse(BaseModel):
     
 class ChatbotResponse(BaseResponse):
     """Response scheme for chatbot interactions"""
-    session_id: str
+    conversation_id: str
     message: str
     history: List[Dict]
     
 class LearningResponse(BaseResponse):
     """Response scheme for learning interactions"""
     learning_plan: str
+    
+class VocabExpansionResponse(BaseResponse):
+    """Response scheme for vocabulary expansion"""
+    vocab_expansion: str
    

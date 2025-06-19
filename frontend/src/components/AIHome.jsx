@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MessageCircle, CalendarCheck, Brain, BookOpen, LogOut } from 'lucide-react';
 import LanguageSwitcher from './common/LanguageSwitcher';
+import useLogout from './auth/logout';
 
 const features = [
   {
@@ -32,6 +33,7 @@ const features = [
 
 const AIHome = ({ onLogout }) => {
   const navigate = useNavigate();
+  const handleLogout = useLogout(onLogout);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 to-yellow-50 flex flex-col items-center justify-center relative">
@@ -42,7 +44,7 @@ const AIHome = ({ onLogout }) => {
       {/* Logout ở góc phải */}
       <div className="absolute top-4 right-4">
         <button
-          onClick={onLogout}
+          onClick={handleLogout}
           className="text-orange-500 underline text-sm flex items-center gap-1"
         >
           <LogOut className="w-4 h-4" /> Đăng xuất

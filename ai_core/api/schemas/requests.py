@@ -10,7 +10,7 @@ class BaseRequest(BaseModel):
     
 class ChatbotRequest(BaseRequest):
     """Request schema for chatbot interactions."""
-    session_id: str
+    conversation_id: str
     message: str
     language: str
     history: List[Dict]
@@ -21,4 +21,9 @@ class LearningRequest(BaseRequest):
     user_goals: str
     period: str
     weekly_study_hours: int
+    language: str
+    
+class VocabExpansionRequest(BaseRequest):
+    """Request schema for vocabulary expansion."""
+    user_word: str
     language: str

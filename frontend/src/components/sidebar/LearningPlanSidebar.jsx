@@ -31,7 +31,7 @@ const LearningPlanSidebar = ({ userId, onSelectPlan, currentPlanId, settings, se
         {loading && <div>Loading...</div>}
         {plans.length === 0 && !loading && <div>No plans yet.</div>}
         <ul className="space-y-2">
-          {plans.map(plan => (
+          {(Array.isArray(plans) ? plans : []).map(plan => (
             <li
               key={plan.plan_id}
               className={`p-2 rounded-lg cursor-pointer ${plan.plan_id === currentPlanId ? "bg-orange-100 font-bold" : "hover:bg-orange-50"}`}

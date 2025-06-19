@@ -25,9 +25,9 @@ class StreamingCallbackHandler(BaseCallbackHandler):
         self.tokens = []
 
 class KorLearningChatModels:
-    def __init__(self, user_id: str, session_id: str):
+    def __init__(self, user_id: str, conversation_id: str):
         self.user_id = user_id
-        self.session_id = session_id
+        self.conversation_id = conversation_id
         
         # Initialize components
         self.llm = self._initialize_llm()

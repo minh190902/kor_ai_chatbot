@@ -9,14 +9,19 @@ router.get('/', conversationController.getConversationsByUser);
 // POST   /api/conversations
 router.post('/', conversationController.createConversation);
 
+// GET    /api/conversations/search
 router.get('/search', conversationController.searchConversations);
-router.get('/messages/search', messageController.searchMessages);
+
+// // GET    /api/messages/search
+// router.get('/messages/search', messageController.searchMessages);
 
 // DELETE /api/conversations/:id
-router.delete('/:session_id', conversationController.deleteConversation);
+router.delete('/:conversation_id', conversationController.deleteConversation);
 
-router.delete('/:session_id/messages', messageController.deleteMessagesInConversation);
+// GET    /api/conversations/:conversation_id/messages
+router.get('/:conversation_id/messages', messageController.getMessagesBySession);
 
-router.get('/:session_id/messages', messageController.getMessagesBySession);
+// DELETE /api/conversations/:conversation_id/messages
+router.delete('/:conversation_id/messages', messageController.deleteMessagesInConversation);
 
 module.exports = router;
