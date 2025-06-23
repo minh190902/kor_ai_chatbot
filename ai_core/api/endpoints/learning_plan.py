@@ -9,7 +9,7 @@ router = APIRouter()
 learning_plan_crew = AILearningCrew()
 
 @router.post(
-    "/planning_response",
+    "/response",
     response_model=LearningResponse,
     responses={500: {"model": ErrorResponse}},
 )

@@ -14,7 +14,7 @@ const PrivateRoute = ({ children, onInvalidUser }) => {
       if (onInvalidUser) onInvalidUser();
       return;
     }
-    fetch(`/api/user/${userId}`)
+    fetch(`/api/${userId}`)
       .then(res => {
         if (!res.ok) throw new Error();
         return res.json();
@@ -36,7 +36,7 @@ const PrivateRoute = ({ children, onInvalidUser }) => {
   }
 
   if (!valid) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/" replace />;
   }
 
   return children;

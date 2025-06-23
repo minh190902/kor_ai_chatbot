@@ -1,8 +1,6 @@
 from .db_config import get_db_session
 from .db_models import LearningPlan, VocabExpansion
 import xmltodict
-import hashlib
-import json
 
 def create_learning_plan(user_id: str):
     with get_db_session() as db:

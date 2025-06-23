@@ -1,0 +1,31 @@
+```xml
+<?xml version="1.0" encoding="UTF-8" ?>
+<topic_question>
+  <metadata>
+    <level>고급</level>
+    <type>어휘</type>
+    <subtype>Choose the expression with the same meaning as the underlined part</subtype>
+    <topic>애완동물</topic>
+    <skill>어휘 이해</skill>
+  </metadata>
+  <passage><![CDATA[애완동물은 사람과 함께 사는 <u>친구</u> 같은 존재입니다. 많은 사람들이 애완동물을 통해 정서적인 기쁨을 느끼고, 그들과의 교감을 통해 서로의 삶에 긍정적인 영향을 미칩니다.]]></passage>
+  <question><![CDATA[위 문장에서 <u>친구</u>와 같은 의미인 단어는 무엇인가요?]]></question>
+  <choices>
+    <choice id="1"><![CDATA[동반자]]></choice>
+    <choice id="2"><![CDATA[전쟁]]></choice>
+    <choice id="3"><![CDATA[적]]></choice>
+    <choice id="4"><![CDATA[외로움]]></choice>
+  </choices>
+  <answer>
+    <id>1</id>
+    <explanation>
+      <rationale><![CDATA[문장에서 '친구'는 '동반자'와 같은 의미로, 두 단어 모두 서로의 존재가 정서적 지원을 의미합니다.]]></rationale>
+      <distractor_analysis>
+        <item choice_id="2"><![CDATA[전쟁은 친구와 반대되는 개념으로, 이 문맥에서는 전혀 관련이 없습니다.]]></item>
+        <item choice_id="3"><![CDATA[적은 친구와 반대로, 부정적인 관계를 나타냅니다.]]></item>
+        <item choice_id="4"><![CDATA[외로움은 정서적인 상태로, 친구와의 관계를 설명하지 않습니다.]]></item>
+      </distractor_analysis>
+    </explanation>
+  </answer>
+</topic_question>
+```

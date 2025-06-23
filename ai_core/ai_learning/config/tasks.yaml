@@ -1,201 +1,6 @@
-goal_analysis_task:
-  description: |-
-    # User Input
-    - Self-assessment: {self_assessment}
-    - User goals: {user_goals}
-    - Period: {period}
-    - Weekly study hours: {weekly_study_hours}
-
-    # Guidelines
-    1. Analyze each user goal using SMART criteria (Specific, Measurable, Achievable, Relevant, Time-bound).
-    2. Assess the feasibility of each goal based on the user's self-assessment, available period, and weekly study hours. Clearly state if the goal is realistic or needs adjustment.
-    3. Structure goals into a hierarchy: identify main goals and break them down into actionable sub-goals.
-    4. Assign a priority weight (max 1.0) to each main goal, based on importance and urgency.
-    5. For each goal, provide a short, specific description and a feasibility note and sub goal.
-    6. If goals are unclear or unrealistic, provide feedback and suggestions for clarification or adjustment.
-
-  expected_output: |-
-    Provide a structured goal hierarchy in the concise format:
-
-curriculum_planning_task:
-  description: |-
-    # User Input
-    - Goals: Get concise goal hierarchy from goal analysis task
-
-    # Guidelines
-    1. Design a personalized curriculum based on assessment results and user goals.
-    2. Sequence topics and skills for optimal learning progression.
-    3. Map dependencies between topics and skills.
-    4. Ensure the curriculum is achievable and motivating within the given constraints.
-
-  expected_output: |-
-    Provide a detailed curriculum plan in the concise format:
-
-timeline_task:
-  description: |-
-    # User Input
-    ## Period:
-    {period}
-
-    ## Weekly study hours:
-    {weekly_study_hours} (hours/weekly)
-
-    ## Curriculum: 
-    {curriculum_plan}
-
-    # Guidelines
-    1. Carefully analyze the provided Curriculum, user constraints (period, weekly study hours), and feasibility notes.
-    2. Break down the learning journey into clear, realistic phases (e.g., Foundation, Skill Integration, Exam Preparation), each with a specific time period (e.g., "Month 1-2", "Q1 2024").
-    3. For each phase:
-       - Name: Combine a descriptive phase name and its estimated period (e.g., "Month 1-2: Foundation Building").
-       - Objective: Write a clear, actionable objective that aligns with the user's main goals and sub-goals for this phase.
-       - Plan: List specific, measurable, and achievable tasks or milestones that must be completed in this phase. Each plan item should be concrete and relevant to the user's goals and available time.
-    4. Ensure the timeline is logically sequenced, covers all main/sub-goals, and distributes workload realistically according to the user's available study hours and period.
-    5. Make sure each phase is motivating, achievable, and avoids overloading the user.
-    6. If the user's goals are very ambitious, recommend breaking them into smaller, more manageable milestones across phases.
-
-  expected_output: |-
-    Provide a structured timeline in the concise format:
-
-schedule_optimization_task:
-  description: |-
-    # User Input
-    ## Available time: 
-    {weekly_study_hours} (hours/weekly)
-
-    ## Curriculum: 
-    {curriculum_plan}
-
-    # Guidelines
-    1. Analyze available study time (weekly).
-    2. Integrate Pomodoro and spaced repetition techniques into the schedule.
-    3. Balance cognitive load across sessions and days.
-    4. Adjust the schedule for optimal retention and motivation.
-
-  expected_output: |-
-    Provide an optimized study schedule in the concise format:
-
-planning_task:
-  description: |-
-    # User Input
-
-    ## Curriculum plan: 
-    {curriculum_plan}
-
-    ## Timeline:
-    {timeline_plan}
-
-    ## Schedule plan: 
-    {schedule_plan}
-
-    # Guidelines
-    1. Integrate all components into a comprehensive, actionable learning plan.
-    2. Ensure the plan includes the following sections, each clearly structured:
-       - title: The overall title of the study plan.
-       - overview: General description of the plan, goals, duration, and target audience.
-       - weekly_plan: A list of days, each with name, time, focus, and activities.
-       - learning_strategies: For each skill area (listening, reading, writing, speaking, vocabulary, grammar), provide a list of strategies.
-       - recommended_resources: For each resource type (textbooks, online_resources, apps, practice_tests), provide a list of recommended items.
-       - timeline: A list of phases, each with name, objective, and a list of plan items.
-       - tips: A list of actionable tips for success.
-    3. Each section must be output as a top-level YAML key, with all sub-items as lists or nested keys as appropriate.
-    4. Ensure all content is clear, actionable, and ready for conversion to XML.
-
-  expected_output: |-
-    Provide the complete learning plan with concise structured:
-    All sections must be present and clearly structured as much as details.
-
-xml_structure_task:
-  description: |-
-    # User Input
-    - Comprehensive plan data: get from planning task
-
-    # Guidelines
-    1. Convert the learning plan into a well-structured XML format following the defined schema.
-    2. Validate the XML for consistency and completeness.
-    3. Generate additional UI-friendly representations (e.g., parsed components or summaries) as needed.
-    4. Ensure the output is ready for integration into user interfaces.
-
-  expected_output: |-
-    You MUST output only a single, well-formed XML document, strictly following this structure:
-    <?xml version="1.0" encoding="UTF-8" ?>
-    <study_plan>
-      <title>...</title>
-      <overview>...</overview>
-      <weekly_plan>
-        <day name="..." time="...">
-          <focus>...</focus>
-          <activity>
-            <item>...</item>
-            ...
-          </activity>
-        </day>
-        ...
-      </weekly_plan>
-      <learning_strategies>
-        <listening>
-          <item>...</item>
-          ...
-        </listening>
-        <reading>
-          <item>...</item>
-          ...
-        </reading>
-        <writing>
-          <item>...</item>
-          ...
-        </writing>
-        <speaking>
-          <item>...</item>
-          ...
-        </speaking>
-        <vocabulary>
-          <item>...</item>
-          ...
-        </vocabulary>
-        <grammar>
-          <item>...</item>
-          ...
-        </grammar>
-      </learning_strategies>
-      <recommended_resources>
-        <textbooks>
-          <item>...</item>
-          ...
-        </textbooks>
-        <online_resources>
-          <item>...</item>
-          ...
-        </online_resources>
-        <apps>
-          <item>...</item>
-          ...
-        </apps>
-        <practice_tests>
-          <item>...</item>
-          ...
-        </practice_tests>
-      </recommended_resources>
-      <timeline>
-        <phase name="...">
-          <objective>...</objective>
-          <plan>
-            <item>...</item>
-            ...
-          </plan>
-        </phase>
-        ...
-      </timeline>
-      <tips>
-        <item>...</item>
-        ...
-      </tips>
-    </study_plan>
-    All content must be inside tags, and all tags must be correctly nested and closed. Do not add any explanations or text outside the XML.
-
-
 # ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------  
-#                                                                                            End-to-End Task
+#                                                                                            Learning Plan Task
+# ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 end2end_task:
   description: |-
     # User Input
@@ -320,6 +125,8 @@ end2end_task:
 
 
 # ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#                                                                                            Vocabulary Expansion Task
+# -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 vocab_expansion_task:
   description: |-
     # User Input
@@ -397,3 +204,119 @@ vocab_expansion_task:
     All content must be inside tags, and all tags must be correctly nested and closed. Do not add any explanations or text outside the XML.
     If the input is invalid, out of scope, or inappropriate, return only the specified plain text error message.
     Ensure the XML is well-formed, with no extra text or comments. Validate against the provided schema.
+
+
+# ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#                                                                                            TOPIK Generation Task
+# ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------  
+topik_preprocessing_task:
+  description: |-
+    # User Input
+    - Level: {level}
+    - Type: {type}
+    - Subtype: {subtype}
+    - Topic: {topic}
+
+    # Guidelines
+    1. Validate and normalize the user input for TOPIK question generation.
+    2. Ensure the level, type, and topic are well-formed, standardized, and appropriate for TOPIK.
+    3. The 'topic' field must be a detailed, well-formed description in Korean, elaborating on the topic's context, scope, or relevant aspects (not just a label).
+    4. If any field is missing or ambiguous, infer or suggest a suitable value based on context, always using the official TOPIK terminology in English.
+    5. Output a single, well-formed JSON object with the following fields: level, type, topic, topic_details, subtype. All values must be in English and standardized.
+    6. Do not generate any explanations or text outside the JSON.
+
+  expected_output: |-
+    Concise information about the TOPIK question request, formatted as a single, well-formed JSON object:
+    {
+      "level": "...",
+      "type": "...",
+      "topic": "...",
+      "topic_details": "...",
+      "subtype": "..."
+    }
+    Ensure all values are in Korean and standardized according to official TOPIK terminology.
+    The 'topic' value must be a detailed, context-rich description in Korean.
+    Do not include any explanations or text outside the JSON.
+
+
+topik_question_task:
+  description: |-
+    # User Input will be preprocessed by the topik_preprocessing_task to ensure it is well-formed and standardized.
+
+    # Guidelines
+    1. Analyze the user's request and create a unique, high-quality TOPIK question based on the specified level, type, subtype, and topic.
+    2. Strictly follow the principles of validity, authenticity, clarity, and plausible distractors.
+    3. Ensure the question is unique for each request, even for repeated topics.
+    4. Output only a single, well-formed XML document, strictly following the schema and rules below.
+
+    # [CORE PRINCIPLES OF QUESTION CREATION] 
+    1. Validity: The question must accurately measure the specific language skill (e.g., inference, detail comprehension, vocabulary knowledge) intended for the given level and type. 
+    2. Authenticity: The passage, question, and choices must use vocabulary, grammar, and sentence structures appropriate for the specified TOPIK level (Beginner, Intermediate, Advanced). 
+    3. Clarity: The question and passage must be clear and unambiguous. There should be only one definitively correct answer. 
+    4. Plausible Distractors: Incorrect choices (distractors) must be attractive to learners who have an incomplete understanding. They should be based on 
+    principles like using words from the passage irrelevantly, presenting opposite information, or making logical leaps. 
+
+    # [DYNAMIC CONTENT GENERATION] 
+    1. Topic-Driven Content: You will be given a specific topic along with the level, type, and subtype. The entire question, including the passage and choices, 
+    MUST be created based on this topic. 
+    2. Variety and Uniqueness: Even if the same topic is provided multiple times, you must create a unique question by focusing on a different aspect of the 
+    topic or using a different context. Avoid generating repetitive questions. 
+    3. Topic Examples: Topics can range from daily life ('반려동물', '배달 문화') to social issues ('환경 보호', '저출산 문제') or technology ('인공지능', '메타버스').
+
+    # [XML STRUCTURE DEFINITION]
+
+    - <topic_question>: (Root element)
+      + <metadata>: (Required, 1)
+        * <level>: (Required, 1) Difficulty level (초급, 중급, 고급).
+        * <type>: (Required, 1) Main category (어휘, 문법, 읽기).
+        * <subtype>: (Required, 1) Specific sub-type (e.g., 빈칸 채우기, 중심 생각 찾기).
+        * <topic>: (Required, 1) The specific topic for the question content.
+        * <skill>: (Required, 1) The specific language skill being tested.
+      + <passage>: (Optional, 1) Enclose in <![CDATA[...]]>.
+      + <question>: (Required, 1) Enclose in <![CDATA[...]]>.
+      + <choices>: (Required, 1)
+        * <choice id="[number]">: (Required, 4) Enclose in <![CDATA[...]]>.
+      + <answer>: (Required, 1)
+        * <id>: (Required, 1) The ID of the correct choice.
+        * <explanation>:
+          - <rationale>: (Required, 1) Enclose in <![CDATA[...]]>.
+          - <distractor_analysis>:
+            - <item choice_id="[number]">: (Required, 3) Enclose in <![CDATA[...]]>.
+
+  expected_output: |-
+    You MUST output only a single, well-formed XML document, strictly following this structure:
+    <?xml version="1.0" encoding="UTF-8" ?>
+    <topic_question>
+      <metadata>
+        <level>...</level>
+        <type>...</type>
+        <subtype>...</subtype>
+        <topic>...</topic>
+        <skill>...</skill>
+      </metadata>
+      <passage><![CDATA[...]]></passage>
+      <question><![CDATA[...]]></question>
+      <choices>
+        <choice id="1"><![CDATA[...]]></choice>
+        <choice id="2"><![CDATA[...]]></choice>
+        <choice id="3"><![CDATA[...]]></choice>
+        <choice id="4"><![CDATA[...]]></choice>
+      </choices>
+      <answer>
+        <id>...</id>
+        <explanation>
+          <rationale><![CDATA[...]]></rationale>
+          <distractor_analysis>
+            <item choice_id="..."><![CDATA[...]]></item>
+            <item choice_id="..."><![CDATA[...]]></item>
+            <item choice_id="..."><![CDATA[...]]></item>
+          </distractor_analysis>
+        </explanation>
+      </answer>
+    </topic_question>
+    
+    CRITICAL: Ensure complete consistency between passage, question, choices, and explanation.
+    All content must be inside tags, and all tags must be correctly nested and closed. Do not add any explanations or text outside the XML.
+    Ensure the XML is well-formed, with no extra text or comments. Validate against the provided schema.
+
+

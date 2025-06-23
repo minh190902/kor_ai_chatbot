@@ -1,6 +1,6 @@
-import React from "react";
 import { ArrowLeft } from "lucide-react";
 import { XMLParser } from "fast-xml-parser";
+import { useTranslation } from "react-i18next";
 
 // Helper render functions
 function renderList(items) {
@@ -102,6 +102,7 @@ function renderTips(tips) {
 const PlanResult = ({ plan, onBack }) => {
   // Parse XML
   let parsed = null;
+  const { t } = useTranslation();
   try {
     const parser = new XMLParser({
       ignoreAttributes: false,
@@ -124,13 +125,13 @@ const PlanResult = ({ plan, onBack }) => {
     <div className="max-w-2xl mx-auto bg-white rounded-2xl shadow-lg p-8 mt-8">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-2xl font-bold text-orange-500 flex items-center gap-2">
-          🎉 Your personalized learning plan is ready!
+          {t("learning_plan.success")}
         </h2>
         <button
           onClick={onBack}
           className="text-orange-500 underline flex items-center gap-1"
         >
-          <ArrowLeft className="w-4 h-4" /> Back
+          <ArrowLeft className="w-4 h-4" /> {t("common.back")}
         </button>
       </div>
       {studyPlan ? (
@@ -147,7 +148,7 @@ const PlanResult = ({ plan, onBack }) => {
         </>
       ) : (
         <pre className="bg-gray-50 rounded-lg p-4 text-sm whitespace-pre-wrap text-red-600">
-          Không thể phân tích kế hoạch học tập.<br />
+          {t("learning_plan.error.no_plan")}<br />
           <span className="text-xs">{plan.learning_plan}</span>
         </pre>
       )}

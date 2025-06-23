@@ -49,7 +49,6 @@ const MessageList = ({ messages, isLoading }) => {
             )}
           </>
         )}
-        {/* Div này để scroll xuống cuối */}
         <div ref={messagesEndRef} />
       </div>
     </div>

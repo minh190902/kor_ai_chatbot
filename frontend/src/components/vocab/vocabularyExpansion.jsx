@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Loader2, Search } from "lucide-react";
 import { getLanguageName } from '../../utils/getLanguageName';
+import { useTranslation } from "react-i18next";
 import VocabTabs from "./func/Tabs";
 import { normalizeVocabData } from "./func/parse";
 import VocabHeader from './VocabHeader';
@@ -20,6 +21,7 @@ const VocabularyExpansion = ({ user_id }) => {
     model_id: "gpt-4o-mini",
     temperature: 0.7,
   });
+  const { t } = useTranslation();
 
   const handleSearch = async () => {
     if (!input.trim()) return;
@@ -87,7 +89,7 @@ const VocabularyExpansion = ({ user_id }) => {
         <div className="flex gap-2 mb-6">
           <input
             className="flex-1 px-4 py-2 border border-orange-200 rounded-lg focus:ring-2 focus:ring-orange-400 outline-none"
-            placeholder="Nhập từ vựng tiếng Hàn hoặc tiếng Anh..."
+            placeholder={t("vocab.input_placeholder")}
             value={input}
             onChange={e => setInput(e.target.value)}
             onKeyDown={e => e.key === "Enter" && handleSearch()}
@@ -99,13 +101,13 @@ const VocabularyExpansion = ({ user_id }) => {
             disabled={loading}
           >
             <Search className="w-5 h-5" />
-            Tra cứu
+            {t("vocab.search")}
           </button>
         </div>
         {loading && (
           <div className="flex flex-col items-center py-8">
             <Loader2 className="w-10 h-10 animate-spin text-orange-400 mb-2" />
-            <div className="text-gray-500">Đang tra cứu từ vựng...</div>
+            <div className="text-gray-500">{t("vocab.loading")}</div>
           </div>
         )}
         {error && (
@@ -133,7 +135,7 @@ const VocabularyExpansion = ({ user_id }) => {
         )}
         {!result && !loading && (
           <div className="bg-blue-50 rounded-lg p-4 mt-4 text-center text-sm text-blue-700">
-            Nhập một từ vựng để tra cứu ý nghĩa, ví dụ, đồng nghĩa, trái nghĩa, nguồn gốc, biểu đạt liên quan...
+            {t("vocab.guide")}
           </div>
         )}
       </div>

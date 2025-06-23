@@ -14,7 +14,7 @@ const ChatHeader = ({
 
   return (
     <div className="border-b bg-white shadow-sm flex items-center justify-between px-6 h-16">
-      {/* Trái */}
+      {/* Left */}
       <div className="flex items-center gap-2 min-w-0">
         {!sidebarOpen && (
           <button
@@ -32,17 +32,17 @@ const ChatHeader = ({
           </span>
         )}
       </div>
-      {/* Giữa */}
+      {/* Midle */}
       <div className="flex-1 flex justify-center items-center">
         <LanguageSwitcher />
       </div>
-      {/* Phải */}
+      {/* Right */}
       <div className="flex items-center gap-4">
         <button
           onClick={() => navigate('/ai')}
           className="text-orange-500 underline text-sm flex items-center gap-1"
         >
-          <ArrowLeft className="w-4 h-4" /> Quay lại Home
+          <ArrowLeft className="w-4 h-4" /> {t("common.back_home")}
         </button>
       </div>
     </div>

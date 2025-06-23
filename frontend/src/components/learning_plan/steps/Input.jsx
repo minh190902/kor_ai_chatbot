@@ -1,4 +1,4 @@
-import React from "react";
+import { useTranslation } from "react-i18next";
 
 const Input = ({
   step,
@@ -13,8 +13,9 @@ const Input = ({
     if (goals.includes(goal)) setGoals(goals.filter(g => g !== goal));
     else setGoals([...goals, goal]);
   };
+  const { t } = useTranslation();
 
-  // Render từng bước
+  // Render step content based on current step
   if (step === "level") {
     return (
       <div className="flex flex-col items-center">
@@ -38,12 +39,12 @@ const Input = ({
           <button
             onClick={prevStep}
             className="px-4 py-2 rounded-lg bg-gray-100 text-gray-600 font-semibold"
-          >Back</button>
+          >{t("common.back")}</button>
           <button
             onClick={() => level && nextStep()}
             className={`px-6 py-2 rounded-lg font-bold text-white bg-gradient-to-r from-orange-400 to-yellow-400 shadow ${level ? 'hover:from-orange-500 hover:to-yellow-500' : 'opacity-50 cursor-not-allowed'}`}
             disabled={!level}
-          >Next</button>
+          >{t("common.next")}</button>
         </div>
       </div>
     );
@@ -79,11 +80,18 @@ const Input = ({
               )}
             </label>
           ))}
-          <label className={`block cursor-pointer bg-orange-50 rounded-xl px-4 py-3 border-2 ${otherGoal ? 'border-orange-400 bg-orange-100' : 'border-transparent'} transition-all`}>
+          <label className={`block cursor-pointer bg-orange-50 rounded-xl px-4 py-3 border-2 ${goals.includes('other') ? 'border-orange-400 bg-orange-100' : 'border-transparent'} transition-all`}>
             <input
               type="checkbox"
-              checked={!!otherGoal}
-              onChange={e => setOtherGoal(e.target.checked ? '' : '')}
+              checked={goals.includes('other')}
+              onChange={e => {
+                if (e.target.checked) {
+                  setGoals([...goals, 'other']);
+                } else {
+                  setGoals(goals.filter(g => g !== 'other'));
+                  setOtherGoal('');
+                }
+              }}
               className="mr-3"
             />
             Other:
@@ -93,7 +101,7 @@ const Input = ({
               value={otherGoal}
               onChange={e => setOtherGoal(e.target.value)}
               placeholder="Your goal"
-              disabled={!otherGoal && !goals.includes('other')}
+              disabled={!goals.includes('other')}
             />
           </label>
         </div>
@@ -101,12 +109,12 @@ const Input = ({
           <button
             onClick={prevStep}
             className="px-4 py-2 rounded-lg bg-gray-100 text-gray-600 font-semibold"
-          >Back</button>
+          >{t("common.back")}</button>
           <button
             onClick={() => goals.length > 0 && nextStep()}
             className={`px-6 py-2 rounded-lg font-bold text-white bg-gradient-to-r from-orange-400 to-yellow-400 shadow ${goals.length > 0 ? 'hover:from-orange-500 hover:to-yellow-500' : 'opacity-50 cursor-not-allowed'}`}
             disabled={goals.length === 0}
-          >Next</button>
+          >{t("common.next")}</button>
         </div>
       </div>
     );
@@ -149,12 +157,12 @@ const Input = ({
           <button
             onClick={prevStep}
             className="px-4 py-2 rounded-lg bg-gray-100 text-gray-600 font-semibold"
-          >Back</button>
+          >{t("common.back")}</button>
           <button
             onClick={() => (duration !== '' && (duration !== 'custom' || customDuration)) && nextStep()}
             className={`px-6 py-2 rounded-lg font-bold text-white bg-gradient-to-r from-orange-400 to-yellow-400 shadow ${(duration !== '' && (duration !== 'custom' || customDuration)) ? 'hover:from-orange-500 hover:to-yellow-500' : 'opacity-50 cursor-not-allowed'}`}
             disabled={duration === '' || (duration === 'custom' && !customDuration)}
-          >Next</button>
+          >{t("common.next")}</button>
         </div>
       </div>
     );
@@ -183,12 +191,12 @@ const Input = ({
           <button
             onClick={prevStep}
             className="px-4 py-2 rounded-lg bg-gray-100 text-gray-600 font-semibold"
-          >Back</button>
+          >{t("common.back")}</button>
           <button
             onClick={() => hours && nextStep()}
             className={`px-6 py-2 rounded-lg font-bold text-white bg-gradient-to-r from-orange-400 to-yellow-400 shadow ${hours ? 'hover:from-orange-500 hover:to-yellow-500' : 'opacity-50 cursor-not-allowed'}`}
             disabled={!hours}
-          >Next</button>
+          >{t("common.next")}</button>
         </div>
       </div>
     );

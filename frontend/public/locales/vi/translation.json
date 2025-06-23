@@ -11,18 +11,34 @@
         "error": {
             "username_required": "Tên đăng nhập là bắt buộc.",
             "password_required": "Mật khẩu là bắt buộc.",
+            "no_login": "Bạn cần đăng nhập để tiếp tục!",
             "login_failed": "Đăng nhập không thành công. Vui lòng kiểm tra lại tên đăng nhập và mật khẩu.",
             "fully_required": "Vui lòng nhập đầy đủ tên và mật khẩu",
             "register_failed": "Đăng ký không thành công. Vui lòng thử lại sau.",
-            "server_error": "Lỗi kết nối server. Vui lòng thử lại sau."
+            "server_error": "Lỗi kết nối server. Vui lòng thử lại sau.",
+            "not_found_user": "Không tìm thấy user nào",
+            "error": "Đã xảy ra lỗi. Vui lòng thử lại."
         }
+    },
+    "ai_home": {
+        "title": "AI Korean Learning",
+        "chat_title": "AI Korean Learning Chat",
+        "chat_desc": "Trò chuyện luyện tập tiếng Hàn với AI.",
+        "planner_title": "AI Learning Planner",
+        "planner_desc": "Lập kế hoạch học tập cá nhân hóa.",
+        "problem_title": "AI TOPIK Generation",
+        "problem_desc": "Tạo bài tập, câu hỏi luyện tập tự động.",
+        "vocab_title": "Vocabulary Expansion",
+        "vocab_desc": "Mở rộng vốn từ vựng hiệu quả."
     },
     "sidebar": {
         "ai_name": "AI Chat",
         "new_session": "Tạo cuộc trò chuyện mới",
         "find_sessions": "Tìm kiếm cuộc trò chuyện...",
         "no_sessions": "Không có cuộc trò chuyện nào",
+        "no_plan": "Không có kế hoạch học tập nào",
         "sessions_history": "Lịch sử trò chuyện",
+        "plan_history": "Lịch sử kế hoạch học tập",
         "settings": "Cài đặt"
     },
     "header": {
@@ -31,8 +47,15 @@
         "greeting": "Xin chào bạn, "
     },
     "common": {
-        "loading": "AI đang suy nghĩ...",
-        "error": "Đã xảy ra lỗi. Vui lòng thử lại."
+        "ai_loading": "AI đang suy nghĩ...",
+        "loading": "Đang tải...",
+        "error": "Đã xảy ra lỗi. Vui lòng thử lại.",
+        "back_home": "Quay lại Home",
+        "refresh": "Làm mới",
+        "back": "Quay lại",
+        "next": "Tiếp theo",
+        "new": "Mới",
+        "close": "Đóng"
     },
     "chat_area": {
         "input_placeholder": "Nhập tin nhắn của bạn...",
@@ -40,6 +63,59 @@
             "title": "Bắt đầu cuộc trò chuyện",
             "content": "Gửi tin nhắn để bắt đầu trò chuyện với AI Korean Tutor"
         },
+        "delete_msg": {
+            "title": "Xóa toàn bộ hội thoại này",
+            "warning": "Bạn có chắc chắn muốn xóa toàn bộ hội thoại này không? Hành động này không thể hoàn tác."
+        },
+        "truncated": "Một phần lịch sử hội thoại đã bị cắt do giới hạn dung lượng.",
+        "summary": "Tóm tắt cuộc trò chuyện",
         "warning": "AI có thể mắc lỗi. Hãy kiểm tra thông tin quan trọng."
+    },
+    "learning_plan":{
+        "welcome": {
+            "title": "Chào mừng đến với AI Korean Learning Plan",
+            "overview": "Sẵn sàng để tạo kế hoạch học tập tiếng Hàn của bạn chưa? Chúng tôi sẽ giúp bạn tạo một kế hoạch học tập cá nhân hóa dựa trên sở thích và mục tiêu của bạn.",
+            "start": "Bắt đầu nào!",
+            "submit": "Bắt đầu tạo kế hoạch học tập"
+        },
+        "submit": "Tạo kế hoạch học tập",
+        "loading": "Đang tạo kế hoạch học tập cho bạn...",
+        "success": "🎉 Kế hoạch học tập của bạn đã được tạo thành công!",
+        "error": {
+            "no_plan": "Không thể phân tích kế hoạch học tập."
+        }
+    },
+    "vocab": {
+        "header": "AI VOCAB",
+        "my_vocab": "Kho từ vựng của tôi",
+        "tabs": {
+            "info": "Thông tin",
+            "synonyms": "Từ đồng nghĩa",
+            "examples": "Ví dụ",
+            "antonyms": "Từ trái nghĩa",
+            "etymology": "Nguồn gốc",
+            "related": "Biểu đạt liên quan"
+        },
+        "save": "Lưu vào từ vựng của tôi",
+        "saved": "Đã lưu vào từ vựng của tôi",
+        "no_data": "Không có dữ liệu",
+        "no_description": "Không có mô tả",
+        "definition": "Định nghĩa:",
+        "input_placeholder": "Nhập từ vựng tiếng Hàn hoặc tiếng Anh...",
+        "search": "Tra cứu",
+        "loading": "Đang tra cứu từ vựng...",
+        "save_success": "✅ Đã lưu vào từ vựng của bạn!",
+        "save_fail": "❌ Lưu thất bại, vui lòng thử lại.",
+        "guide": "Nhập một từ vựng để tra cứu ý nghĩa, ví dụ, đồng nghĩa, trái nghĩa, nguồn gốc, biểu đạt liên quan..."
+    },
+    "api_error": {
+        "fetch_conversations": "Không thể tải cuộc trò chuyện",
+        "create_conversation": "Không thể tạo cuộc trò chuyện",
+        "delete_conversation": "Không thể xóa cuộc trò chuyện",
+        "delete_messages": "Không thể xóa tin nhắn",
+        "fetch_messages": "Không thể tải tin nhắn",
+        "send_chat": "Không thể gửi yêu cầu chat",
+        "fetch_context": "Không thể lấy context",
+        "search_conversations": "Không thể tìm kiếm cuộc trò chuyện. Vui lòng thử lại!"
     }
 }

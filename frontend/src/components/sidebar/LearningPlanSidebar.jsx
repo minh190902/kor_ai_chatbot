@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import useLearningPlans from "../../hooks/useLearningPlans";
 import { Settings } from "lucide-react";
 import LearningPlanSettings from "../learning_plan/Settings";
+import { useTranslation } from "react-i18next";
 
 const LearningPlanSidebar = ({ userId, onSelectPlan, currentPlanId, settings, setSettings }) => {
   const { plans, loading } = useLearningPlans(userId);
   const [showSettings, setShowSettings] = useState(false);
+  const { t } = useTranslation();
 
   return (
     <div className="h-full w-72 bg-white shadow-xl border-r border-orange-100 flex flex-col">
@@ -25,11 +27,11 @@ const LearningPlanSidebar = ({ userId, onSelectPlan, currentPlanId, settings, se
         </div>
       )}
       <div className="px-4 py-2 border-b border-orange-100 font-semibold text-gray-700 text-sm">
-        History
+        {t("sidebar.no_plan")}
       </div>
       <div className="flex-1 overflow-y-auto p-4">
-        {loading && <div>Loading...</div>}
-        {plans.length === 0 && !loading && <div>No plans yet.</div>}
+        {loading && <div>{t("common.loading")}</div>}
+        {plans.length === 0 && !loading && <div>{t("sidebar.plan_history")}</div>}
         <ul className="space-y-2">
           {(Array.isArray(plans) ? plans : []).map(plan => (
             <li

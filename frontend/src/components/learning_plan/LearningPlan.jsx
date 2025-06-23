@@ -7,6 +7,7 @@ import Review from "./steps/Review";
 import LoadingContent from "./LoadingContent";
 import { getLanguageName } from '../../utils/getLanguageName';
 import PlanResult from "./PlanResult";
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from "react-router-dom";
 import { fetchLearningPlan, fetchLearningPlanDetail } from '../../services/api';
 import LearningPlanSidebar from "../sidebar/LearningPlanSidebar";
@@ -62,6 +63,7 @@ const LearningPlan = ({ user_id }) => {
   const [currentPlanId, setCurrentPlanId] = useState(null);
   const [showSettings, setShowSettings] = useState(false);
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   // when user selects a plan from sidebar
   // fetch the plan details and set it to state
@@ -128,7 +130,7 @@ const LearningPlan = ({ user_id }) => {
               onClick={() => navigate('/ai')}
               className="text-orange-500 underline text-sm flex items-center gap-1"
             >
-              <ArrowLeft className="w-4 h-4" /> Quay lại Home
+              <ArrowLeft className="w-4 h-4" /> {t('common.back_home')}
             </button>
           </div>
         </div>
@@ -161,7 +163,7 @@ const LearningPlan = ({ user_id }) => {
             onClick={() => navigate('/ai')}
             className="text-orange-500 underline text-sm flex items-center gap-1"
           >
-            <ArrowLeft className="w-4 h-4" /> Quay lại Home
+            <ArrowLeft className="w-4 h-4" /> {t('common.back_home')}
           </button>
         </div>
       </div>

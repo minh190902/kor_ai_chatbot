@@ -19,4 +19,8 @@ class LearningResponse(BaseResponse):
 class VocabExpansionResponse(BaseResponse):
     """Response scheme for vocabulary expansion"""
     vocab_expansion: str
+    
+class TopikQuestionGenResponse(BaseResponse):
+    """Response scheme for TOPIK generation"""
+    topik_questions: str
    

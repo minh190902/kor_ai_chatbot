@@ -227,66 +227,21 @@ class Agents:
                 **kwargs
             ),
         )
-        
-    # # ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    # #                                                           Progress Tracker Agents
-    # # ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    # def progress_tracker_agent(
-    #     self,
-    #     model_provider: str = "openai",
-    #     model_id: str = None,
-    #     **kwargs
-    # ) -> Agent:
-    #     """
-    #     Initialize progress agent
-    #     """
-    #     return Agent(
-    #         config=self.agents_config["progress_tracker_agent"],
-    #         llm=self.get_llm(
-    #             model_provider, 
-    #             model_id, 
-    #             **kwargs
-    #         ),
-    #     )
-        
-    # # ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    # #                                                           Recommendation Agents
-    # # ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    # def recommendation_agent(
-    #     self,
-    #     model_provider: str = "openai",
-    #     model_id: str = None,
-    #     **kwargs
-    # ) -> Agent:
-    #     """
-    #     Initialize recommendation agent
-    #     """
-    #     return Agent(
-    #         config=self.agents_config["recommendation_agent"],
-    #         llm=self.get_llm(
-    #             model_provider, 
-    #             model_id, 
-    #             **kwargs
-    #         ),
-    #     )
-        
-    # # ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    # #                                                           Calendar Agents
-    # # ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    # def calendar_agent(
-    #     self,
-    #     model_provider: str = "openai",
-    #     model_id: str = None,
-    #     **kwargs
-    # ) -> Agent:
-    #     """
-    #     Initialize calendar agent
-    #     """
-    #     return Agent(
-    #         config=self.agents_config["calendar_agent"],
-    #         llm=self.get_llm(
-    #             model_provider, 
-    #             model_id, 
-    #             **kwargs
-    #         ),
-    #     )
+    
+    def topik_question_agent(
+        self,
+        model_provider: str = "openai",
+        model_id: str = None,
+        **kwargs
+    ) -> Agent:
+        """
+        Create a TOPIK question generation agent
+        """
+        return Agent(
+            config=self.agents_config["topik_question_agent"],
+            llm=self.get_llm(
+                model_provider, 
+                model_id, 
+                **kwargs
+            ),
+        )

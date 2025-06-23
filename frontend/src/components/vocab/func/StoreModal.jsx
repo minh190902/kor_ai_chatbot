@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import VocabTabs from "./Tabs";
+import { useTranslation } from "react-i18next";
 
 const VocabStoreModal = ({ user_id, open, onClose }) => {
   const [vocabs, setVocabs] = useState([]);
@@ -7,8 +8,9 @@ const VocabStoreModal = ({ user_id, open, onClose }) => {
   const [tab, setTab] = useState("info");
   const [hovered, setHovered] = useState(null);
   const [loading, setLoading] = useState(false);
+  const { t } = useTranslation();
 
-  // Hàm lấy danh sách vocab
+  // Get vocab list from backend
   const fetchVocabs = async () => {
     setLoading(true);
     try {
@@ -24,14 +26,13 @@ const VocabStoreModal = ({ user_id, open, onClose }) => {
     setLoading(false);
   };
 
-  // Khi mở modal thì fetch vocab (chỉ fetch khi open chuyển từ false sang true)
+  // fetch vocabs when modal opens
   React.useEffect(() => {
     if (open) {
       fetchVocabs();
       setSelected(null);
       setTab("info");
     }
-    // eslint-disable-next-line
   }, [open, user_id]);
 
   if (!open) return null;
@@ -46,17 +47,17 @@ const VocabStoreModal = ({ user_id, open, onClose }) => {
           ×
         </button>
         <h2 className="text-xl font-bold mb-4 text-orange-500 flex items-center gap-2">
-          Kho từ vựng của tôi
+          {t("vocab.my_vocab")}
           <button
             onClick={fetchVocabs}
             className="ml-2 px-2 py-1 text-xs rounded bg-orange-100 text-orange-700 hover:bg-orange-200 transition"
             title="Làm mới danh sách"
           >
-            Làm mới
+            {t("common.refresh")}
           </button>
         </h2>
         {loading ? (
-          <div className="text-center text-orange-500 py-8">Đang tải...</div>
+          <div className="text-center text-orange-500 py-8">{t("common.loading")}</div>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {vocabs.map((vocab, idx) => (
@@ -83,13 +84,13 @@ const VocabStoreModal = ({ user_id, open, onClose }) => {
                   {vocab.user_word}
                   {idx === 0 && (
                     <span className="ml-2 bg-green-200 text-green-800 text-xs px-2 py-0.5 rounded-full animate-pulse">
-                      Mới
+                      {t("common.new")}
                     </span>
                   )}
                 </div>
                 {hovered === vocab.vocab_id && (
                   <div className="absolute left-1/2 -translate-x-1/2 top-full mt-2 w-max max-w-xs bg-white border border-orange-200 shadow-lg rounded px-3 py-2 text-sm text-gray-700 z-30 pointer-events-none">
-                    {(JSON.parse(vocab.xml_response)?.definitions?.[0]?.value) || "Không có mô tả"}
+                    {(JSON.parse(vocab.xml_response)?.definitions?.[0]?.value) || t("vocab.no_description")}
                   </div>
                 )}
               </div>

@@ -2,44 +2,120 @@
   "login": {
     "login_btn": "로그인",
     "register_btn": "회원가입",
-    "username": "사용자 이름",
+    "username": "아이디",
     "password": "비밀번호",
-    "login_title": "AI 채팅 로그인",
-    "register_title": "계정 등록",
-    "login_notice": "계정이 없으신가요? 회원가입하세요!",
+    "login_title": "AI 챗 로그인",
+    "register_title": "계정 만들기",
+    "login_notice": "계정이 없으신가요? 지금 가입해보세요!",
     "register_notice": "이미 계정이 있으신가요? 로그인하세요!",
     "error": {
-      "username_required": "사용자 이름은 필수입니다.",
-      "password_required": "비밀번호는 필수입니다.",
-      "login_failed": "로그인에 실패했습니다. 사용자 이름과 비밀번호를 확인하세요.",
-      "fully_required": "사용자 이름과 비밀번호를 모두 입력해 주세요.",
-      "register_failed": "회원가입에 실패했습니다. 나중에 다시 시도해 주세요.",
-      "server_error": "서버 연결 오류입니다. 다시 시도해 주세요."
+      "username_required": "아이디를 입력해주세요.",
+      "password_required": "비밀번호를 입력해주세요.",
+      "no_login": "계속하려면 로그인이 필요해요!",
+      "login_failed": "로그인에 실패했어요. 아이디와 비밀번호를 확인해주세요.",
+      "fully_required": "아이디와 비밀번호를 모두 입력해주세요.",
+      "register_failed": "회원가입에 실패했어요. 나중에 다시 시도해주세요.",
+      "server_error": "서버 연결 오류가 발생했어요. 잠시 후 다시 시도해주세요.",
+      "not_found_user": "사용자를 찾을 수 없어요.",
+      "error": "문제가 발생했어요. 다시 시도해주세요."
     }
   },
+  "ai_home": {
+    "title": "AI 한국어 학습",
+    "chat_title": "AI 한국어 대화 연습",
+    "chat_desc": "AI와 함께 한국어 회화를 연습해보세요.",
+    "planner_title": "AI 학습 플래너",
+    "planner_desc": "나만의 학습 계획을 만들어보세요.",
+    "problem_title": "AI 문제 생성기",
+    "problem_desc": "연습 문제와 질문을 자동으로 만들어드려요.",
+    "vocab_title": "어휘 확장",
+    "vocab_desc": "효율적으로 어휘를 늘려보세요."
+  },
   "sidebar": {
-    "ai_name": "AI Chat",
+    "ai_name": "AI 챗",
     "new_session": "새 대화 시작",
-    "find_sessions": "대화 세션 검색...",
-    "no_sessions": "대화 세션이 없습니다",
+    "find_sessions": "대화 검색...",
+    "no_sessions": "대화가 없어요.",
+    "no_plan": "학습 계획이 아직 없어요",
     "sessions_history": "대화 기록",
+    "plan_history": "학습 계획 기록",
     "settings": "설정"
   },
   "header": {
     "logout": "로그아웃",
-    "name": "AI Korean Tutor",
+    "name": "AI 한국어 튜터",
     "greeting": "안녕하세요, "
   },
   "common": {
-    "loading": "AI가 생각 중입니다...",
-    "error": "오류가 발생했습니다. 다시 시도해 주세요."
+    "ai_loading": "AI가 생각 중이에요...",
+    "loading": "불러오는 중...",
+    "error": "문제가 발생했어요. 다시 시도해주세요.",
+    "back_home": "홈으로 돌아가기",
+    "refresh": "새로고침",
+    "back": "뒤로",
+    "next": "다음",
+    "new": "새로 만들기",
+    "close": "닫기"
   },
   "chat_area": {
     "input_placeholder": "메시지를 입력하세요...",
     "welcome_message": {
-      "title": "대화를 시작하세요",
-      "content": "AI 한국어 튜터와 대화를 시작하려면 메시지를 보내세요"
+      "title": "대화를 시작해볼까요?",
+      "content": "AI 한국어 튜터에게 메시지를 보내보세요!"
     },
-    "warning": "AI가 실수할 수 있습니다. 중요한 정보는 확인하세요."
+    "delete_msg": {
+      "title": "이 대화를 삭제할까요?",
+      "warning": "정말 삭제하시겠어요? 되돌릴 수 없어요."
+    },
+    "truncated": "대화 기록 일부가 길이 제한으로 생략됐어요.",
+    "summary": "대화 요약",
+    "warning": "AI가 실수할 수도 있어요. 중요한 내용은 꼭 확인해주세요."
+  },
+  "learning_plan": {
+    "welcome": {
+      "title": "AI 한국어 학습 플랜에 오신 걸 환영해요!",
+      "overview": "당신의 목표와 관심사에 맞춘 학습 계획을 만들어드릴게요. 준비되셨나요?",
+      "start": "시작해볼까요?",
+      "submit": "학습 계획 만들기"
+    },
+    "submit": "학습 계획 만들기",
+    "loading": "학습 계획을 생성 중이에요...",
+    "success": "🎉 학습 계획이 성공적으로 생성되었어요!",
+    "error": {
+      "no_plan": "학습 계획을 분석할 수 없어요."
+    }
+  },
+  "vocab": {
+    "header": "AI 어휘장",
+    "my_vocab": "내 단어장",
+    "tabs": {
+      "info": "정보",
+      "synonyms": "유의어",
+      "examples": "예문",
+      "antonyms": "반의어",
+      "etymology": "어원",
+      "related": "연관 표현"
+    },
+    "save": "내 단어장에 저장",
+    "saved": "단어장이 저장되었어요",
+    "no_data": "데이터가 없어요",
+    "no_description": "설명이 없어요",
+    "definition": "뜻:",
+    "input_placeholder": "한국어나 영어 단어를 입력하세요...",
+    "search": "검색",
+    "loading": "단어를 찾는 중이에요...",
+    "save_success": "✅ 단어장이 저장되었어요!",
+    "save_fail": "❌ 저장에 실패했어요. 다시 시도해주세요.",
+    "guide": "단어를 입력하면 뜻, 예문, 유의어, 반의어, 어원, 연관 표현 등을 확인할 수 있어요."
+  },
+  "api_error": {
+    "fetch_conversations": "대화를 불러올 수 없어요.",
+    "create_conversation": "대화를 시작할 수 없어요.",
+    "delete_conversation": "대화를 삭제할 수 없어요.",
+    "delete_messages": "메시지를 삭제할 수 없어요.",
+    "fetch_messages": "메시지를 불러올 수 없어요.",
+    "send_chat": "채팅 요청을 보낼 수 없어요.",
+    "fetch_context": "문맥을 불러올 수 없어요.",
+    "search_conversations": "대화를 검색할 수 없어요. 다시 시도해주세요!"
   }
 }

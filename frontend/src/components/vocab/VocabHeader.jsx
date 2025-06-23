@@ -1,10 +1,11 @@
-import React from 'react';
 import { ArrowLeft, BookOpen } from 'lucide-react';
 import LanguageSwitcher from '../common/LanguageSwitcher';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from "react-i18next";
 
 const VocabHeader = ({ onOpenVocabStore }) => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   return (
     <div className="border-b bg-white shadow-sm flex items-center justify-between px-6 h-16">
@@ -22,13 +23,13 @@ const VocabHeader = ({ onOpenVocabStore }) => {
           onClick={onOpenVocabStore}
           className="text-orange-500 underline text-sm flex items-center gap-1"
         >
-          <BookOpen className="w-4 h-4" /> Kho từ vựng của tôi
+          <BookOpen className="w-4 h-4" /> {t("vocab.my_vocab")}
         </button>
         <button
           onClick={() => navigate('/ai')}
           className="text-orange-500 underline text-sm flex items-center gap-1"
         >
-          <ArrowLeft className="w-4 h-4" /> Quay lại Home
+          <ArrowLeft className="w-4 h-4" /> {t("common.back_home")}
         </button>
       </div>
     </div>

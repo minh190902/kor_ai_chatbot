@@ -7,8 +7,10 @@ import Modal from './components/common/Modal';
 import ChatLayout from './components/chat/ChatLayout';
 import LearningPlan from './components/learning_plan/LearningPlan';
 import VocabularyExpansion from './components/vocab/vocabularyExpansion';
+import TopikGeneration from './components/topik_gen/TopikGeneration';
 import AIHome from './components/AIHome';
 import { useConversations } from './hooks/useConversations';
+import { useTranslation } from 'react-i18next';
 import { useChat } from './hooks/useChat';
 import { DEFAULT_SETTINGS } from './utils/constants';
 import { searchConversations } from './services/conversationSearch';
@@ -20,6 +22,7 @@ const App = () => {
     return saved ? JSON.parse(saved) : null;
   });
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const { t } = useTranslation();
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -102,7 +105,7 @@ const App = () => {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-400 mx-auto mb-4"></div>
-          <p className="text-gray-600">Đang tải...</p>
+          <p className="text-gray-600">{t('common.loading')}</p>
         </div>
       </div>
     );
@@ -112,7 +115,7 @@ const App = () => {
     <>
       {showLoginModal && (
         <Modal onClose={handleCloseModal}>
-          <div>Bạn cần đăng nhập để tiếp tục!</div>
+          <div>{t('login.error.no_login')}</div>
         </Modal>
       )}
       <Routes>
@@ -177,6 +180,14 @@ const App = () => {
           element={
             <PrivateRoute onInvalidUser={handleInvalidUser}>
               <VocabularyExpansion user_id={userId} />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/topik-generation"
+          element={
+            <PrivateRoute onInvalidUser={handleInvalidUser}>
+              <TopikGeneration user_id={userId} />
             </PrivateRoute>
           }
         />

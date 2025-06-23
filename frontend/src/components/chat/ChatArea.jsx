@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import MessageList from './MessageList';
 import MessageInput from './MessageInput';
 import { fetchContextInfo } from '../../services/api';
+import { useTranslation } from 'react-i18next';
 import { Trash2 } from 'lucide-react';
 
 const ChatArea = ({
@@ -14,6 +15,7 @@ const ChatArea = ({
   onResetConversation
 }) => {
   const [contextInfo, setContextInfo] = useState(null);
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (!currentConversationId) return;
@@ -27,10 +29,10 @@ const ChatArea = ({
       {currentConversationId && (
         <div className="flex justify-end p-2">
           <button
-            title="Xóa toàn bộ hội thoại này"
+            title={t("chat_area.delete_msg.title")}
             className="p-1 rounded hover:bg-red-100 transition"
             onClick={() => {
-              if (window.confirm('Bạn có chắc chắn muốn xóa toàn bộ hội thoại này?')) {
+              if (window.confirm(t("chat_area.delete_msg.warning"))) {
                 onResetConversation(currentConversationId);
               }
             }}
@@ -41,12 +43,12 @@ const ChatArea = ({
       )}
       {contextInfo?.truncated && (
         <div className="p-2 bg-yellow-50 text-yellow-700 text-xs rounded mb-2">
-          Một phần lịch sử hội thoại đã bị cắt do giới hạn dung lượng.
+          {t("chat_area.truncated")}
         </div>
       )}
       {contextInfo?.summary && (
         <div className="p-2 bg-blue-50 text-blue-700 text-xs rounded mb-2">
-          Tóm tắt hội thoại: {contextInfo.summary}
+          {t("chat_area.summary")}: {contextInfo.summary}
         </div>
       )}
       <div className="flex-1 min-h-0 overflow-hidden">

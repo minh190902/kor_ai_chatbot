@@ -27,3 +27,11 @@ class VocabExpansionRequest(BaseRequest):
     """Request schema for vocabulary expansion."""
     user_word: str
     language: str
+    
+class TopikQuestionGenRequest(BaseRequest):
+    """Request schema for TOPIK generation."""
+    level: str
+    type: str
+    subtype: str
+    topic: str
+    language: str

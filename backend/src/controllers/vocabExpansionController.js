@@ -9,7 +9,7 @@ async function handleVocabExpansion(req, res) {
 
     // Gọi FastAPI endpoint vocab_expansion_response
     const payload = { user_id, user_word, model_provider, model_id, temperature, language };
-    const result = await aiService.callFastAPI('/vocab/vocab_expansion_response', payload);
+    const result = await aiService.callFastAPI('/vocab/response', payload);
 
     res.json({ success: true, data: result });
   } catch (err) {

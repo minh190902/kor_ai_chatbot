@@ -2,14 +2,16 @@ from .requests import (
     BaseRequest,
     LearningRequest,
     ChatbotRequest,
-    VocabExpansionRequest
+    VocabExpansionRequest,
+    TopikQuestionGenRequest
 )
 
 from .response import (
     BaseResponse,
     LearningResponse,
     ChatbotResponse,
-    VocabExpansionResponse
+    VocabExpansionResponse,
+    TopikQuestionGenResponse
 )
 
 from .errors import ErrorResponse
@@ -22,7 +24,8 @@ __all__ = [
     "BaseRequest",
     "LearningRequest",
     "ChatbotRequest",
-    "VocabExpansionRequest"
+    "VocabExpansionRequest",
+    "TopikQuestionGenRequest",
     
     # ------------------------------
     #            Response
@@ -32,6 +35,7 @@ __all__ = [
     "LearningResponse",
     "ChatbotResponse",
     "VocabExpansionResponse",
+    "TopikQuestionGenResponse",
     
     # ------------------------------
     #            Error

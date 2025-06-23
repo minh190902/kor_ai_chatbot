@@ -4,25 +4,41 @@
     "register_btn": "Register",
     "username": "Username",
     "password": "Password",
-    "login_title": "AI Chat Login",
-    "register_title": "Register an Account",
+    "login_title": "Login to AI Chat",
+    "register_title": "Create an account",
     "login_notice": "Don't have an account? Please register!",
-    "register_notice": "Already have an account? Please login!",
+    "register_notice": "Already have an account? Please log in!",
     "error": {
       "username_required": "Username is required.",
       "password_required": "Password is required.",
+      "no_login": "You need to log in to continue!",
       "login_failed": "Login failed. Please check your username and password.",
       "fully_required": "Please enter both username and password.",
       "register_failed": "Registration failed. Please try again later.",
-      "server_error": "Server connection error. Please try again later."
+      "server_error": "Server connection error. Please try again later.",
+      "not_found_user": "No user found",
+      "error": "An error occurred. Please try again."
     }
+  },
+  "ai_home": {
+    "title": "AI Korean Learning",
+    "chat_title": "AI Korean Learning Chat",
+    "chat_desc": "Practice Korean conversation with AI.",
+    "planner_title": "AI Learning Planner",
+    "planner_desc": "Create a personalized learning plan.",
+    "problem_title": "AI TOPIK Generation",
+    "problem_desc": "Automatically generate exercises and practice questions.",
+    "vocab_title": "Vocabulary Expansion",
+    "vocab_desc": "Effectively expand your vocabulary."
   },
   "sidebar": {
     "ai_name": "AI Chat",
-    "new_session": "Start New Chat",
-    "find_sessions": "Search chat sessions...",
-    "no_sessions": "No chat sessions available",
-    "sessions_history": "Chat History",
+    "new_session": "Start a new conversation",
+    "find_sessions": "Search conversation...",
+    "no_sessions": "No conversations found",
+    "no_plan": "No learning plan available",
+    "sessions_history": "Chat history",
+    "plan_history": "Learning plan history",
     "settings": "Settings"
   },
   "header": {
@@ -31,15 +47,75 @@
     "greeting": "Hello, "
   },
   "common": {
-    "loading": "AI is thinking...",
-    "error": "An error occurred. Please try again."
+    "ai_loading": "AI is thinking...",
+    "loading": "Loading...",
+    "error": "An error occurred. Please try again.",
+    "back_home": "Back to Home",
+    "refresh": "Refresh",
+    "back": "Back",
+    "next": "Next",
+    "new": "New",
+    "close": "Close"
   },
   "chat_area": {
     "input_placeholder": "Enter your message...",
     "welcome_message": {
-      "title": "Start a conversation",
-      "content": "Send a message to begin chatting with AI Korean Tutor"
+      "title": "Start the conversation",
+      "content": "Send a message to start chatting with the AI Korean Tutor"
     },
+    "delete_msg": {
+      "title": "Delete this conversation",
+      "warning": "Are you sure you want to delete this conversation? This action cannot be undone."
+    },
+    "truncated": "Part of the conversation history has been truncated due to size limits.",
+    "summary": "Conversation Summary",
     "warning": "AI may make mistakes. Please verify important information."
+  },
+  "learning_plan": {
+    "welcome": {
+      "title": "Welcome to AI Korean Learning Plan",
+      "overview": "Ready to create your Korean learning plan? We'll help you personalize it based on your goals and interests.",
+      "start": "Let's get started!",
+      "submit": "Create learning plan"
+    },
+    "submit": "Create learning plan",
+    "loading": "Creating your learning plan...",
+    "success": "🎉 Your learning plan was created successfully!",
+    "error": {
+      "no_plan": "Unable to generate learning plan."
+    }
+  },
+  "vocab": {
+    "header": "AI VOCAB",
+    "my_vocab": "My Vocabulary",
+    "tabs": {
+      "info": "Info",
+      "synonyms": "Synonyms",
+      "examples": "Examples",
+      "antonyms": "Antonyms",
+      "etymology": "Etymology",
+      "related": "Related Expressions"
+    },
+    "save": "Save to My Vocabulary",
+    "saved": "Saved to My Vocabulary",
+    "no_data": "No data",
+    "no_description": "No description",
+    "definition": "Definition:",
+    "input_placeholder": "Enter Korean or English word...",
+    "search": "Search",
+    "loading": "Searching vocabulary...",
+    "save_success": "✅ Saved to your vocabulary!",
+    "save_fail": "❌ Save failed, please try again.",
+    "guide": "Enter a word to look up its meaning, examples, synonyms, antonyms, origin, related expressions..."
+  },
+  "api_error": {
+    "fetch_conversations": "Cannot load conversations",
+    "create_conversation": "Cannot create conversation",
+    "delete_conversation": "Cannot delete conversation",
+    "delete_messages": "Cannot delete messages",
+    "fetch_messages": "Cannot load messages",
+    "send_chat": "Cannot send chat request",
+    "fetch_context": "Cannot get context",
+    "search_conversations": "Cannot search conversations. Please try again!"
   }
 }

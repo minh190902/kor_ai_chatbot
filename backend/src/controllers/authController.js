@@ -29,6 +29,7 @@ async function login(req, res) {
   }
 }
 
+const { User } = require('../db/models');
 async function getUserById(req, res) {
   try {
     const user = await User.findByPk(req.params.id, {

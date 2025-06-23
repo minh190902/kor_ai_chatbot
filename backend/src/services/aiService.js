@@ -106,11 +106,11 @@ async function callChatAPIStream(payload, onChunk) {
  * API FOR AI FEATURES
  */
 async function callPlanAPI(payload) {
-  return callFastAPI('/learning/planning_response', payload);
+  return callFastAPI('/learning/response', payload);
 }
 
 async function callVocabExpansionAPI(payload) {
-  return callFastAPI('/vocab/vocab_expansion_response', payload);
+  return callFastAPI('/vocab/response', payload);
 }
 
 async function callSummaryAPI(payload) {

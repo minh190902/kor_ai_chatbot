@@ -4,11 +4,7 @@ from crewai import Task, Agent
 from crewai.project import CrewBase, crew, task
 
 from .schemas.response_model import (
-    LearningPlan, 
-    CurriculumPlanResponse, 
-    TimelineResponse,
-    ScheduleOptimizationResponse, 
-    GoalAnalysisResponse
+    PreInput
 )
 
 @CrewBase
@@ -29,90 +25,10 @@ class Tasks:
             config=self.tasks_config['skill_assessment_task'],
             agent=agent,
         )
-
-    # ---------------------------------------------------------------------
-    # Goal Analysis Task
-    # ---------------------------------------------------------------------
-    def goal_analysis_task(self, agent: Agent) -> Task:
-        """
-        Analyze and structure user goals using SMART criteria
-        """
-        return Task(
-            config=self.tasks_config['goal_analysis_task'],
-            agent=agent,
-            output_file=f"output/goal_analysis_output.txt",
-            output_pydantic=GoalAnalysisResponse
-        )
-
-    # ---------------------------------------------------------------------
-    # Curriculum Planning Task
-    # ---------------------------------------------------------------------
-    def curriculum_planning_task(self, agent: Agent) -> Task:
-        """
-        Design personalized curriculum based on assessment and goals
-        """
-        return Task(
-            config=self.tasks_config['curriculum_planning_task'],
-            agent=agent,
-            output_file=f"output/curriculum_planning_output.txt",
-            output_pydantic=CurriculumPlanResponse
-        )
         
     # ---------------------------------------------------------------------
-    # Timeline Task
-    # ---------------------------------------------------------------------
-    def timeline_task(self, agent: Agent) -> Task:
-        """
-        Create a detailed timeline with phases and objectives
-        """
-        return Task(
-            config=self.tasks_config['timeline_task'],
-            agent=agent,
-            output_file=f"output/timeline_response.txt",
-            output_pydantic=TimelineResponse
-        )
-
-    # ---------------------------------------------------------------------
-    # Schedule Optimization Task
-    # ---------------------------------------------------------------------
-    def schedule_optimization_task(self, agent: Agent) -> Task:
-        """
-        Optimize study schedule with Pomodoro and spaced repetition
-        """
-        return Task(
-            config=self.tasks_config['schedule_optimization_task'],
-            agent=agent,
-            output_file=f"output/schedule_optimization_output.txt",
-            output_pydantic=ScheduleOptimizationResponse
-        )
-
-    # ---------------------------------------------------------------------
-    # Planning Task (Comprehensive Plan)
-    # ---------------------------------------------------------------------
-    def planning_task(self, agent: Agent) -> Task:
-        """
-        Integrate all components into a comprehensive, actionable learning plan
-        """
-        return Task(
-            config=self.tasks_config['planning_task'],
-            agent=agent,
-            output_file=f"output/planning_output.txt",
-            output_pydantic=LearningPlan
-        )
-
-    # ---------------------------------------------------------------------
-    # XML Structure Task
-    # ---------------------------------------------------------------------
-    def xml_structure_task(self, agent: Agent) -> Task:
-        """
-        Convert the learning plan into a well-structured XML format
-        """
-        return Task(
-            config=self.tasks_config['xml_structure_task'],
-            agent=agent,
-            output_file=f"output/xml_structure_output.xml",
-        )
-        
+    # Learning Plan Tasks
+    # ---------------------------------------------------------------------    
     def end2end_tasks(self, agent: Agent) -> Task:
         """
         Initialize all tasks for the end-to-end learning process
@@ -122,7 +38,10 @@ class Tasks:
             agent=agent,
             output_file=f"output/end2end_tasks.xml",
         )
-        
+    
+    # ---------------------------------------------------------------------
+    # Vocab Expansion Tasks
+    # ---------------------------------------------------------------------
     def vocab_expansion_task(self, agent: Agent) -> Task:
         """
         Example task that can be customized
@@ -130,5 +49,45 @@ class Tasks:
         return Task(
             config=self.tasks_config['vocab_expansion_task'],
             agent=agent,
+            output_file=f"output/example_output.xml"
+        )
+        
+    # ---------------------------------------------------------------------
+    # TOPIK generation tasks
+    # ---------------------------------------------------------------------
+    def topik_preprocessing_task(self, agent: Agent) -> Task:
+        """
+        Example task that can be customized
+        """        
+        return Task(
+            config=self.tasks_config['topik_preprocessing_task'],
+            agent=agent,
+            output_file=f"output/preprocess.txt",
+            output_pydantic=PreInput
+        )
+    
+    def topik_question_task(self, agent: Agent, task_list: list[Task]=None, subtype_context: str = "") -> Task:
+        """
+        Question generation task with dynamic subtype context
+        """
+        # Create base task config
+        base_config = self.tasks_config['topik_question_task'].copy()
+        
+        # Inject subtype-specific context into the description
+        if subtype_context:
+            # Insert subtype context after the guidelines section
+            description_parts = base_config['description'].split('# [XML STRUCTURE DEFINITION]')
+            enhanced_description = (
+                description_parts[0] + 
+                f"\n\n{subtype_context}\n\n" +
+                '# [XML STRUCTURE DEFINITION]' + 
+                description_parts[1] if len(description_parts) > 1 else ""
+            )
+            base_config['description'] = enhanced_description
+        
+        return Task(
+            config=base_config,
+            agent=agent,
+            context=task_list,
             output_file=f"output/example_output.xml"
         )

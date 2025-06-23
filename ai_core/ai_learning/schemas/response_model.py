@@ -161,4 +161,14 @@ class WordInfo(BaseModel):
 class VocabularyExpansion(BaseModel):
     request: RequestInfo = Field(..., description="Request information")
     word_info: WordInfo = Field(..., description="Detailed word information")
+    
+    
+# --------------------------------------
+# --- TOPIK Preprocessing Input Model ---
+class PreInput(BaseModel):
+    level: str = Field(..., description="TOPIK Level(e.g., '초급')")
+    type: str = Field(..., description="TOPIK type (e.g., '읽기', '문법 등')")
+    subtype: Optional[str] = Field(None, description="TOPIK subtype (optional)")
+    topic: Optional[str] = Field(None, description="Specific topic for the question (optional)")
+    topic_details: Optional[str] = Field(None, description="Detailed topic description (optional)")
 
