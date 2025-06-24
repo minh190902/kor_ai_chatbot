@@ -1,0 +1,144 @@
+[
+    {
+        "Grammar & Vocabulary":[
+            {
+                "subtype": "Choose the correct grammar/vocabulary for the blank",
+                "description": "Questions that require selecting the most appropriate grammar expression or vocabulary for the blank in a sentence. (Common to TOPIK I and II)",
+                "applicable_levels": ["초급", "중급", "고급"],
+                "pattern_type": "blank_fill",
+                "format_rules": {
+                    "passage": "Must contain blank or ___",
+                    "question": "Must ask what fits in blank",
+                    "choices": "One correct + three plausible distractors",
+                    "notes": "Explaination MUST justify why the correct choice fits the specific blank"
+                }
+            },
+            {
+                "subtype": "Choose the expression with the same meaning as the underlined part",
+                "description": "Questions that require selecting the expression most similar in meaning to the underlined idiom or vocabulary in the sentence. (TOPIK II)",
+                "applicable_levels": ["고급"],
+                "pattern_type": "underlined",
+                "format_rules": {
+                    "passage": "Must contain <u>text</u> tags",
+                    "question": "Must reference exact underlined text",
+                    "choices": "One synonym + three distractors",
+                    "notes": "Explaination MUST reference the exact underlined word/phrase"
+                }
+            }
+        ],
+        "Detail Comprehension": [
+            {
+                "subtype": "Choose the statement that matches the content",
+                "description": "The most representative type where you judge whether the passage and the selected option match or not.",
+                "applicable_levels": ["초급", "중급", "고급"],
+                "pattern_type": "true_false_match",
+                "format_rules": {
+                    "passage": "Must contain at least 3 factual details",
+                    "question": "Must ask for correct (matching) statement",
+                    "choices": "One correct + three with varying degrees of distortion",
+                    "notes": "Explanation MUST explain the factual basis for the correct answer"
+                }
+            },
+            {
+                "subtype": "Understand information from notices/diagrams",
+                "description": "Questions that check whether you understood practical information correctly by reading advertisements, notices, signs, or graphs.",
+                "applicable_levels": ["초급", "중급", "고급"],
+                "pattern_type": "practical_info",
+                "format_rules": {
+                    "passage": "Must resemble practical content (e.g., ads, signs, graphs)",
+                    "question": "Ask what is true or inferred from the content",
+                    "choices": "One correct + three plausible alternatives based on real-world scenarios",
+                    "notes": "Explanation MUST clarify why the correct choice is practical or realistic"
+                }
+            }
+        ],
+        "Main Idea Comprehension": [
+            {
+                "subtype": "Identify the main idea",
+                "description": "Questions to find the core argument or main thought the writer is trying to convey.",
+                "applicable_levels": ["중급", "고급"],
+                "pattern_type": "main_idea",
+                "format_rules": {
+                    "passage": "Must have a clear thesis or central message",
+                    "question": "Ask what the main idea is",
+                    "choices": "One main idea + three partial or off-topic ideas",
+                    "notes": "Explanation MUST explain why the choice represents the central theme"
+                }
+            },
+            {
+                "subtype": "Choose the topic/title of the passage",
+                "description": "Questions that require selecting the topic or title that best represents the content of the passage.",
+                "applicable_levels": ["중급", "고급"],
+                "pattern_type": "title_choice",
+                "format_rules": {
+                    "passage": "Should be a coherent short passage (2+ paragraphs)",
+                    "question": "Ask to choose the best title or topic",
+                    "choices": "One accurate title + three misleading/irrelevant ones",
+                    "notes": "Explanation MUST clarify why the title accurately reflects the passage's content"
+                }
+            },
+            {
+                "subtype": "Understand the meaning of a newspaper headline",
+                "description": "Questions that require interpreting metaphorical or indirect meanings contained in a newspaper headline and choosing the option that explains it. (TOPIK II Advanced)",
+                "applicable_levels": ["고급"],
+                "pattern_type": "headline_inference",
+                "format_rules": {
+                    "passage": "Must present a metaphorical headline with context",
+                    "question": "Ask for the interpretation of the headline",
+                    "choices": "One accurate explanation + three distractors based on surface meanings",
+                    "notes": "Explanation MUST clarify the metaphorical meaning and why it fits the headline"
+                }
+            }
+        ],
+        "Logical Inference & Structure": [
+            {
+                "subtype": "Arrange sentences in logical order",
+                "description": "Questions that require arranging four given sentences (A-B-C-D) in logical sequence.",
+                "applicable_levels": ["중급", "고급"],
+                "pattern_type": "reorder_sentences",
+                "format_rules": {
+                    "passage": "Provide 4 unordered sentences (A–D)",
+                    "question": "Ask to arrange in logical order",
+                    "choices": "Four sequence options, one correct",
+                    "notes": "Explanation MUST clarify the logical flow and reasoning for the correct order"
+                }
+            },
+            {
+                "subtype": "Find the correct position for a sentence",
+                "description": "Questions that ask where a given sentence fits most naturally in the flow of the passage.",
+                "applicable_levels": ["중급", "고급"],
+                "pattern_type": "sentence_insertion",
+                "format_rules": {
+                    "passage": "Must contain markers for insertion spots (e.g., ⓐ, ⓑ, ⓒ)",
+                    "question": "Provide one sentence and ask where to insert",
+                    "choices": "One correct insertion + three less coherent options",
+                    "notes": "Explanation MUST clarify why the insertion improves coherence or flow"
+                }
+            },
+            {
+                "subtype": "Infer the content to go inside the parentheses",
+                "description": "Questions that require logically inferring the content that fits into a blank (parentheses) based on the overall context of the passage.",
+                "applicable_levels": ["중급", "고급"],
+                "pattern_type": "contextual_inference",
+                "format_rules": {
+                    "passage": "Must contain a clear blank or parentheses",
+                    "question": "Ask what logically fits the blank",
+                    "choices": "One contextually correct answer + three that misinterpret or overgeneralize",
+                    "notes": "Explanation MUST clarify how the correct choice logically fits the context"
+                }
+            },
+            {
+                "subtype": "Identify the writer’s attitude or emotion",
+                "description": "Questions that assess the attitude, tone, or psychological state of the author or characters, mainly in literary texts (novels, essays).",
+                "applicable_levels": ["고급"],
+                "pattern_type": "tone_emotion",
+                "format_rules": {
+                    "passage": "Must be a literary or emotional narrative",
+                    "question": "Ask for author's or character's emotion or tone",
+                    "choices": "One accurate emotional state + three exaggerated, neutral, or unrelated ones",
+                    "notes": "Explanation MUST clarify the emotional cues or language that indicate the correct choice"
+                }
+            }
+        ]
+    }
+]

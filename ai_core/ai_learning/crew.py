@@ -12,7 +12,9 @@ from crewai import Crew, Process
 from crewai.task import TaskOutput
 
 from db.pg_db import update_learning_plan, update_vocab_expansion
-from .utils.subtype_manager import subtype_manager
+from db.subtype_manager import SubtypeManagerDB
+from db.db_config import SessionLocal
+
 
 from .agents import Agents
 from .tasks import Tasks
@@ -98,14 +100,15 @@ class AILearningCrew:
             model_id=inputs["model_id"],
             temperature=0,
         )
-        
-        preprocess_task = self.tasks.topik_preprocessing_task(topik_question_agent)
 
-        selected_subtype_name = inputs.get('subtype', '')
-        selected_subtype_info = subtype_manager.get_subtype_info(inputs["type"], selected_subtype_name)
+        session = SessionLocal()
+        subtype_manager = SubtypeManagerDB(session)
+        selected_subtype_info = subtype_manager.get_subtype_detail(inputs["type"], inputs["subtype"])
         subtype_context = subtype_manager.generate_subtype_context(selected_subtype_info) if selected_subtype_info else ""
+        session.close()
         
-        # Step 3: Create question generation task with subtype context
+        # Initialize Tasks
+        preprocess_task = self.tasks.topik_preprocessing_task(topik_question_agent)
         topik_question_task = self.tasks.topik_question_task(
             topik_question_agent, 
             task_list=[preprocess_task],

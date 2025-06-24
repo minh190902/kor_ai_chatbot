@@ -119,3 +119,30 @@ export const fetchLearningPlanDetail = async (planId) => {
   if (!res.ok || !json.success) throw new Error(json.error || 'Không thể tải kế hoạch học tập');
   return json.data;
 };
+
+
+
+
+// -------------------------------------------------------------------------------------
+// Topik Generation API Service
+// -------------------------------------------------------------------------------------
+export async function generateTopikQuestion(payload) {
+  const res = await fetch("/api/topik/question", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  const json = await res.json();
+  if (!json.success) throw new Error(json.error || "Không thể tạo câu hỏi");
+  // Trả về đúng XML string
+  if (json.data?.topik_questions) return json.data.topik_questions;
+  if (typeof json.data === "string" && json.data.includes("<?xml")) return json.data;
+  throw new Error("Không nhận được dữ liệu hợp lệ từ API");
+}
+
+export async function fetchTopikQuestionTypes() {
+  const res = await fetch('/api/topik/question-types');
+  const json = await res.json();
+  if (!json.success) throw new Error(json.error || 'Không thể tải danh sách loại câu hỏi');
+  return json.data;
+}

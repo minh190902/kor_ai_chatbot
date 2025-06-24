@@ -49,7 +49,7 @@ class Tasks:
         return Task(
             config=self.tasks_config['vocab_expansion_task'],
             agent=agent,
-            output_file=f"output/example_output.xml"
+            output_file=f"output/vocab.xml"
         )
         
     # ---------------------------------------------------------------------
@@ -62,7 +62,6 @@ class Tasks:
         return Task(
             config=self.tasks_config['topik_preprocessing_task'],
             agent=agent,
-            output_file=f"output/preprocess.txt",
             output_pydantic=PreInput
         )
     
@@ -89,5 +88,5 @@ class Tasks:
             config=base_config,
             agent=agent,
             context=task_list,
-            output_file=f"output/example_output.xml"
+            output_file=f"output/topik.xml"
         )

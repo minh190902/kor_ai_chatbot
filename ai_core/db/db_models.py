@@ -1,7 +1,7 @@
 import uuid
 from datetime import datetime
 from sqlalchemy import (
-    Column, String, DateTime, Text, BigInteger, Integer, Enum, Boolean, JSON, ForeignKey, func, Index
+    Column, String, DateTime, Text, BigInteger, Integer, Enum, Boolean, JSON, ForeignKey, func, Index, UniqueConstraint
 )
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.dialects.postgresql import UUID as PG_UUID, JSONB
@@ -134,6 +134,71 @@ class VocabExpansion(Base):
         back_populates="vocab_expansions",
         foreign_keys=[user_id]
     )
+    
+# -------------------- TOPIK QUESTIONS --------------------
+class TopikQuestionType(Base):
+    """
+    Lưu các loại câu hỏi và subtype, giống TopikQuestionType trong models.js
+    """
+    __tablename__ = "topik_question_types"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    type = Column(String(100), nullable=False)  # Grammar & Vocabulary, Detail Comprehension...
+    subtype = Column(String(100), nullable=False)
+    description = Column(Text, nullable=True)
+    applicable_levels = Column(JSONB, nullable=False)  # ["초급", "중급", "고급"]
+    pattern_type = Column(String(50), nullable=True)  # blank_fill, underlined, true_false_match...
+    format_rules = Column(JSONB, nullable=True)
+    is_active = Column(Boolean, default=True)
+
+    __table_args__ = (
+        UniqueConstraint('type', 'subtype', name='uq_type_subtype'),
+    )
+
+# -------------------- TOPIK QUESTION --------------------
+class TopikQuestion(Base):
+    """
+    Lưu trữ câu hỏi TOPIK được tạo bởi AI (bổ sung trường user_id, xml_content, correct_answer_id, is_active)
+    """
+    __tablename__ = 'topik_questions'
+
+    id = Column(PG_UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    user_id = Column(PG_UUID(as_uuid=True), ForeignKey('users.id'), nullable=False, index=True)  # Người tạo
+    level = Column(String(10), nullable=False, index=True)  # '초급', '중급', '고급'
+    type = Column(String(100), nullable=False)
+    subtype = Column(String(100), nullable=False)
+    topic = Column(String(12), nullable=False)
+    xml_content = Column(Text, nullable=False)  # Lưu toàn bộ XML từ AI
+    passage = Column(Text, nullable=True)
+    question_text = Column(Text, nullable=False)
+    choices = Column(JSONB, nullable=False)  # [choice1, choice2, choice3, choice4]
+    correct_answer_id = Column(Integer, nullable=False)  # 1,2,3,4
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    is_active = Column(Boolean, default=True)
+
+    # Relationships
+    user = relationship("User", backref="topik_questions", foreign_keys=[user_id])
+
+# -------------------- TOPIK GENERATION LOG --------------------
+class TopikGenerationLog(Base):
+    """
+    Log quá trình tạo câu hỏi để debug và monitoring (bổ sung user_id, status, error_message, v.v.)
+    """
+    __tablename__ = 'topik_generation_logs'
+
+    id = Column(PG_UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    user_id = Column(PG_UUID(as_uuid=True), ForeignKey('users.id'), nullable=False, index=True)
+    question_id = Column(PG_UUID(as_uuid=True), ForeignKey('topik_questions.id'), nullable=True)
+    level = Column(String(10), nullable=False)
+    type = Column(String(100), nullable=False)
+    subtype = Column(String(100), nullable=False)
+    topic = Column(String(100), nullable=False)
+    status = Column(Enum('success', 'failed', name='generation_status'), nullable=False)
+    error_message = Column(Text, nullable=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+    user = relationship("User", backref="generation_logs", foreign_keys=[user_id])
+    question = relationship("TopikQuestion", backref="generation_logs", foreign_keys=[question_id])
+
 
 
 # -------------------- INDEXES --------------------
